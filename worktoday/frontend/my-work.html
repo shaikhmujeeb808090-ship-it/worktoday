@@ -1,0 +1,2253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Work - WorkToday</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* =====================================================
+       WORKTODAY — MY WORK
+       Premium 2026 UI
+       Real Supabase Data
+       PC + Mobile Responsive
+       ===================================================== */
+
+    :root {
+      --mw-bg: #f5f7fb;
+      --mw-card: #ffffff;
+      --mw-text: #111827;
+      --mw-muted: #6b7280;
+      --mw-border: #e5e7eb;
+      --mw-dark: #111827;
+      --mw-green: #16a34a;
+      --mw-green-bg: #ecfdf3;
+      --mw-red: #dc2626;
+      --mw-red-bg: #fef2f2;
+      --mw-blue: #2563eb;
+      --mw-blue-bg: #eff6ff;
+      --mw-shadow: 0 10px 35px rgba(15, 23, 42, 0.06);
+    }
+
+    body {
+      background: var(--mw-bg);
+      color: var(--mw-text);
+    }
+
+    /* HEADER */
+
+  .mw-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(229,231,235,0.9);
+    }
+
+  .mw-header-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+  .mw-logo {
+      text-decoration: none;
+      color: #111827;
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      white-space: nowrap;
+    }
+
+  .mw-logo span {
+      color: #2563eb;
+    }
+
+  .mw-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+  .mw-nav a {
+      text-decoration: none;
+      color: #4b5563;
+      padding: 10px 13px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      transition:.2s ease;
+    }
+
+  .mw-nav a:hover,
+  .mw-nav a.active {
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+  .mw-profile-link {
+      border: 1px solid var(--mw-border);
+      background: white;
+    }
+
+    /* MAIN */
+
+  .mw-main {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      padding: 38px 0 70px;
+    }
+
+  .mw-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 25px;
+      margin-bottom: 28px;
+    }
+
+  .mw-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      color: var(--mw-muted);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 13px;
+    }
+
+  .mw-back:hover {
+      color: var(--mw-text);
+    }
+
+  .mw-heading h1 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 42px);
+      line-height: 1.1;
+      letter-spacing: -1.2px;
+    }
+
+  .mw-heading p {
+      margin: 10px 0 0;
+      color: var(--mw-muted);
+      font-size: 15px;
+    }
+
+  .mw-post-btn {
+      text-decoration: none;
+      background: var(--mw-dark);
+      color: white;
+      padding: 13px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition:.2s ease;
+    }
+
+  .mw-post-btn:hover {
+      transform: translateY(-1px);
+      background: #000;
+    }
+
+    /* STATS */
+
+  .mw-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+  .mw-stat {
+      background: var(--mw-card);
+      border: 1px solid var(--mw-border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: var(--mw-shadow);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+  .mw-stat-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      font-size: 21px;
+      background: #f3f4f6;
+      flex-shrink: 0;
+    }
+
+  .mw-stat-number {
+      display: block;
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+  .mw-stat-label {
+      display: block;
+      color: var(--mw-muted);
+      font-size: 12px;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    /* FILTER */
+
+  .mw-filter {
+      background: var(--mw-card);
+      border: 1px solid var(--mw-border);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 18px;
+      box-shadow: var(--mw-shadow);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+  .mw-tabs {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+  .mw-tab {
+      border: 0;
+      background: transparent;
+      color: var(--mw-muted);
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+  .mw-tab:hover {
+      background: #f3f4f6;
+      color: var(--mw-text);
+    }
+
+  .mw-tab.active {
+      background: var(--mw-dark);
+      color: white;
+    }
+
+  .mw-sort {
+      border: 1px solid var(--mw-border);
+      background: white;
+      color: var(--mw-text);
+      border-radius: 10px;
+      padding: 10px 13px;
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    /* LOADING */
+
+  .mw-loading {
+      background: white;
+      border: 1px solid var(--mw-border);
+      border-radius: 18px;
+      padding: 45px 20px;
+      text-align: center;
+      color: var(--mw-muted);
+    }
+
+  .mw-loader {
+      width: 30px;
+      height: 30px;
+      margin: 0 auto 12px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #111827;
+      border-radius: 50%;
+      animation: mwSpin.8s linear infinite;
+    }
+
+    @keyframes mwSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* WORK LIST */
+
+  .mw-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+  .mw-card {
+      background: var(--mw-card);
+      border: 1px solid var(--mw-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--mw-shadow);
+      transition:.2s ease;
+    }
+
+  .mw-card:hover {
+      border-color: #d1d5db;
+      transform: translateY(-1px);
+    }
+
+  .mw-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+  .mw-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--mw-blue);
+      background: var(--mw-blue-bg);
+      border-radius: 8px;
+      padding: 6px 9px;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+  .mw-card-title {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: -.3px;
+    }
+
+  .mw-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+  .mw-status.open {
+      background: var(--mw-green-bg);
+      color: var(--mw-green);
+    }
+
+  .mw-status.closed {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+  .mw-description {
+      color: #4b5563;
+      line-height: 1.65;
+      margin: 14px 0 18px;
+      font-size: 14px;
+    }
+
+  .mw-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+  .mw-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border: 1px solid #edf0f3;
+      border-radius: 9px;
+      color: #5f6773;
+      background: #fafbfc;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+  .mw-bottom {
+      margin-top: 19px;
+      padding-top: 17px;
+      border-top: 1px solid #eef0f2;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+  .mw-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      color: var(--mw-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+  .mw-info span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+  .mw-details-btn {
+      text-decoration: none;
+      border: 1px solid #d9dde3;
+      color: #111827;
+      background: white;
+      padding: 9px 13px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+  .mw-details-btn:hover {
+      background: #f8fafc;
+    }
+
+    /* WORKERS */
+
+  .mw-workers {
+      margin-top: 20px;
+      padding-top: 19px;
+      border-top: 1px solid #eef0f2;
+    }
+
+  .mw-workers-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+  .mw-worker {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+    }
+
+  .mw-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #eef2f7;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      font-size: 17px;
+      font-weight: 800;
+      color: #475569;
+    }
+
+  .mw-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+  .mw-worker-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+  .mw-worker-name {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+
+  .mw-worker-meta {
+      color: var(--mw-muted);
+      font-size: 11px;
+    }
+
+  .mw-message-btn {
+      text-decoration: none;
+      color: white;
+      background: #111827;
+      border-radius: 9px;
+      padding: 8px 11px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+  .mw-found {
+      margin-top: 13px;
+      padding: 13px;
+      background: #f8fafc;
+      border: 1px solid #edf0f3;
+      border-radius: 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+  .mw-found-text {
+      color: #4b5563;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+  .mw-found-btn {
+      border: 0;
+      background: #111827;
+      color: white;
+      border-radius: 9px;
+      padding: 9px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+  .mw-found-btn:hover {
+      background: #000;
+    }
+
+  .mw-found-btn:disabled {
+      opacity:.55;
+      cursor: not-allowed;
+    }
+
+    /* EMPTY */
+
+  .mw-empty {
+      display: none;
+      background: white;
+      border: 1px solid var(--mw-border);
+      border-radius: 20px;
+      padding: 55px 20px;
+      text-align: center;
+      box-shadow: var(--mw-shadow);
+    }
+
+  .mw-empty-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: #f3f4f6;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 15px;
+      font-size: 26px;
+    }
+
+  .mw-empty h2 {
+      margin: 0 0 7px;
+      font-size: 20px;
+    }
+
+  .mw-empty p {
+      color: var(--mw-muted);
+      font-size: 14px;
+      margin: 0 0 20px;
+    }
+
+  .mw-empty-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #111827;
+      color: white;
+      padding: 11px 15px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* ERROR */
+
+  .mw-error {
+      display: none;
+      background: var(--mw-red-bg);
+      border: 1px solid #fecaca;
+      color: var(--mw-red);
+      padding: 15px;
+      border-radius: 13px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* FOOTER */
+
+  .mw-footer {
+      border-top: 1px solid var(--mw-border);
+      background: white;
+      padding: 22px 16px;
+    }
+
+  .mw-footer-inner {
+      width: min(1180px, 100%);
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      color: #8a919c;
+      font-size: 12px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 900px) {
+
+    .mw-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    .mw-nav a {
+        padding: 8px 9px;
+        font-size: 12px;
+      }
+
+    }
+
+    @media (max-width: 650px) {
+
+    .mw-header-inner {
+        width: calc(100% - 24px);
+        min-height: 62px;
+      }
+
+    .mw-logo {
+        font-size: 21px;
+      }
+
+    .mw-nav {
+        gap: 2px;
+      }
+
+    .mw-nav a {
+        font-size: 0;
+        padding: 8px;
+      }
+
+    .mw-nav a:nth-child(1)::before {
+        content: "⌂";
+        font-size: 17px;
+      }
+
+    .mw-nav a:nth-child(2)::before {
+        content: "+";
+        font-size: 18px;
+      }
+
+    .mw-nav a:nth-child(3)::before {
+        content: "▣";
+        font-size: 16px;
+      }
+
+    .mw-nav a:nth-child(4)::before {
+        content: "✉";
+        font-size: 16px;
+      }
+
+    .mw-nav a:nth-child(5)::before {
+        content: "♢";
+        font-size: 17px;
+      }
+
+    .mw-nav a:nth-child(6)::before {
+        content: "●";
+        font-size: 15px;
+      }
+
+    .mw-main {
+        width: calc(100% - 24px);
+        padding: 25px 0 50px;
+      }
+
+    .mw-top {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 17px;
+      }
+
+    .mw-post-btn {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+      }
+
+    .mw-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+    .mw-stat {
+        padding: 15px;
+        border-radius: 15px;
+      }
+
+    .mw-stat-icon {
+        width: 39px;
+        height: 39px;
+        font-size: 17px;
+      }
+
+    .mw-stat-number {
+        font-size: 20px;
+      }
+
+    .mw-stat-label {
+        font-size: 10px;
+      }
+
+    .mw-filter {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+    .mw-tabs {
+        width: 100%;
+      }
+
+    .mw-tab {
+        flex: 1;
+        padding: 10px 8px;
+      }
+
+    .mw-sort {
+        width: 100%;
+      }
+
+    .mw-card {
+        padding: 18px;
+        border-radius: 17px;
+      }
+
+    .mw-card-top {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+    .mw-status {
+        align-self: flex-start;
+      }
+
+    .mw-card-title {
+        font-size: 18px;
+      }
+
+    .mw-bottom {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+    .mw-details-btn {
+        text-align: center;
+      }
+
+    .mw-worker {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+    .mw-message-btn {
+        margin-left: 54px;
+      }
+
+    .mw-found {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+    .mw-found-btn {
+        width: 100%;
+      }
+
+    .mw-footer-inner {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 390px) {
+
+    .mw-stats {
+        grid-template-columns: 1fr;
+      }
+
+    .mw-info {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="mw-header">
+
+    <div class="mw-header-inner">
+
+      <a href="customer-dashboard.html" class="mw-logo">
+        Work<span>Today</span>
+      </a>
+
+      <nav class="mw-nav">
+
+        <a href="customer-dashboard.html">
+          Dashboard
+        </a>
+
+        <a href="post-work.html">
+          Post Work
+        </a>
+
+        <a href="my-work.html" class="active">
+          My Work
+        </a>
+
+        <a href="messages.html">
+          Messages
+        </a>
+
+        <a href="notifications.html">
+          Notifications
+        </a>
+
+        <a href="profile.html">
+          Profile
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+  <!-- MAIN -->
+
+  <main class="mw-main">
+
+    <section class="mw-top">
+
+      <div class="mw-heading">
+
+        <a href="customer-dashboard.html" class="mw-back">
+          ← Back to Dashboard
+        </a>
+
+        <h1>My Work</h1>
+
+        <p>
+          Manage your posted work and connect with workers.
+        </p>
+
+      </div>
+
+      <a href="post-work.html" class="mw-post-btn">
+        + Post New Work
+      </a>
+
+    </section>
+
+    <!-- STATS -->
+
+    <section class="mw-stats">
+
+      <div class="mw-stat">
+
+        <div class="mw-stat-icon">
+          📋
+        </div>
+
+        <div>
+          <span class="mw-stat-number" id="statActive">
+            0
+          </span>
+
+          <span class="mw-stat-label">
+            Active Work
+          </span>
+        </div>
+
+      </div>
+
+      <div class="mw-stat">
+
+        <div class="mw-stat-icon">
+          👀
+        </div>
+
+        <div>
+          <span class="mw-stat-number" id="statViews">
+            0
+          </span>
+
+          <span class="mw-stat-label">
+            Total Views
+          </span>
+        </div>
+
+      </div>
+
+      <div class="mw-stat">
+
+        <div class="mw-stat-icon">
+          👷
+        </div>
+
+        <div>
+          <span class="mw-stat-number" id="statInterested">
+            0
+          </span>
+
+          <span class="mw-stat-label">
+            Interested Workers
+          </span>
+        </div>
+
+      </div>
+
+      <div class="mw-stat">
+
+        <div class="mw-stat-icon">
+          ✓
+        </div>
+
+        <div>
+          <span class="mw-stat-number" id="statCompleted">
+            0
+          </span>
+
+          <span class="mw-stat-label">
+            Completed / Closed
+          </span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ERROR -->
+
+    <div class="mw-error" id="errorBox"></div>
+
+    <!-- FILTER -->
+
+    <section class="mw-filter">
+
+      <div class="mw-tabs">
+
+        <button
+          type="button"
+          class="mw-tab active"
+          data-filter="all"
+        >
+          All
+        </button>
+
+        <button
+          type="button"
+          class="mw-tab"
+          data-filter="open"
+        >
+          Open
+        </button>
+
+        <button
+          type="button"
+          class="mw-tab"
+          data-filter="closed"
+        >
+          Closed
+        </button>
+
+      </div>
+
+      <select id="sortWorks" class="mw-sort">
+
+        <option value="newest">
+          Newest First
+        </option>
+
+        <option value="oldest">
+          Oldest First
+        </option>
+
+      </select>
+
+    </section>
+
+    <!-- LOADING -->
+
+    <div class="mw-loading" id="loadingBox">
+
+      <div class="mw-loader"></div>
+
+      Loading your work...
+
+    </div>
+
+    <!-- REAL WORK LIST -->
+
+    <section
+      class="mw-list"
+      id="workList"
+      style="display:none;"
+    ></section>
+
+    <!-- EMPTY -->
+
+    <section class="mw-empty" id="emptyWork">
+
+      <div class="mw-empty-icon">
+        📋
+      </div>
+
+      <h2>
+        No Work Found
+      </h2>
+
+      <p>
+        You haven't posted any work in this category yet.
+      </p>
+
+      <a href="post-work.html" class="mw-empty-btn">
+        + Post New Work
+      </a>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer class="mw-footer">
+
+    <div class="mw-footer-inner">
+
+      <span>
+        © 2026 WorkToday. All rights reserved.
+      </span>
+
+      <span>
+        Aaj Ka Kaam. Aaj Hi Worker.
+      </span>
+
+    </div>
+
+  </footer>
+
+  <!-- SUPABASE -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="js/supabase.js"></script>
+
+  <script src="js/auth.js"></script>
+
+  <!-- PAGE JAVASCRIPT -->
+
+  <script>
+
+    let allWorks = [];
+    let currentFilter = "all";
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    function escapeHTML(value) {
+
+      if (value === null || value === undefined) {
+        return "";
+      }
+
+      return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+    }
+
+    function formatDate(dateString) {
+
+      if (!dateString) {
+        return "—";
+      }
+
+      const date = new Date(dateString);
+
+      if (Number.isNaN(date.getTime())) {
+        return "—";
+      }
+
+      return date.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      });
+
+    }
+
+    function formatTime(timeString) {
+
+      if (!timeString) {
+        return "";
+      }
+
+      const parts = String(timeString).split(":");
+
+      if (parts.length < 2) {
+        return timeString;
+      }
+
+      let hour = Number(parts[0]);
+      const minute = parts[1];
+
+      if (Number.isNaN(hour)) {
+        return timeString;
+      }
+
+      const suffix = hour >= 12? "PM" : "AM";
+
+      hour = hour % 12;
+
+      if (hour === 0) {
+        hour = 12;
+      }
+
+      return `${hour}:${minute} ${suffix}`;
+
+    }
+
+    function getStatusLabel(status) {
+
+      if (
+        status === "closed" ||
+        status === "cancelled" ||
+        status === "assigned"
+      ) {
+        return "Closed";
+      }
+
+      return "Open";
+
+    }
+
+    function isOpen(status) {
+
+      return (
+        status === "open"
+      );
+
+    }
+
+    function getInitials(name) {
+
+      if (!name) {
+        return "?";
+      }
+
+      const parts =
+        String(name)
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2);
+
+      return parts
+      .map(function(part) {
+          return part.charAt(0).toUpperCase();
+        })
+      .join("");
+
+    }
+
+    /* =====================================================
+       LOAD CURRENT USER
+       ===================================================== */
+
+    async function getCurrentUser() {
+
+      const client =
+        window.supabaseClient;
+
+      if (!client) {
+        throw new Error(
+          "Supabase client not found."
+        );
+      }
+
+      const {
+        data,
+        error
+      } =
+        await client.auth.getUser();
+
+      if (error) {
+        throw error;
+      }
+
+      if (!data ||!data.user) {
+
+        window.location.href =
+          "login.html";
+
+        return null;
+      }
+
+      return data.user;
+
+    }
+
+    /* =====================================================
+       LOAD JOBS
+       ===================================================== */
+
+    async function loadMyWorks() {
+
+      const client =
+        window.supabaseClient;
+
+      if (!client) {
+        throw new Error(
+          "Supabase connection not found."
+        );
+      }
+
+      const user =
+        await getCurrentUser();
+
+      if (!user) {
+        return;
+      }
+
+      /*
+       * Get jobs created by current customer.
+       *
+       * We intentionally fetch applications separately.
+       * This keeps the page easier to maintain and lets us
+       * show worker profile information safely.
+       */
+
+      const {
+        data: jobs,
+        error: jobsError
+      } =
+        await client
+        .from("jobs")
+        .select(`
+            id,
+            customer_id,
+            category_id,
+            category_name,
+            title,
+            description,
+            city,
+            area,
+            address,
+            work_date,
+            start_time,
+            duration,
+            phone,
+            allow_calls,
+            status,
+            views_count,
+            created_at,
+            updated_at,
+            closed_at
+          `)
+        .eq("customer_id", user.id)
+        .order("created_at", {
+            ascending: false
+          });
+
+      if (jobsError) {
+        throw jobsError;
+      }
+
+      allWorks = jobs || [];
+
+      /*
+       * Load applications for all jobs.
+       */
+
+      if (allWorks.length > 0) {
+
+        const jobIds =
+          allWorks.map(function(job) {
+            return job.id;
+          });
+
+        const {
+          data: applications,
+          error: applicationsError
+        } =
+          await client
+          .from("applications")
+          .select(`
+              id,
+              job_id,
+              worker_id,
+              message,
+              status,
+              created_at,
+              profiles:worker_id (
+                id,
+                name,
+                profile_photo_url,
+                experience_years,
+                city,
+                area
+              )
+            `)
+          .in(
+              "job_id",
+              jobIds
+            )
+          .order("created_at", {
+              ascending: false
+            });
+
+        if (applicationsError) {
+          console.warn(
+            "Applications load warning:",
+            applicationsError
+          );
+        }
+
+        const applicationList =
+          applications || [];
+
+        allWorks =
+          allWorks.map(function(job) {
+
+            const jobApplications =
+              applicationList.filter(
+                function(application) {
+                  return (
+                    application.job_id ===
+                    job.id
+                  );
+                }
+              );
+
+            return {
+             ...job,
+              applications:
+                jobApplications
+            };
+
+          });
+
+      } else {
+
+        allWorks = [];
+
+      }
+
+      updateStats();
+
+      renderWorks();
+
+    }
+
+    /* =====================================================
+       UPDATE STATS
+       ===================================================== */
+
+    function updateStats() {
+
+      const active =
+        allWorks.filter(function(job) {
+          return isOpen(job.status);
+        }).length;
+
+      const closed =
+        allWorks.filter(function(job) {
+          return!isOpen(job.status);
+        }).length;
+
+      const views =
+        allWorks.reduce(
+          function(total, job) {
+
+            return (
+              total +
+              Number(job.views_count || 0)
+            );
+
+          },
+          0
+        );
+
+      const interested =
+        allWorks.reduce(
+          function(total, job) {
+
+            const applications =
+              job.applications || [];
+
+            return (
+              total +
+              applications.filter(
+                function(application) {
+
+                  return (
+                    application.status!==
+                      "withdrawn" &&
+                    application.status!==
+                      "rejected"
+                  );
+
+                }
+              ).length
+            );
+
+          },
+          0
+        );
+
+      document.getElementById(
+        "statActive"
+      ).textContent = active;
+
+      document.getElementById(
+        "statViews"
+      ).textContent = views;
+
+      document.getElementById(
+        "statInterested"
+      ).textContent = interested;
+
+      document.getElementById(
+        "statCompleted"
+      ).textContent = closed;
+
+    }
+
+    /* =====================================================
+       RENDER WORKS
+       ===================================================== */
+
+    function renderWorks() {
+
+      const list =
+        document.getElementById(
+          "workList"
+        );
+
+      const empty =
+        document.getElementById(
+          "emptyWork"
+        );
+
+      const sort =
+        document.getElementById(
+          "sortWorks"
+        ).value;
+
+      let works =
+        [...allWorks];
+
+      /* FILTER */
+
+      if (currentFilter === "open") {
+
+        works =
+          works.filter(function(job) {
+            return isOpen(job.status);
+          });
+
+      }
+
+      if (currentFilter === "closed") {
+
+        works =
+          works.filter(function(job) {
+            return!isOpen(job.status);
+          });
+
+      }
+
+      /* SORT */
+
+      works.sort(
+        function(a, b) {
+
+          const first =
+            new Date(
+              a.created_at
+            ).getTime();
+
+          const second =
+            new Date(
+              b.created_at
+            ).getTime();
+
+          if (
+            sort === "oldest"
+          ) {
+
+            return first - second;
+
+          }
+
+          return second - first;
+
+        }
+      );
+
+      /* EMPTY */
+
+      if (works.length === 0) {
+
+        list.innerHTML = "";
+
+        list.style.display = "none";
+
+        empty.style.display = "block";
+
+        return;
+
+      }
+
+      empty.style.display = "none";
+
+      list.style.display = "flex";
+
+      list.innerHTML =
+        works.map(
+          function(job) {
+            return createWorkCard(job);
+          }
+        ).join("");
+
+    }
+
+    /* =====================================================
+       CREATE WORK CARD
+       ===================================================== */
+
+    function createWorkCard(job) {
+
+      const open =
+        isOpen(job.status);
+
+      const statusText =
+        getStatusLabel(
+          job.status
+        );
+
+      const applications =
+        job.applications || [];
+
+      const interestedWorkers =
+        applications.filter(
+          function(application) {
+
+            return (
+              application.status!==
+                "withdrawn" &&
+              application.status!==
+                "rejected"
+            );
+
+          }
+        );
+
+      const category =
+        job.category_name ||
+        "General Work";
+
+      const title =
+        escapeHTML(
+          job.title ||
+          "Untitled Work"
+        );
+
+      const description =
+        escapeHTML(
+          job.description ||
+          "No description added."
+        );
+
+      const city =
+        escapeHTML(
+          job.city ||
+          "Location not set"
+        );
+
+      const area =
+        escapeHTML(
+          job.area ||
+          ""
+        );
+
+      const date =
+        job.work_date
+        ? escapeHTML(
+              job.work_date
+            )
+          : "Date not set";
+
+      const time =
+        job.start_time
+        ? formatTime(
+              job.start_time
+            )
+          : "";
+
+      const posted =
+        formatDate(
+          job.created_at
+        );
+
+      const views =
+        Number(
+          job.views_count || 0
+        );
+
+      let workerHTML = "";
+
+      if (
+        open &&
+        interestedWorkers.length > 0
+      ) {
+
+        const limitedWorkers =
+          interestedWorkers.slice(
+            0,
+            3
+          );
+
+        workerHTML =
+          `
+          <div class="mw-workers">
+
+            <div class="mw-workers-title">
+              Interested Workers
+              <span style="color:#9ca3af;font-weight:600;">
+                (${interestedWorkers.length})
+              </span>
+            </div>
+
+            ${limitedWorkers.map(
+              function(application) {
+
+                return createWorkerRow(
+                  application,
+                  job.id
+                );
+
+              }
+            ).join("")}
+
+            <div class="mw-found">
+
+              <span class="mw-found-text">
+                Found your worker?
+              </span>
+
+              <button
+                type="button"
+                class="mw-found-btn"
+                onclick="workerFound('${job.id}', this)"
+              >
+                ✓ Worker Found
+              </button>
+
+            </div>
+
+          </div>
+          `;
+
+      }
+
+      if (
+        open &&
+        interestedWorkers.length === 0
+      ) {
+
+        workerHTML =
+          `
+          <div class="mw-workers">
+
+            <div class="mw-found">
+
+              <span class="mw-found-text">
+                No workers have applied yet.
+              </span>
+
+              <button
+                type="button"
+                class="mw-found-btn"
+                onclick="workerFound('${job.id}', this)"
+              >
+                ✓ Worker Found
+              </button>
+
+            </div>
+
+          </div>
+          `;
+
+      }
+
+      return `
+        <article
+          class="mw-card"
+          data-status="${open? "open" : "closed"}"
+        >
+
+          <div class="mw-card-top">
+
+            <div>
+
+              <div class="mw-category">
+                ${escapeHTML(category)}
+              </div>
+
+              <h2 class="mw-card-title">
+                ${title}
+              </h2>
+
+            </div>
+
+            <span class="mw-status ${open? "open" : "closed"}">
+              ${open? "● Open" : "✓ Closed"}
+            </span>
+
+          </div>
+
+          <p class="mw-description">
+            ${description}
+          </p>
+
+          <div class="mw-meta">
+
+            ${
+              city
+              ? `
+                  <span class="mw-meta-item">
+                    📍 ${city}${area? ", " + area : ""}
+                  </span>
+                `
+                : ""
+            }
+
+            ${
+              job.work_date
+              ? `
+                  <span class="mw-meta-item">
+                    📅 ${date}
+                  </span>
+                `
+                : ""
+            }
+
+            ${
+              time
+              ? `
+                  <span class="mw-meta-item">
+                    🕐 ${escapeHTML(time)}
+                  </span>
+                `
+                : ""
+            }
+
+            <span class="mw-meta-item">
+              Posted ${escapeHTML(posted)}
+            </span>
+
+            ${
+             !open
+              ? `
+                  <span class="mw-meta-item">
+                    ✓ Worker Found / Closed
+                  </span>
+                `
+                : ""
+            }
+
+          </div>
+
+          <div class="mw-bottom">
+
+            <div class="mw-info">
+
+              <span>
+                👀 ${views} Views
+              </span>
+
+              <span>
+                👷 ${interestedWorkers.length} Interested
+              </span>
+
+              <span>
+                💬 ${interestedWorkers.length} Applications
+              </span>
+
+            </div>
+
+            <a
+              href="work-details.html?id=${encodeURIComponent(job.id)}"
+              class="mw-details-btn"
+            >
+              View Details →
+            </a>
+
+          </div>
+
+          ${workerHTML}
+
+        </article>
+      `;
+
+    }
+
+    /* =====================================================
+       WORKER ROW
+       ===================================================== */
+
+    function createWorkerRow(
+      application,
+      jobId
+    ) {
+
+      const worker =
+        application.profiles;
+
+      const name =
+        worker &&
+        worker.name
+        ? worker.name
+          : "Worker";
+
+      const experience =
+        worker &&
+        worker.experience_years!== null &&
+        worker.experience_years!== undefined
+        ? `${worker.experience_years} years experience`
+          : "Experience not added";
+
+      const locationParts = [];
+
+      if (
+        worker &&
+        worker.area
+      ) {
+        locationParts.push(
+          worker.area
+        );
+      }
+
+      if (
+        worker &&
+        worker.city
+      ) {
+        locationParts.push(
+          worker.city
+        );
+      }
+
+      const location =
+        locationParts.length
+        ? locationParts.join(", ")
+          : "Location not added";
+
+      const photo =
+        worker &&
+        worker.profile_photo_url
+        ? worker.profile_photo_url
+          : "";
+
+      const avatar =
+        photo
+        ? `
+            <div class="mw-avatar">
+              <img
+                src="${escapeHTML(photo)}"
+                alt="${escapeHTML(name)}"
+              >
+            </div>
+          `
+          : `
+            <div class="mw-avatar">
+              ${escapeHTML(
+                getInitials(name)
+              )}
+            </div>
+          `;
+
+      /*
+       * worker-chat.html can later read these URL params
+       * when we connect the real conversation system.
+       */
+
+      const chatURL =
+        `worker-chat.html?job_id=${encodeURIComponent(jobId)}&worker_id=${encodeURIComponent(worker?.id || "")}`;
+
+      return `
+        <div class="mw-worker">
+
+          ${avatar}
+
+          <div class="mw-worker-info">
+
+            <span class="mw-worker-name">
+              ${escapeHTML(name)}
+            </span>
+
+            <span class="mw-worker-meta">
+              ${escapeHTML(experience)}
+              •
+              ${escapeHTML(location)}
+            </span>
+
+          </div>
+
+          <a
+            href="${chatURL}"
+            class="mw-message-btn"
+          >
+            Message
+          </a>
+
+        </div>
+      `;
+
+    }
+
+    /* =====================================================
+       WORKER FOUND
+       REAL DATABASE UPDATE
+       ===================================================== */
+
+    async function workerFound(
+      jobId,
+      button
+    ) {
+
+      const confirmation =
+        confirm(
+          "Mark this work as Worker Found?\n\n" +
+          "After closing, new workers will not be able to apply for this work."
+        );
+
+      if (!confirmation) {
+        return;
+      }
+
+      try {
+
+        button.disabled = true;
+
+        button.textContent =
+          "Closing...";
+
+        const client =
+          window.supabaseClient;
+
+        const user =
+          await getCurrentUser();
+
+        if (!user) {
+          return;
+        }
+
+        /*
+         * First make sure this job belongs
+         * to the logged-in customer.
+         */
+
+        const {
+          data: job,
+          error: checkError
+        } =
+          await client
+          .from("jobs")
+          .select(
+              "id, customer_id, status"
+            )
+          .eq(
+              "id",
+              jobId
+            )
+          .eq(
+              "customer_id",
+              user.id
+            )
+          .single();
+
+        if (checkError) {
+          throw checkError;
+        }
+
+        if (!job) {
+          throw new Error(
+            "Work not found."
+          );
+        }
+
+        if (
+          job.status!== "open"
+        ) {
+
+          alert(
+            "This work is already closed."
+          );
+
+          return;
+
+        }
+
+        /*
+         * Close the real job in Supabase.
+         *
+         * This is the important part:
+         * after status becomes closed,
+         * worker application logic can reject
+         * new applications.
+         */
+
+        const {
+          error: updateError
+        } =
+          await client
+          .from("jobs")
+          .update({
+              status: "closed",
+              closed_at:
+                new Date().toISOString(),
+              updated_at:
+                new Date().toISOString()
+            })
+          .eq(
+              "id",
+              jobId
+            )
+          .eq(
+              "customer_id",
+              user.id
+            );
+
+        if (updateError) {
+          throw updateError;
+        }
+
+        /*
+         * Update local state.
+         */
+
+        allWorks =
+          allWorks.map(
+            function(work) {
+
+              if (
+                work.id === jobId
+              ) {
+
+                return {
+                 ...work,
+                  status: "closed",
+                  closed_at:
+                    new Date().toISOString()
+                };
+
+              }
+
+              return work;
+
+            }
+          );
+
+        updateStats();
+
+        renderWorks();
+
+        alert(
+          "Work closed successfully.\n\n" +
+          "No new applications should be accepted for this work."
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Worker Found Error:",
+          error
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+          "✓ Worker Found";
+
+        showError(
+          error.message ||
+          "Unable to close this work."
+        );
+
+      }
+
+    }
+
+    /* =====================================================
+       ERROR
+       ===================================================== */
+
+    function showError(
+      message
+    ) {
+
+      const box =
+        document.getElementById(
+          "errorBox"
+        );
+
+      box.textContent =
+        "Something went wrong: " +
+        message;
+
+      box.style.display =
+        "block";
+
+    }
+
+    /* =====================================================
+       FILTER BUTTONS
+       ===================================================== */
+
+    document
+    .querySelectorAll(".mw-tab")
+    .forEach(
+        function(button) {
+
+          button.addEventListener(
+            "click",
+            function() {
+
+              document
+              .querySelectorAll(
+                  ".mw-tab"
+                )
+              .forEach(
+                  function(tab) {
+                    tab.classList.remove(
+                      "active"
+                    );
+                  }
+                );
+
+              this.classList.add(
+                "active"
+              );
+
+              currentFilter =
+                this.dataset.filter;
+
+              renderWorks();
+
+            }
+          );
+
+        }
+      );
+
+    /* =====================================================
+       SORT
+       ===================================================== */
+
+    document
+    .getElementById("sortWorks")
+    .addEventListener(
+        "change",
+        function() {
+          renderWorks();
+        }
+      );
+
+    /* =====================================================
+       INITIAL LOAD
+       ===================================================== */
+
+    async function initMyWork() {
+
+      try {
+
+        await loadMyWorks();
+
+      } catch (error) {
+
+        console.error(
+          "My Work Error:",
+          error
+        );
+
+        document
+        .getElementById(
+            "loadingBox"
+          )
+        .style.display =
+          "none";
+
+        showError(
+          error.message ||
+          "Unable to load your work."
+        );
+
+        document
+        .getElementById(
+            "emptyWork"
+          )
+        .style.display =
+          "block";
+
+        return;
+
+      }
+
+      document
+      .getElementById(
+          "loadingBox"
+        )
+      .style.display =
+        "none";
+
+    }
+
+    initMyWork();
+
+  </script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    WorkTodayAuth.requireLogin();
+});
+</script>
+</body>
+</html>

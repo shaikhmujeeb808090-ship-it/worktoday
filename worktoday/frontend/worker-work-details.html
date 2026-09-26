@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Work Details - WorkToday</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* =====================================
+       WORKER WORK DETAILS
+    ===================================== */
+
+    .worker-details-page {
+      min-height: calc(100vh - 80px);
+      background: #f7f8fc;
+      padding: 45px 20px 70px;
+    }
+
+    .worker-details-container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .details-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .details-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 7px 25px rgba(15, 23, 42, 0.05);
+      margin-bottom: 20px;
+    }
+
+    /* Main heading */
+
+    .work-heading-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .work-category {
+      display: inline-block;
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 11px;
+    }
+
+    .work-status {
+      background: #ecfdf3;
+      color: #15803d;
+      padding: 8px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .details-card h1 {
+      margin: 0;
+      color: #111827;
+      font-size: 29px;
+      line-height: 1.25;
+    }
+
+    .posted-time {
+      color: #9ca3af;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    /* Description */
+
+    .section-title {
+      margin: 0 0 13px;
+      color: #111827;
+      font-size: 19px;
+    }
+
+    .description-text {
+      margin: 0;
+      color: #4b5563;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* Work information */
+
+    .work-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 13px;
+    }
+
+    .work-info-box {
+      border: 1px solid #edf0f4;
+      background: #fafbfc;
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .work-info-box .info-icon {
+      font-size: 20px;
+      margin-bottom: 7px;
+    }
+
+    .work-info-box small {
+      display: block;
+      color: #9ca3af;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .work-info-box strong {
+      color: #374151;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* Location */
+
+    .location-box {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .map-placeholder {
+      height: 220px;
+      background:
+        linear-gradient(
+          rgba(226, 232, 240, 0.9),
+          rgba(241, 245, 249, 0.9)
+        );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 7px;
+      color: #64748b;
+    }
+
+    .map-placeholder .map-icon {
+      font-size: 40px;
+    }
+
+    .map-placeholder strong {
+      color: #475569;
+    }
+
+    .address-box {
+      padding: 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .address-box span {
+      font-size: 21px;
+    }
+
+    .address-box p {
+      margin: 0;
+      color: #4b5563;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Photos */
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .media-placeholder {
+      height: 145px;
+      border-radius: 12px;
+      background: #f1f5f9;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #64748b;
+      gap: 7px;
+    }
+
+    .media-placeholder span {
+      font-size: 30px;
+    }
+
+    .media-placeholder small {
+      font-size: 11px;
+    }
+
+    /* Customer */
+
+    .customer-box {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .customer-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #eef4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      flex-shrink: 0;
+    }
+
+    .customer-info h3 {
+      margin: 0 0 4px;
+      color: #111827;
+      font-size: 16px;
+    }
+
+    .customer-info p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .customer-meta {
+      margin-top: 13px;
+      padding-top: 13px;
+      border-top: 1px solid #edf0f4;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    /* Sidebar */
+
+    .sidebar-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 7px 25px rgba(15, 23, 42, 0.05);
+      margin-bottom: 18px;
+    }
+
+    .sidebar-card h2 {
+      margin: 0 0 14px;
+      color: #111827;
+      font-size: 18px;
+    }
+
+    .interest-btn-large {
+      width: 100%;
+      border: none;
+      background: #2563eb;
+      color: white;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .interest-btn-large:hover {
+      background: #1d4ed8;
+    }
+
+    .interest-btn-large.selected {
+      background: #15803d;
+    }
+
+    .message-btn,
+    .call-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .message-btn {
+      border: 1px solid #dbe3ef;
+      background: white;
+      color: #2563eb;
+    }
+
+    .call-btn {
+      border: 1px solid #dbe3ef;
+      background: #f8fafc;
+      color: #374151;
+    }
+
+    .safety-note {
+      background: #f8fafc;
+      border-radius: 11px;
+      padding: 13px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .report-link {
+      display: block;
+      text-align: center;
+      color: #6b7280;
+      font-size: 12px;
+      text-decoration: none;
+      margin-top: 14px;
+    }
+
+    .report-link:hover {
+      color: #dc2626;
+    }
+
+    /* Work summary */
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 11px 0;
+      border-bottom: 1px solid #edf0f4;
+      font-size: 13px;
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+    }
+
+    .summary-row span {
+      color: #6b7280;
+    }
+
+    .summary-row strong {
+      color: #374151;
+      text-align: right;
+    }
+
+    /* Bottom action */
+
+    .bottom-action {
+      display: none;
+    }
+
+    /* =====================================
+       TABLET
+    ===================================== */
+
+    @media (max-width: 900px) {
+
+      .details-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar-card {
+        margin-bottom: 18px;
+      }
+
+      .bottom-action {
+        display: block;
+      }
+    }
+
+    /* =====================================
+       MOBILE
+    ===================================== */
+
+    @media (max-width: 600px) {
+
+      .worker-details-page {
+        padding: 28px 12px 90px;
+      }
+
+      .details-card {
+        padding: 18px;
+        border-radius: 15px;
+      }
+
+      .details-card h1 {
+        font-size: 23px;
+      }
+
+      .work-heading-top {
+        flex-direction: column;
+      }
+
+      .work-status {
+        align-self: flex-start;
+      }
+
+      .work-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .media-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .media-placeholder {
+        height: 180px;
+      }
+
+      .map-placeholder {
+        height: 180px;
+      }
+
+      .sidebar-card {
+        padding: 17px;
+        border-radius: 15px;
+      }
+
+      .customer-box {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================
+       HEADER
+  ====================================== -->
+
+  <header class="site-header">
+
+    <div class="container">
+
+      <div class="nav-wrap">
+
+        <a href="index.html" class="logo">
+          WorkToday
+        </a>
+
+        <nav class="main-nav">
+
+          <a href="worker-dashboard.html">
+            Dashboard
+          </a>
+
+          <a href="workers.html" class="active">
+            Find Work
+          </a>
+
+          <a href="worker-messages.html">
+            Messages
+          </a>
+
+          <a href="worker-notifications.html">
+            Notifications
+          </a>
+
+          <a href="worker-profile.html">
+            Profile
+          </a>
+
+        </nav>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- =====================================
+       PAGE
+  ====================================== -->
+
+  <main class="worker-details-page">
+
+    <div class="worker-details-container">
+
+      <a
+        href="workers.html"
+        class="back-link">
+        ← Back to Find Work
+      </a>
+
+      <div class="details-layout">
+
+        <!-- =================================
+             LEFT SIDE
+        ================================== -->
+
+        <div>
+
+          <!-- WORK TITLE -->
+
+          <section class="details-card">
+
+            <div class="work-heading-top">
+
+              <div>
+
+                <span class="work-category">
+                  ⚡ Electrician
+                </span>
+
+                <h1>
+                  Electrician required for home repair
+                </h1>
+
+                <div class="posted-time">
+                  Posted 18 minutes ago
+                </div>
+
+              </div>
+
+              <span class="work-status">
+                ● Open
+              </span>
+
+            </div>
+
+          </section>
+
+          <!-- DESCRIPTION -->
+
+          <section class="details-card">
+
+            <h2 class="section-title">
+              Work Description
+            </h2>
+
+            <p class="description-text">
+
+              Need an experienced electrician for
+              home electrical repair. The work includes
+              checking the switchboard, repairing loose
+              wiring and replacing a damaged switch.
+
+              <br><br>
+
+              Customer needs someone available today.
+              Please contact through WorkToday before
+              visiting the location.
+
+            </p>
+
+          </section>
+
+          <!-- WORK INFORMATION -->
+
+          <section class="details-card">
+
+            <h2 class="section-title">
+              Work Information
+            </h2>
+
+            <div class="work-info-grid">
+
+              <div class="work-info-box">
+
+                <div class="info-icon">
+                  📍
+                </div>
+
+                <small>
+                  Location
+                </small>
+
+                <strong>
+                  CIDCO, Aurangabad
+                </strong>
+
+              </div>
+
+              <div class="work-info-box">
+
+                <div class="info-icon">
+                  📏
+                </div>
+
+                <small>
+                  Distance
+                </small>
+
+                <strong>
+                  Approximately 1.8 km away
+                </strong>
+
+              </div>
+
+              <div class="work-info-box">
+
+                <div class="info-icon">
+                  🕐
+                </div>
+
+                <small>
+                  Required Time
+                </small>
+
+                <strong>
+                  Today • 2:00 PM
+                </strong>
+
+              </div>
+
+              <div class="work-info-box">
+
+                <div class="info-icon">
+                  ⏱️
+                </div>
+
+                <small>
+                  Estimated Duration
+                </small>
+
+                <strong>
+                  2–3 hours
+                </strong>
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- LOCATION -->
+
+          <section class="details-card">
+
+            <h2 class="section-title">
+              Work Location
+            </h2>
+
+            <div class="location-box">
+
+              <div class="map-placeholder">
+
+                <div class="map-icon">
+                  📍
+                </div>
+
+                <strong>
+                  Map Location
+                </strong>
+
+                <span>
+                  Map will be connected later
+                </span>
+
+              </div>
+
+              <div class="address-box">
+
+                <span>
+                  📍
+                </span>
+
+                <p>
+                  CIDCO, Aurangabad, Maharashtra
+                  <br>
+                  Exact address will be available
+                  according to customer privacy settings.
+                </p>
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- PHOTOS / VIDEO -->
+
+          <section class="details-card">
+
+            <h2 class="section-title">
+              Photos & Video
+            </h2>
+
+            <div class="media-grid">
+
+              <div class="media-placeholder">
+
+                <span>
+                  🖼️
+                </span>
+
+                <small>
+                  Work Photo
+                </small>
+
+              </div>
+
+              <div class="media-placeholder">
+
+                <span>
+                  🖼️
+                </span>
+
+                <small>
+                  Work Photo
+                </small>
+
+              </div>
+
+              <div class="media-placeholder">
+
+                <span>
+                  🎥
+                </span>
+
+                <small>
+                  Work Video
+                </small>
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- CUSTOMER -->
+
+          <section class="details-card">
+
+            <h2 class="section-title">
+              Customer
+            </h2>
+
+            <div class="customer-box">
+
+              <div class="customer-avatar">
+                👤
+              </div>
+
+              <div class="customer-info">
+
+                <h3>
+                  SK Mujeeb
+                </h3>
+
+                <p>
+                  Customer • Aurangabad
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="customer-meta">
+
+              <span>
+                ⭐ New Customer
+              </span>
+
+              <span>
+                📅 Joined recently
+              </span>
+
+            </div>
+
+          </section>
+
+        </div>
+
+        <!-- =================================
+             RIGHT SIDEBAR
+        ================================== -->
+
+        <aside>
+
+          <!-- APPLY -->
+
+          <div class="sidebar-card">
+
+            <h2>
+              Interested in this work?
+            </h2>
+
+            <button
+              id="interestButton"
+              class="interest-btn-large"
+              onclick="showInterest()">
+
+              I'm Interested
+
+            </button>
+
+            <button
+              class="message-btn"
+              onclick="openMessage()">
+
+              💬 Message Customer
+
+            </button>
+
+            <button
+              class="call-btn"
+              onclick="callCustomer()">
+
+              📞 Call Customer
+
+            </button>
+
+            <div class="safety-note">
+
+              🛡️ <strong>Safety:</strong>
+              Keep communication inside WorkToday.
+              Never share OTP, password or sensitive
+              account information.
+
+            </div>
+
+            <a
+              href="#"
+              class="report-link"
+              onclick="reportWork(event)">
+
+              Report this work
+
+            </a>
+
+          </div>
+
+          <!-- SUMMARY -->
+
+          <div class="sidebar-card">
+
+            <h2>
+              Work Summary
+            </h2>
+
+            <div class="summary-row">
+
+              <span>
+                Category
+              </span>
+
+              <strong>
+                Electrician
+              </strong>
+
+            </div>
+
+            <div class="summary-row">
+
+              <span>
+                Status
+              </span>
+
+              <strong>
+                Open
+              </strong>
+
+            </div>
+
+            <div class="summary-row">
+
+              <span>
+                Posted
+              </span>
+
+              <strong>
+                18 min ago
+              </strong>
+
+            </div>
+
+            <div class="summary-row">
+
+              <span>
+                Distance
+              </span>
+
+              <strong>
+                1.8 km
+              </strong>
+
+            </div>
+
+            <div class="summary-row">
+
+              <span>
+                Required
+              </span>
+
+              <strong>
+                Today
+              </strong>
+
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+      <!-- MOBILE BOTTOM ACTION -->
+
+      <div class="bottom-action">
+
+        <button
+          class="interest-btn-large"
+          onclick="showInterest()">
+
+          I'm Interested
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- =====================================
+       JAVASCRIPT
+  ====================================== -->
+
+  <script>
+
+    function showInterest() {
+
+      const button =
+        document.getElementById(
+          "interestButton"
+        );
+
+      if (
+        button &&
+        button.classList.contains("selected")
+      ) {
+
+        return;
+
+      }
+
+      if (button) {
+
+        button.classList.add("selected");
+
+        button.textContent =
+          "✓ Interest Sent";
+
+      }
+
+      alert(
+        "Your interest has been sent to the customer.\n\n" +
+        "Real applications and notifications " +
+        "will be connected with the backend later."
+      );
+
+    }
+
+    function openMessage() {
+
+      window.location.href =
+        "worker-chat.html";
+
+    }
+
+    function callCustomer() {
+
+      alert(
+        "Customer calling will be connected " +
+        "with the real phone number after " +
+        "the backend is connected."
+      );
+
+    }
+
+    function reportWork(event) {
+
+      event.preventDefault();
+
+      const reason =
+        prompt(
+          "Why do you want to report this work?"
+        );
+
+      if (reason) {
+
+        alert(
+          "Report submitted.\n\n" +
+          "Admin moderation will be connected " +
+          "with the backend later."
+        );
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Worker Dashboard - WorkToday</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ==============================
+       WORKER DASHBOARD
+    ============================== */
+
+    .worker-dashboard-page {
+      min-height: calc(100vh - 80px);
+      background: #f7f8fc;
+      padding: 45px 20px 70px;
+    }
+
+    .worker-container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Welcome */
+
+    .worker-welcome {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+    }
+
+    .welcome-left {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+    }
+
+    .worker-avatar {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: #eaf2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 29px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .worker-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .worker-welcome h1 {
+      margin: 0;
+      color: #111827;
+      font-size: 27px;
+    }
+
+    .worker-welcome p {
+      margin: 7px 0 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .availability-box {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background: #ecfdf3;
+      color: #15803d;
+      padding: 11px 15px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .green-dot {
+      width: 9px;
+      height: 9px;
+      background: #22c55e;
+      border-radius: 50%;
+    }
+
+    /* Stats */
+
+    .worker-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 17px;
+      margin-bottom: 28px;
+    }
+
+    .worker-stat-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .worker-stat-card .stat-icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .worker-stat-card h2 {
+      margin: 0;
+      font-size: 27px;
+      color: #111827;
+    }
+
+    .worker-stat-card p {
+      margin: 5px 0 0;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    /* Section */
+
+    .worker-section {
+      margin-bottom: 28px;
+    }
+
+    .worker-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .worker-section-header h2 {
+      margin: 0;
+      color: #111827;
+      font-size: 22px;
+    }
+
+    .view-all {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* Filters */
+
+    .work-filters {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 17px;
+    }
+
+    .work-filters select,
+    .work-filters input {
+      border: 1px solid #dbe1ea;
+      border-radius: 10px;
+      padding: 11px 13px;
+      background: white;
+      color: #374151;
+      font-size: 14px;
+      outline: none;
+      min-width: 160px;
+    }
+
+    .work-filters select:focus,
+    .work-filters input:focus {
+      border-color: #2563eb;
+    }
+
+    /* Job cards */
+
+    .worker-job-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 17px;
+    }
+
+    .worker-job-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 17px;
+      padding: 20px;
+      box-shadow: 0 6px 22px rgba(15, 23, 42, 0.04);
+      transition: 0.2s;
+    }
+
+    .worker-job-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .job-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .job-category {
+      display: inline-block;
+      background: #eff6ff;
+      color: #2563eb;
+      border-radius: 8px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .new-badge {
+      background: #ecfdf3;
+      color: #15803d;
+      border-radius: 8px;
+      padding: 6px 9px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .worker-job-card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #111827;
+    }
+
+    .job-description {
+      margin: 0 0 15px;
+      color: #6b7280;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .job-info {
+      display: grid;
+      gap: 9px;
+      margin-bottom: 17px;
+    }
+
+    .job-info-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #4b5563;
+      font-size: 13px;
+    }
+
+    .job-info-row strong {
+      color: #374151;
+    }
+
+    .job-actions {
+      display: flex;
+      gap: 9px;
+    }
+
+    .job-details-btn,
+    .interest-btn {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 9px;
+      padding: 11px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .job-details-btn {
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+    }
+
+    .interest-btn {
+      border: none;
+      background: #2563eb;
+      color: white;
+    }
+
+    .interest-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* Applications */
+
+    .application-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 17px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .application-main {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .application-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #eef4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .application-main h3 {
+      margin: 0 0 5px;
+      color: #111827;
+      font-size: 16px;
+    }
+
+    .application-main p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .application-status {
+      background: #fff7ed;
+      color: #c2410c;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Quick Actions */
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .quick-action {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 15px;
+      padding: 20px;
+      text-decoration: none;
+      color: #111827;
+      transition: 0.2s;
+    }
+
+    .quick-action:hover {
+      transform: translateY(-2px);
+      border-color: #cbd5e1;
+    }
+
+    .quick-action-icon {
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .quick-action strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .quick-action span {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    /* Safety */
+
+    .worker-safety {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .worker-safety h3 {
+      margin: 0 0 8px;
+      color: #111827;
+    }
+
+    .worker-safety p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* ==============================
+       MOBILE
+    ============================== */
+
+    @media (max-width: 900px) {
+
+      .worker-dashboard-page {
+        padding: 30px 15px 50px;
+      }
+
+      .worker-welcome {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 21px;
+      }
+
+      .availability-box {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .worker-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .worker-job-list {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+
+      .worker-dashboard-page {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .worker-welcome {
+        border-radius: 15px;
+      }
+
+      .worker-welcome h1 {
+        font-size: 22px;
+      }
+
+      .worker-stats {
+        gap: 10px;
+      }
+
+      .worker-stat-card {
+        padding: 15px;
+      }
+
+      .worker-stat-card h2 {
+        font-size: 23px;
+      }
+
+      .worker-section-header h2 {
+        font-size: 19px;
+      }
+
+      .work-filters {
+        flex-direction: column;
+      }
+
+      .work-filters select,
+      .work-filters input {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .worker-job-card {
+        padding: 16px;
+      }
+
+      .job-actions {
+        flex-direction: column;
+      }
+
+      .application-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .application-status {
+        width: 100%;
+        text-align: center;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==============================
+       HEADER
+  ============================== -->
+
+  <header class="site-header">
+
+    <div class="container">
+
+      <div class="nav-wrap">
+
+        <a href="index.html" class="logo">
+          WorkToday
+        </a>
+
+        <nav class="main-nav">
+
+          <a href="worker-dashboard.html" class="active">
+            Dashboard
+          </a>
+
+          <a href="workers.html">
+            Find Work
+          </a>
+
+          <a href="messages.html">
+            Messages
+          </a>
+
+          <a href="notifications.html">
+            Notifications
+          </a>
+
+          <a href="profile.html">
+            Profile
+          </a>
+
+        </nav>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- ==============================
+       DASHBOARD
+  ============================== -->
+
+  <main class="worker-dashboard-page">
+
+    <div class="worker-container">
+
+      <!-- WELCOME -->
+
+      <section class="worker-welcome">
+
+        <div class="welcome-left">
+
+          <div class="worker-avatar">
+            👤
+          </div>
+
+          <div>
+
+            <h1>
+              Hello, Rahul 👋
+            </h1>
+
+            <p>
+              Find nearby work and earn today.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="availability-box">
+
+          <span class="green-dot"></span>
+
+          Available Today
+
+        </div>
+
+      </section>
+
+      <!-- STATS -->
+
+      <section class="worker-stats">
+
+        <div class="worker-stat-card">
+
+          <div class="stat-icon">
+            🔎
+          </div>
+
+          <h2>12</h2>
+
+          <p>Nearby Works</p>
+
+        </div>
+
+        <div class="worker-stat-card">
+
+          <div class="stat-icon">
+            ❤️
+          </div>
+
+          <h2>5</h2>
+
+          <p>Interested</p>
+
+        </div>
+
+        <div class="worker-stat-card">
+
+          <div class="stat-icon">
+            📋
+          </div>
+
+          <h2>3</h2>
+
+          <p>Applications</p>
+
+        </div>
+
+        <div class="worker-stat-card">
+
+          <div class="stat-icon">
+            ✅
+          </div>
+
+          <h2>18</h2>
+
+          <p>Completed Works</p>
+
+        </div>
+
+      </section>
+
+      <!-- AVAILABLE WORK -->
+
+      <section class="worker-section">
+
+        <div class="worker-section-header">
+
+          <h2>
+            Works Near You
+          </h2>
+
+          <a href="workers.html" class="view-all">
+            View All →
+          </a>
+
+        </div>
+
+        <!-- FILTERS -->
+
+        <div class="work-filters">
+
+          <select id="categoryFilter">
+
+            <option value="all">
+              All Categories
+            </option>
+
+            <option value="electrician">
+              Electrician
+            </option>
+
+            <option value="plumber">
+              Plumber
+            </option>
+
+            <option value="cleaning">
+              Cleaning
+            </option>
+
+            <option value="delivery">
+              Delivery
+            </option>
+
+            <option value="painting">
+              Painting
+            </option>
+
+            <option value="driver">
+              Driver
+            </option>
+
+          </select>
+
+          <select id="distanceFilter">
+
+            <option value="all">
+              Any Distance
+            </option>
+
+            <option value="2">
+              Within 2 km
+            </option>
+
+            <option value="5">
+              Within 5 km
+            </option>
+
+            <option value="10">
+              Within 10 km
+            </option>
+
+          </select>
+
+          <select id="timeFilter">
+
+            <option value="all">
+              Any Time
+            </option>
+
+            <option value="today">
+              Today
+            </option>
+
+            <option value="now">
+              Available Now
+            </option>
+
+          </select>
+
+          <select id="sortFilter">
+
+            <option value="newest">
+              Newest First
+            </option>
+
+            <option value="nearest">
+              Nearest First
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- JOB LIST -->
+
+        <div class="worker-job-list" id="jobList">
+
+          <!-- JOB 1 -->
+
+          <article
+            class="worker-job-card"
+            data-category="electrician"
+            data-distance="1.2">
+
+            <div class="job-card-top">
+
+              <span class="job-category">
+                ⚡ Electrician
+              </span>
+
+              <span class="new-badge">
+                NEW
+              </span>
+
+            </div>
+
+            <h3>
+              Electrician required for home repair
+            </h3>
+
+            <p class="job-description">
+              Need an electrician for switchboard
+              and wiring repair at home.
+            </p>
+
+            <div class="job-info">
+
+              <div class="job-info-row">
+                📍
+                <span>
+                  Aurangabad • 1.2 km away
+                </span>
+              </div>
+
+              <div class="job-info-row">
+                🕐
+                <span>
+                  Today • 2:00 PM
+                </span>
+              </div>
+
+              <div class="job-info-row">
+                ⏱️
+                <span>
+                  Approx. 2–3 hours
+                </span>
+              </div>
+
+            </div>
+
+            <div class="job-actions">
+
+              <a
+                href="work-details.html"
+                class="job-details-btn">
+                View Details
+              </a>
+
+              <button
+                class="interest-btn"
+                onclick="showInterest(this)">
+                I'm Interested
+              </button>
+
+            </div>
+
+          </article>
+
+          <!-- JOB 2 -->
+
+          <article
+            class="worker-job-card"
+            data-category="cleaning"
+            data-distance="2.5">
+
+            <div class="job-card-top">
+
+              <span class="job-category">
+                🧹 Cleaning
+              </span>
+
+              <span class="new-badge">
+                TODAY
+              </span>
+
+            </div>
+
+            <h3>
+              House cleaning required
+            </h3>
+
+            <p class="job-description">
+              Looking for someone for complete
+              home cleaning today.
+            </p>
+
+            <div class="job-info">
+
+              <div class="job-info-row">
+                📍
+                <span>
+                  CIDCO • 2.5 km away
+                </span>
+              </div>
+
+              <div class="job-info-row">
+                🕐
+                <span>
+                  Today • 11:00 AM
+                </span>
+              </div>
+
+              <div class="job-info-row">
+                ⏱️
+                <span>
+                  Approx. 3 hours
+                </span>
+              </div>
+
+            </div>
+
+            <div class="job-actions">
+
+              <a
+                href="work-details.html"
+                class="job-details-btn">
+                View Details
+              </a>
+
+              <button
+                class="interest-btn"
+                onclick="showInterest(this)">
+                I'm Interested
+              </button>
+
+            </div>
+
+          </article>
+
+          <!-- JOB 3 -->
+
+          <article
+            class="worker-job-card"
+            data-category="delivery"
+            data-distance="3.8">
+
+            <div class="job-card-top">
+
+              <span class="job-category">
+                🛵 Delivery
+              </span>
+
+              <span class="new-badge">
+                TODAY
+              </span>
+
+            </div>
+
+            <h3>
+              Urgent local delivery
+            </h3>
+
+            <p class="job-description">
+              Need a bike rider for local package
+              delivery in the city.
+            </p>
+
+            <div class="job-info">
+
+              <div class="job-info-row">
+                📍
+                <span>
+                  Garkheda • 3.8 km away
+                </span>
+              </div>
+
+              <div class="job-info-row">
+                🕐
+                <span>
+                  Today • 4:30 PM
+                </span>
+              </div>
+
+              <div class="job-info-row">
+                ⏱️
+                <span>
+                  Approx. 1–2 hours
+                </span>
+              </div>
+
+            </div>
+
+            <div class="job-actions">
+
+              <a
+                href="work-details.html"
+                class="job-details-btn">
+                View Details
+              </a>
+
+              <button
+                class="interest-btn"
+                onclick="showInterest(this)">
+                I'm Interested
+              </button>
+
+            </div>
+
+          </article>
+
+          <!-- JOB 4 -->
+
+          <article
+            class="worker-job-card"
+            data-category="plumber"
+            data-distance="4.6">
+
+            <div class="job-card-top">
+
+              <span class="job-category">
+                🔧 Plumber
+              </span>
+
+              <span class="new-badge">
+                NEW
+              </span>
+
+            </div>
+
+            <h3>
+              Bathroom pipe repair
+            </h3>
+
+            <p class="job-description">
+              Need a plumber for urgent bathroom
+              pipe leakage repair.
+            </p>
+
+            <div class="job-info">
+
+              <div class="job-info-row">
+                📍
+                <span>
+                  Waluj • 4.6 km away
+                </span>
+              </div>
+
+              <div class="job-info-row">
+                🕐
+                <span>
+                  Today • 6:00 PM
+                </span>
+              </div>
+
+              <div class="job-info-row">
+                ⏱️
+                <span>
+                  Approx. 1–2 hours
+                </span>
+              </div>
+
+            </div>
+
+            <div class="job-actions">
+
+              <a
+                href="work-details.html"
+                class="job-details-btn">
+                View Details
+              </a>
+
+              <button
+                class="interest-btn"
+                onclick="showInterest(this)">
+                I'm Interested
+              </button>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- MY APPLICATIONS -->
+
+      <section class="worker-section">
+
+        <div class="worker-section-header">
+
+          <h2>
+            My Recent Applications
+          </h2>
+
+          <a href="#" class="view-all">
+            View All →
+          </a>
+
+        </div>
+
+        <div class="application-card">
+
+          <div class="application-main">
+
+            <div class="application-icon">
+              ⚡
+            </div>
+
+            <div>
+
+              <h3>
+                Electrician required for home repair
+              </h3>
+
+              <p>
+                Applied today • Aurangabad
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="application-status">
+            Waiting for customer
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- QUICK ACTIONS -->
+
+      <section class="worker-section">
+
+        <div class="worker-section-header">
+
+          <h2>
+            Quick Actions
+          </h2>
+
+        </div>
+
+        <div class="quick-actions">
+
+          <a href="workers.html" class="quick-action">
+
+            <div class="quick-action-icon">
+              🔎
+            </div>
+
+            <strong>
+              Find Work
+            </strong>
+
+            <span>
+              Search nearby jobs
+            </span>
+
+          </a>
+
+          <a href="messages.html" class="quick-action">
+
+            <div class="quick-action-icon">
+              💬
+            </div>
+
+            <strong>
+              Messages
+            </strong>
+
+            <span>
+              Chat with customers
+            </span>
+
+          </a>
+
+          <a href="notifications.html" class="quick-action">
+
+            <div class="quick-action-icon">
+              🔔
+            </div>
+
+            <strong>
+              Notifications
+            </strong>
+
+            <span>
+              Check latest updates
+            </span>
+
+          </a>
+
+          <a href="profile.html" class="quick-action">
+
+            <div class="quick-action-icon">
+              👤
+            </div>
+
+            <strong>
+              My Profile
+            </strong>
+
+            <span>
+              Update worker profile
+            </span>
+
+          </a>
+
+        </div>
+
+      </section>
+
+      <!-- SAFETY -->
+
+      <section class="worker-safety">
+
+        <h3>
+          🛡️ Stay Safe
+        </h3>
+
+        <p>
+          Meet customers in safe places when possible.
+          Keep communication inside WorkToday and never
+          share passwords, OTPs or sensitive account
+          information with anyone.
+        </p>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ==============================
+       JAVASCRIPT
+  ============================== -->
+
+  <script>
+
+    /* ==============================
+       I'M INTERESTED
+    ============================== */
+
+    function showInterest(button) {
+
+      if (
+        button.classList.contains("selected")
+      ) {
+        return;
+      }
+
+      button.classList.add("selected");
+
+      button.textContent =
+        "✓ Interested";
+
+      button.style.background =
+        "#15803d";
+
+      alert(
+        "Your interest has been recorded.\n\n" +
+        "Real application/notification system " +
+        "will be connected with the backend."
+      );
+
+    }
+
+    /* ==============================
+       CATEGORY FILTER
+    ============================== */
+
+    const categoryFilter =
+      document.getElementById(
+        "categoryFilter"
+      );
+
+    const jobCards =
+      document.querySelectorAll(
+        ".worker-job-card"
+      );
+
+    categoryFilter.addEventListener(
+      "change",
+      function () {
+
+        const selected =
+          this.value;
+
+        jobCards.forEach(
+          function (card) {
+
+            const category =
+              card.dataset.category;
+
+            if (
+              selected === "all" ||
+              category === selected
+            ) {
+
+              card.style.display =
+                "block";
+
+            } else {
+
+              card.style.display =
+                "none";
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+    /* ==============================
+       DISTANCE FILTER
+    ============================== */
+
+    const distanceFilter =
+      document.getElementById(
+        "distanceFilter"
+      );
+
+    distanceFilter.addEventListener(
+      "change",
+      function () {
+
+        const selected =
+          this.value;
+
+        jobCards.forEach(
+          function (card) {
+
+            const distance =
+              parseFloat(
+                card.dataset.distance
+              );
+
+            if (
+              selected === "all" ||
+              distance <=
+              parseFloat(selected)
+            ) {
+
+              card.style.display =
+                "block";
+
+            } else {
+
+              card.style.display =
+                "none";
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+    /* ==============================
+       SORT
+    ============================== */
+
+    const sortFilter =
+      document.getElementById(
+        "sortFilter"
+      );
+
+    const jobList =
+      document.getElementById(
+        "jobList"
+      );
+
+    sortFilter.addEventListener(
+      "change",
+      function () {
+
+        const cards =
+          Array.from(
+            document.querySelectorAll(
+              ".worker-job-card"
+            )
+          );
+
+        if (
+          this.value === "nearest"
+        ) {
+
+          cards.sort(
+            function (a, b) {
+
+              return (
+                parseFloat(
+                  a.dataset.distance
+                ) -
+                parseFloat(
+                  b.dataset.distance
+                )
+              );
+
+            }
+          );
+
+        }
+
+        cards.forEach(
+          function (card) {
+
+            jobList.appendChild(
+              card
+            );
+
+          }
+        );
+
+      }
+    );
+
+  </script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    WorkTodayAuth.requireLogin();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Post New Work - WorkToday</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* ================================
+   WORKTODAY PREMIUM POST WORK
+================================ */
+
+.post-page {
+    min-height: calc(100vh - 80px);
+    padding: 42px 20px 70px;
+}
+
+.post-container {
+    width: min(1050px, 100%);
+    margin: 0 auto;
+}
+
+.post-hero {
+    margin-bottom: 28px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+.post-hero h1 {
+    margin: 0;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.post-hero p {
+    margin: 12px 0 0;
+    opacity:.68;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.post-card {
+    background: rgba(255,255,255,.97);
+    border: 1px solid rgba(0,0,0,.07);
+    border-radius: 24px;
+    padding: 34px;
+    box-shadow: 0 18px 55px rgba(0,0,0,.08);
+}
+
+.post-section {
+    padding: 0 0 34px;
+    margin-bottom: 34px;
+    border-bottom: 1px solid #ececec;
+}
+
+.post-section:last-of-type {
+    border-bottom: 0;
+    margin-bottom: 0;
+}
+
+.section-heading {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.section-number {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    background: #111827;
+    color: white;
+}
+
+.section-heading h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.section-heading p {
+    margin: 5px 0 0;
+    font-size: 13px;
+    opacity:.62;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.required {
+    color: #dc2626;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-control {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 48px;
+    border: 1px solid #d9dce1;
+    border-radius: 12px;
+    background: #fff;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 15px;
+    outline: none;
+    transition:.2s ease;
+}
+
+textarea.form-control {
+    min-height: 125px;
+    resize: vertical;
+}
+
+.form-control:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17,24,39,.08);
+}
+
+.form-hint {
+    display: block;
+    margin-top: 7px;
+    font-size: 12px;
+    opacity:.58;
+}
+
+.location-box {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 14px;
+    background: #f7f8fa;
+    border: 1px solid #e8e9ec;
+}
+
+.location-button {
+    margin-top: 10px;
+}
+
+.location-status {
+    margin: 9px 0 0;
+    font-size: 13px;
+}
+
+.contact-note {
+    padding: 13px 15px;
+    background: #f7f8fa;
+    border-radius: 12px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.checkbox-row input {
+    width: 18px;
+    height: 18px;
+}
+
+.submit-area {
+    text-align: center;
+    padding-top: 8px;
+}
+
+.security-note {
+    max-width: 650px;
+    margin: 0 auto 20px;
+    padding: 13px 15px;
+    border-radius: 12px;
+    background: #f7f8fa;
+    font-size: 13px;
+    opacity:.78;
+}
+
+.post-button {
+    width: min(430px, 100%);
+    min-height: 52px;
+    border-radius: 13px;
+    border: 0;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.post-button:disabled {
+    opacity:.6;
+    cursor: not-allowed;
+}
+
+.submit-message {
+    min-height: 20px;
+    margin: 12px 0 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.success-message {
+    color: #15803d;
+}
+
+.error-message {
+    color: #dc2626;
+}
+
+@media (max-width: 700px) {
+
+   .post-page {
+        padding: 25px 14px 50px;
+    }
+
+   .post-card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+   .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+   .post-section {
+        padding-bottom: 27px;
+        margin-bottom: 27px;
+    }
+
+   .section-heading h2 {
+        font-size: 18px;
+    }
+
+   .section-number {
+        width: 34px;
+        height: 34px;
+        flex-basis: 34px;
+        border-radius: 10px;
+    }
+
+   .post-hero h1 {
+        font-size: 30px;
+    }
+
+   .form-control {
+        min-height: 50px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="site-header">
+
+    <div class="container nav-wrap">
+
+        <a href="index.html" class="logo">
+            Work<span>Today</span>
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="customer-dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="post-work.html">
+                Post Work
+            </a>
+
+            <a href="my-work.html">
+                My Work
+            </a>
+
+            <a href="messages.html">
+                Messages
+            </a>
+
+            <a href="notifications.html">
+                🔔
+            </a>
+
+            <a href="profile.html">
+                Profile
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+<!-- MAIN -->
+
+<main class="post-page">
+
+<div class="post-container">
+
+    <div class="post-hero">
+
+        <a
+            href="customer-dashboard.html"
+            class="back-link"
+        >
+            ← Back to Dashboard
+        </a>
+
+        <h1>
+            Post New Work
+        </h1>
+
+        <p>
+            Tell nearby workers what you need and find
+            someone available for the job.
+        </p>
+
+    </div>
+
+    <div class="post-card">
+
+        <form id="workForm">
+
+            <!-- =========================
+                 1 WORK DETAILS
+            ========================== -->
+
+            <section class="post-section">
+
+                <div class="section-heading">
+
+                    <span class="section-number">
+                        1
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Work Details
+                        </h2>
+
+                        <p>
+                            Describe the work clearly so workers understand it.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Work Category
+                        <span class="required">*</span>
+                    </label>
+
+                    <select
+                        id="category"
+                        class="form-control"
+                        required
+                    >
+
+                        <option value="">
+                            Select work category
+                        </option>
+
+                        <option value="electrician">
+                            🔧 Electrician
+                        </option>
+
+                        <option value="plumber">
+                            🚰 Plumber
+                        </option>
+
+                        <option value="carpenter">
+                            🪚 Carpenter
+                        </option>
+
+                        <option value="painter">
+                            🎨 Painter
+                        </option>
+
+                        <option value="cleaning">
+                            🧹 Cleaning
+                        </option>
+
+                        <option value="delivery">
+                            🚚 Delivery
+                        </option>
+
+                        <option value="driver">
+                            🚗 Driver
+                        </option>
+
+                        <option value="mechanic">
+                            🔩 Mechanic
+                        </option>
+
+                        <option value="construction">
+                            🧱 Construction
+                        </option>
+
+                        <option value="moving">
+                            📦 Moving / Shifting
+                        </option>
+
+                        <option value="ac-repair">
+                            ❄️ AC / Appliance Repair
+                        </option>
+
+                        <option value="computer">
+                            💻 Computer / IT
+                        </option>
+
+                        <option value="gardening">
+                            🌱 Gardening
+                        </option>
+
+                        <option value="other">
+                            🛠️ Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="title">
+                        Work Title
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="title"
+                        class="form-control"
+                        type="text"
+                        maxlength="100"
+                        placeholder="Example: Need electrician for home wiring"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Describe the Work
+                        <span class="required">*</span>
+                    </label>
+
+                    <textarea
+                        id="description"
+                        class="form-control"
+                        maxlength="1000"
+                        placeholder="Explain what needs to be done..."
+                        required
+                    ></textarea>
+
+                    <span class="form-hint">
+                        Give workers enough information about the work.
+                    </span>
+
+                </div>
+
+            </section>
+
+            <!-- =========================
+                 2 LOCATION
+            ========================== -->
+
+            <section class="post-section">
+
+                <div class="section-heading">
+
+                    <span class="section-number">
+                        2
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Work Location
+                        </h2>
+
+                        <p>
+                            Tell the worker where the job is.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="city">
+                            City
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="city"
+                            class="form-control"
+                            required
+                        >
+
+                            <option value="">
+                                Select city
+                            </option>
+
+                            <option value="Aurangabad">
+                                Aurangabad
+                            </option>
+
+                            <option value="Pune">
+                                Pune
+                            </option>
+
+                            <option value="Mumbai">
+                                Mumbai
+                            </option>
+
+                            <option value="Nagpur">
+                                Nagpur
+                            </option>
+
+                            <option value="Nashik">
+                                Nashik
+                            </option>
+
+                            <option value="Delhi">
+                                Delhi
+                            </option>
+
+                            <option value="Hyderabad">
+                                Hyderabad
+                            </option>
+
+                            <option value="Bengaluru">
+                                Bengaluru
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="area">
+                            Area / Locality
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            id="area"
+                            class="form-control"
+                            type="text"
+                            placeholder="Example: CIDCO"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="address">
+                        Full Address
+                        <span class="required">*</span>
+                    </label>
+
+                    <textarea
+                        id="address"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Enter the work location..."
+                        required
+                    ></textarea>
+
+                </div>
+
+                <div class="location-box">
+
+                    <strong>
+                        📍 Location coordinates
+                    </strong>
+
+                    <p style="margin:6px 0 0;font-size:13px;opacity:.65;">
+                        Optional. Helps workers understand where the job is.
+                    </p>
+
+                    <button
+                        type="button"
+                        id="locationButton"
+                        class="btn btn-outline location-button"
+                    >
+                        📍 Use My Current Location
+                    </button>
+
+                    <p
+                        id="locationMessage"
+                        class="location-status"
+                    ></p>
+
+                </div>
+
+            </section>
+
+            <!-- =========================
+                 3 DATE TIME
+            ========================== -->
+
+            <section class="post-section">
+
+                <div class="section-heading">
+
+                    <span class="section-number">
+                        3
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Date & Time
+                        </h2>
+
+                        <p>
+                            When should the worker come?
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="date">
+                            Work Date
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            id="date"
+                            class="form-control"
+                            type="date"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="time">
+                            Start Time
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            id="time"
+                            class="form-control"
+                            type="time"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="duration">
+                        Expected Duration
+                    </label>
+
+                    <select
+                        id="duration"
+                        class="form-control"
+                    >
+
+                        <option value="">
+                            Select duration
+                        </option>
+
+                        <option value="1-hour">
+                            Around 1 hour
+                        </option>
+
+                        <option value="2-3-hours">
+                            2–3 hours
+                        </option>
+
+                        <option value="half-day">
+                            Half day
+                        </option>
+
+                        <option value="full-day">
+                            Full day
+                        </option>
+
+                        <option value="multiple-days">
+                            Multiple days
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+            <!-- =========================
+                 4 CONTACT
+            ========================== -->
+
+            <section class="post-section">
+
+                <div class="section-heading">
+
+                    <span class="section-number">
+                        4
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Contact Details
+                        </h2>
+
+                        <p>
+                            How can interested workers contact you?
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contact-note">
+
+                    🔒 Your contact information is stored
+                    with your WorkToday account.
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Mobile Number
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="phone"
+                        class="form-control"
+                        type="tel"
+                        maxlength="10"
+                        inputmode="numeric"
+                        placeholder="10-digit mobile number"
+                        required
+                    >
+
+                </div>
+
+                <label class="checkbox-row">
+
+                    <input
+                        type="checkbox"
+                        id="allowCall"
+                        checked
+                    >
+
+                    <span>
+                        Allow interested workers to call me
+                    </span>
+
+                </label>
+
+            </section>
+
+            <!-- =========================
+                 SUBMIT
+            ========================== -->
+
+            <div class="submit-area">
+
+                <div class="security-note">
+
+                    🛡️ Never share passwords, OTPs
+                    or sensitive financial information.
+
+                </div>
+
+                <button
+                    type="submit"
+                    id="postButton"
+                    class="btn btn-primary post-button"
+                >
+                    🚀 Post Work
+                </button>
+
+                <p
+                    id="submitMessage"
+                    class="submit-message"
+                    aria-live="polite"
+                ></p>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</main>
+
+<!-- FOOTER -->
+
+<footer class="site-footer">
+
+    <div class="container">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 WorkToday. All rights reserved.
+            </p>
+
+            <p>
+                Aaj Ka Kaam. Aaj Hi Worker.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/auth.js"></script>
+
+<script>
+
+/* =====================================
+   WORKTODAY REAL POST WORK
+===================================== */
+
+const supabaseClient =
+    window.supabaseClient;
+
+const form =
+    document.getElementById("workForm");
+
+const postButton =
+    document.getElementById("postButton");
+
+const submitMessage =
+    document.getElementById("submitMessage");
+
+const locationButton =
+    document.getElementById("locationButton");
+
+const locationMessage =
+    document.getElementById("locationMessage");
+
+let latitude = null;
+let longitude = null;
+
+/* =====================================
+   MESSAGE
+===================================== */
+
+function showMessage(message, error = false) {
+
+    submitMessage.textContent =
+        message;
+
+    submitMessage.className =
+        error
+            ? "submit-message error-message"
+            : "submit-message success-message";
+}
+
+/* =====================================
+   AUTH CHECK
+===================================== */
+
+async function checkUser() {
+
+    if (!supabaseClient) {
+
+        showMessage(
+            "Supabase connection nahi mila. Page refresh karo.",
+            true
+        );
+
+        return null;
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+    if (error ||!data.user) {
+
+        window.location.href =
+            "login.html";
+
+        return null;
+    }
+
+    return data.user;
+}
+
+/* =====================================
+   LOCATION
+===================================== */
+
+locationButton.addEventListener(
+    "click",
+    function() {
+
+        if (!navigator.geolocation) {
+
+            locationMessage.textContent =
+                "Location is not supported by this browser.";
+
+            return;
+        }
+
+        locationButton.disabled = true;
+
+        locationButton.textContent =
+            "📍 Detecting...";
+
+        locationMessage.textContent =
+            "Please allow location permission.";
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                latitude =
+                    position.coords.latitude;
+
+                longitude =
+                    position.coords.longitude;
+
+                locationMessage.textContent =
+                    "✓ Location detected successfully.";
+
+                locationButton.disabled =
+                    false;
+
+                locationButton.textContent =
+                    "📍 Location Detected";
+
+            },
+
+            function() {
+
+                latitude = null;
+                longitude = null;
+
+                locationMessage.textContent =
+                    "Location permission denied. You can enter the address manually.";
+
+                locationButton.disabled =
+                    false;
+
+                locationButton.textContent =
+                    "📍 Try Again";
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 60000
+            }
+
+        );
+
+    }
+);
+
+/* =====================================
+   TODAY MIN DATE
+===================================== */
+
+const dateInput =
+    document.getElementById("date");
+
+const now =
+    new Date();
+
+const year =
+    now.getFullYear();
+
+const month =
+    String(
+        now.getMonth() + 1
+    ).padStart(2, "0");
+
+const day =
+    String(
+        now.getDate()
+    ).padStart(2, "0");
+
+const today =
+    `${year}-${month}-${day}`;
+
+dateInput.min =
+    today;
+
+/* =====================================
+   FORM SUBMIT
+===================================== */
+
+form.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        showMessage("");
+
+        postButton.disabled =
+            true;
+
+        postButton.textContent =
+            "Posting Work...";
+
+        try {
+
+            /* AUTH */
+
+            const user =
+                await checkUser();
+
+            if (!user) {
+                return;
+            }
+
+            /* GET VALUES */
+
+            const category =
+                document
+                  .getElementById("category")
+                  .value;
+
+            const title =
+                document
+                  .getElementById("title")
+                  .value
+                  .trim();
+
+            const description =
+                document
+                  .getElementById("description")
+                  .value
+                  .trim();
+
+            const city =
+                document
+                  .getElementById("city")
+                  .value;
+
+            const area =
+                document
+                  .getElementById("area")
+                  .value
+                  .trim();
+
+            const address =
+                document
+                  .getElementById("address")
+                  .value
+                  .trim();
+
+            const workDate =
+                document
+                  .getElementById("date")
+                  .value;
+
+            const startTime =
+                document
+                  .getElementById("time")
+                  .value;
+
+            const duration =
+                document
+                  .getElementById("duration")
+                  .value;
+
+            const phone =
+                document
+                  .getElementById("phone")
+                  .value
+                  .trim();
+
+            const allowCall =
+                document
+                  .getElementById("allowCall")
+                  .checked;
+
+            /* PHONE */
+
+            if (!/^[0-9]{10}$/.test(phone)) {
+
+                showMessage(
+                    "Please enter a valid 10-digit mobile number.",
+                    true
+                );
+
+                postButton.disabled =
+                    false;
+
+                postButton.textContent =
+                    "🚀 Post Work";
+
+                return;
+            }
+
+            /* REQUIRED FIELDS */
+
+            if (
+                !category ||
+                !title ||
+                !description ||
+                !city ||
+                !area ||
+                !address ||
+                !workDate ||
+                !startTime
+            ) {
+
+                showMessage(
+                    "Please fill all required fields.",
+                    true
+                );
+
+                postButton.disabled =
+                    false;
+
+                postButton.textContent =
+                    "🚀 Post Work";
+
+                return;
+            }
+
+            /* DATE */
+
+            if (workDate < today) {
+
+                showMessage(
+                    "Work date cannot be in the past.",
+                    true
+                );
+
+                postButton.disabled =
+                    false;
+
+                postButton.textContent =
+                    "🚀 Post Work";
+
+                return;
+            }
+
+            /* =================================
+               JOB DATA
+            ================================= */
+
+            const jobData = {
+
+                customer_id:
+                    user.id,
+
+                category_name:
+                    category,
+
+                title:
+                    title,
+
+                description:
+                    description,
+
+                city:
+                    city,
+
+                area:
+                    area,
+
+                address:
+                    address,
+
+                latitude:
+                    latitude,
+
+                longitude:
+                    longitude,
+
+                work_date:
+                    workDate,
+
+                start_time:
+                    startTime,
+
+                duration:
+                    duration || null,
+
+                phone:
+                    phone,
+
+                allow_calls:
+                    allowCall,
+
+                status:
+                    "open"
+
+            };
+
+            /* =================================
+               INSERT JOB
+            ================================= */
+
+            const {
+                data: job,
+                error
+            } =
+                await supabaseClient
+                  .from("jobs")
+                  .insert(jobData)
+                  .select()
+                  .single();
+
+            if (error) {
+
+                console.error(
+                    "Job insert error:",
+                    error
+                );
+
+                throw error;
+            }
+
+            /* =================================
+               SUCCESS
+            ================================= */
+
+            console.log(
+                "Job created:",
+                job
+            );
+
+            showMessage(
+                "✓ Work posted successfully!"
+            );
+
+            postButton.textContent =
+                "✓ Work Posted";
+
+            /* GO MY WORK */
+
+            setTimeout(
+                function() {
+
+                    window.location.href =
+                        "my-work.html";
+
+                },
+                900
+            );
+
+        } catch(error) {
+
+            console.error(
+                "Post Work Error:",
+                error
+            );
+
+            showMessage(
+                error.message ||
+                "Work post nahi ho paya. Please try again.",
+                true
+            );
+
+            postButton.disabled =
+                false;
+
+            postButton.textContent =
+                "🚀 Post Work";
+        }
+
+    }
+);
+
+/* =====================================
+   INITIAL AUTH CHECK
+===================================== */
+
+checkUser();
+
+</script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    WorkTodayAuth.requireLogin();
+});
+</script>
+</body>
+</html>

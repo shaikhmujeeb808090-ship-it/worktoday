@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Work Details - WorkToday</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .work-details-page {
+      width: 100%;
+      padding: 45px 20px 70px;
+      box-sizing: border-box;
+    }
+
+    .work-details-container {
+      width: calc(100% - 120px);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .details-back {
+      display: inline-block;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+
+    .details-layout {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 25px;
+      align-items: start;
+    }
+
+    .details-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .details-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .details-category {
+      font-size: 14px;
+      font-weight: 600;
+      opacity: .65;
+      margin-bottom: 8px;
+    }
+
+    .details-card h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.25;
+    }
+
+    .open-status {
+      background: #eaf8ee;
+      color: #16843a;
+      padding: 8px 13px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .details-description {
+      margin-top: 22px;
+      line-height: 1.7;
+      opacity: .78;
+    }
+
+    .details-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .info-box {
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .info-label {
+      display: block;
+      font-size: 12px;
+      opacity: .55;
+      margin-bottom: 6px;
+    }
+
+    .info-value {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .location-box {
+      background: #f7f7f7;
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 20px;
+    }
+
+    .location-box h3 {
+      margin: 0 0 8px;
+    }
+
+    .location-box p {
+      margin: 5px 0;
+      opacity: .75;
+    }
+
+    .location-map {
+      height: 190px;
+      border-radius: 14px;
+      margin-top: 15px;
+      background: #e9e9e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 14px;
+      opacity: .8;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .photo-placeholder {
+      height: 150px;
+      border-radius: 12px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 35px;
+    }
+
+    .worker-card {
+      border: 1px solid #eee;
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+
+    .worker-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .worker-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      flex-shrink: 0;
+    }
+
+    .worker-info {
+      flex: 1;
+    }
+
+    .worker-info strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .worker-info span {
+      font-size: 13px;
+      opacity: .65;
+    }
+
+    .worker-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 13px;
+      font-size: 13px;
+    }
+
+    .worker-actions {
+      display: flex;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .worker-actions .btn {
+      flex: 1;
+      text-align: center;
+    }
+
+    .side-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .side-card h3 {
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .contact-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .side-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .safety-note {
+      font-size: 13px;
+      line-height: 1.6;
+      opacity: .7;
+    }
+
+    .report-link {
+      display: block;
+      margin-top: 15px;
+      color: #b00020;
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    @media (max-width: 950px) {
+      .work-details-container {
+        width: calc(100% - 40px);
+      }
+
+      .details-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .work-details-page {
+        padding: 25px 14px 50px;
+      }
+
+      .work-details-container {
+        width: 100%;
+      }
+
+      .details-card,
+      .side-card {
+        padding: 20px;
+      }
+
+      .details-header {
+        flex-direction: column;
+      }
+
+      .details-card h1 {
+        font-size: 25px;
+      }
+
+      .details-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .photo-placeholder {
+        height: 120px;
+      }
+
+      .worker-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="site-header">
+
+    <div class="container nav-wrap">
+
+      <a href="index.html" class="logo">
+        Work<span>Today</span>
+      </a>
+
+      <nav class="nav-links">
+
+        <a href="customer-dashboard.html">Dashboard</a>
+        <a href="post-work.html">Post Work</a>
+        <a href="my-work.html">My Work</a>
+        <a href="messages.html">Messages</a>
+        <a href="notifications.html">🔔</a>
+        <a href="profile.html">Profile</a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+  <!-- MAIN -->
+
+  <main class="work-details-page">
+
+    <div class="work-details-container">
+
+      <a
+        href="my-work.html"
+        class="details-back"
+      >
+        ← Back to My Work
+      </a>
+
+      <div class="details-layout">
+
+        <!-- LEFT -->
+
+        <section>
+
+          <!-- MAIN DETAILS -->
+
+          <div class="details-card">
+
+            <div class="details-header">
+
+              <div>
+
+                <div class="details-category">
+                  🔧 Electrician
+                </div>
+
+                <h1>
+                  Need electrician for home wiring
+                </h1>
+
+              </div>
+
+              <span class="open-status">
+                ● Open
+              </span>
+
+            </div>
+
+            <p class="details-description">
+
+              Need an electrician today for wiring,
+              switch installation and checking a few
+              electrical points at home.
+
+            </p>
+
+            <div class="details-info-grid">
+
+              <div class="info-box">
+
+                <span class="info-label">
+                  📅 Date
+                </span>
+
+                <span class="info-value">
+                  Today
+                </span>
+
+              </div>
+
+              <div class="info-box">
+
+                <span class="info-label">
+                  🕐 Time
+                </span>
+
+                <span class="info-value">
+                  2:00 PM
+                </span>
+
+              </div>
+
+              <div class="info-box">
+
+                <span class="info-label">
+                  ⏱ Duration
+                </span>
+
+                <span class="info-value">
+                  3–4 Hours
+                </span>
+
+              </div>
+
+              <div class="info-box">
+
+                <span class="info-label">
+                  📍 Area
+                </span>
+
+                <span class="info-value">
+                  Aurangabad
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- LOCATION -->
+
+            <div class="location-box">
+
+              <h3>
+                📍 Location
+              </h3>
+
+              <p>
+                Aurangabad, Maharashtra
+              </p>
+
+              <p>
+                Near main city area
+              </p>
+
+              <div class="location-map">
+                🗺️
+                <br>
+                Map location will appear here
+                when map service is connected.
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- PHOTOS -->
+
+          <div class="details-card">
+
+            <h2>
+              📷 Photos & Video
+            </h2>
+
+            <div class="photo-grid">
+
+              <div class="photo-placeholder">
+                🏠
+              </div>
+
+              <div class="photo-placeholder">
+                🔌
+              </div>
+
+              <div class="photo-placeholder">
+                📷
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- INTERESTED WORKERS -->
+
+          <div class="details-card">
+
+            <h2>
+              👷 Interested Workers
+            </h2>
+
+            <p style="opacity:.65;">
+              Workers who are interested in this work.
+            </p>
+
+            <!-- WORKER 1 -->
+
+            <div class="worker-card">
+
+              <div class="worker-top">
+
+                <div class="worker-avatar">
+                  👨
+                </div>
+
+                <div class="worker-info">
+
+                  <strong>
+                    Rahul Patil
+                  </strong>
+
+                  <span>
+                    Electrician
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div class="worker-meta">
+
+                <span>
+                  ⭐ 4.8 Rating
+                </span>
+
+                <span>
+                  🛠️ 5 Years Experience
+                </span>
+
+                <span>
+                  📍 2.4 km
+                </span>
+
+              </div>
+
+              <div class="worker-actions">
+
+                <a
+                  href="chat.html"
+                  class="btn btn-primary btn-small"
+                >
+                  💬 Message
+                </a>
+
+                <a
+                  href="tel:+919999999999"
+                  class="btn btn-outline btn-small"
+                >
+                  📞 Call
+                </a>
+
+              </div>
+
+            </div>
+
+            <!-- WORKER 2 -->
+
+            <div class="worker-card">
+
+              <div class="worker-top">
+
+                <div class="worker-avatar">
+                  👨
+                </div>
+
+                <div class="worker-info">
+
+                  <strong>
+                    Sameer Khan
+                  </strong>
+
+                  <span>
+                    Electrician
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div class="worker-meta">
+
+                <span>
+                  ⭐ 4.6 Rating
+                </span>
+
+                <span>
+                  🛠️ 3 Years Experience
+                </span>
+
+                <span>
+                  📍 4.1 km
+                </span>
+
+              </div>
+
+              <div class="worker-actions">
+
+                <a
+                  href="chat.html"
+                  class="btn btn-primary btn-small"
+                >
+                  💬 Message
+                </a>
+
+                <a
+                  href="tel:+919888888888"
+                  class="btn btn-outline btn-small"
+                >
+                  📞 Call
+                </a>
+
+              </div>
+
+            </div>
+
+            <!-- WORKER FOUND -->
+
+            <div
+              style="
+                margin-top:20px;
+                padding:18px;
+                border-radius:14px;
+                background:#f7f7f7;
+              "
+            >
+
+              <strong>
+                Found your worker?
+              </strong>
+
+              <p style="opacity:.65;font-size:13px;">
+                Close this work after selecting a worker.
+                New applications will then stop.
+              </p>
+
+              <button
+                class="btn btn-primary"
+                onclick="markWorkerFound()"
+              >
+                ✓ Worker Found
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- RIGHT SIDEBAR -->
+
+        <aside>
+
+          <!-- CONTACT -->
+
+          <div class="side-card">
+
+            <h3>
+              📞 Contact
+            </h3>
+
+            <div class="contact-item">
+
+              <div class="contact-icon">
+                👤
+              </div>
+
+              <div>
+                <strong>
+                  SK Mujeeb
+                </strong>
+
+                <br>
+
+                <span style="opacity:.6;">
+                  Work Poster
+                </span>
+              </div>
+
+            </div>
+
+            <div class="contact-item">
+
+              <div class="contact-icon">
+                📱
+              </div>
+
+              <div>
+                Phone available
+              </div>
+
+            </div>
+
+            <div class="side-buttons">
+
+              <a
+                href="tel:+919999999999"
+                class="btn btn-primary"
+              >
+                📞 Call Customer
+              </a>
+
+              <a
+                href="chat.html"
+                class="btn btn-outline"
+              >
+                💬 Send Message
+              </a>
+
+            </div>
+
+          </div>
+
+          <!-- WORK STATUS -->
+
+          <div class="side-card">
+
+            <h3>
+              📊 Work Status
+            </h3>
+
+            <div class="contact-item">
+
+              <div class="contact-icon">
+                👀
+              </div>
+
+              <div>
+                <strong>
+                  8
+                </strong>
+
+                <br>
+
+                <span style="opacity:.6;">
+                  Views
+                </span>
+              </div>
+
+            </div>
+
+            <div class="contact-item">
+
+              <div class="contact-icon">
+                👷
+              </div>
+
+              <div>
+                <strong>
+                  3
+                </strong>
+
+                <br>
+
+                <span style="opacity:.6;">
+                  Interested Workers
+                </span>
+              </div>
+
+            </div>
+
+            <div class="contact-item">
+
+              <div class="contact-icon">
+                💬
+              </div>
+
+              <div>
+                <strong>
+                  2
+                </strong>
+
+                <br>
+
+                <span style="opacity:.6;">
+                  Messages
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- SAFETY -->
+
+          <div class="side-card">
+
+            <h3>
+              🛡️ Safety
+            </h3>
+
+            <p class="safety-note">
+
+              Never share OTPs, passwords or sensitive
+              financial information. Meet in a safe place
+              and verify the worker before starting work.
+
+            </p>
+
+            <a
+              href="#"
+              class="report-link"
+              onclick="reportWork(event)"
+            >
+              ⚠️ Report this work
+            </a>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer class="site-footer">
+
+    <div class="container">
+
+      <div class="footer-bottom">
+
+        <p>
+          © 2026 WorkToday. All rights reserved.
+        </p>
+
+        <p>
+          Aaj Ka Kaam. Aaj Hi Worker.
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <script>
+
+    function markWorkerFound() {
+
+      const confirmClose = confirm(
+        "Are you sure you found a worker?\n\n" +
+        "This will close the work and stop new applications."
+      );
+
+      if (!confirmClose) {
+        return;
+      }
+
+      const status =
+        document.querySelector(".open-status");
+
+      status.textContent = "✓ Closed";
+
+      status.style.background = "#eeeeee";
+      status.style.color = "#555";
+
+      alert(
+        "Work closed successfully!\n\n" +
+        "No new workers can apply now."
+      );
+
+    }
+
+    function reportWork(event) {
+
+      event.preventDefault();
+
+      const reason = prompt(
+        "Why do you want to report this work?"
+      );
+
+      if (reason && reason.trim() !== "") {
+
+        alert(
+          "Report submitted successfully.\n\n" +
+          "Our team will review it."
+        );
+
+      }
+
+    }
+
+  </script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    WorkTodayAuth.requireLogin();
+});
+</script>
+</body>
+</html>

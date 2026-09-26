@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Applications - WorkToday</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .applications-page {
+      min-height: calc(100vh - 80px);
+      background: #f7f8fc;
+      padding: 45px 20px 70px;
+    }
+
+    .applications-container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .page-heading {
+      margin-bottom: 25px;
+    }
+
+    .page-heading h1 {
+      margin: 0 0 7px;
+      color: #111827;
+      font-size: 30px;
+    }
+
+    .page-heading p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    /* TABS */
+
+    .application-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 22px;
+    }
+
+    .application-tab {
+      border: 1px solid #dbe3ef;
+      background: white;
+      color: #4b5563;
+      padding: 10px 16px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .application-tab.active {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+    }
+
+    /* APPLICATION CARD */
+
+    .applications-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .application-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 17px;
+      padding: 20px;
+      box-shadow: 0 6px 22px rgba(15, 23, 42, 0.05);
+    }
+
+    .application-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .work-info {
+      min-width: 0;
+    }
+
+    .work-category {
+      display: inline-block;
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .work-info h2 {
+      margin: 0 0 5px;
+      color: #111827;
+      font-size: 19px;
+    }
+
+    .work-location {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .status {
+      flex-shrink: 0;
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .status.pending {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .status.accepted {
+      background: #ecfdf3;
+      color: #15803d;
+    }
+
+    .status.closed {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
+    .status.rejected {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    /* DETAILS */
+
+    .work-details-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .detail-box {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 11px;
+    }
+
+    .detail-box span {
+      display: block;
+      color: #9ca3af;
+      font-size: 10px;
+      margin-bottom: 4px;
+    }
+
+    .detail-box strong {
+      color: #374151;
+      font-size: 12px;
+    }
+
+    /* CUSTOMER */
+
+    .customer-box {
+      border-top: 1px solid #edf0f4;
+      border-bottom: 1px solid #edf0f4;
+      padding: 14px 0;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .customer-info {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .customer-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #eef2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+
+    .customer-info strong {
+      display: block;
+      color: #374151;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .customer-info span {
+      color: #9ca3af;
+      font-size: 11px;
+    }
+
+    .application-date {
+      color: #9ca3af;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    /* ACTIONS */
+
+    .application-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      border: 1px solid #dbe3ef;
+      background: white;
+      color: #2563eb;
+      padding: 10px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .action-btn.primary {
+      background: #2563eb;
+      color: white;
+      border-color: #2563eb;
+    }
+
+    .action-btn.call {
+      color: #15803d;
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+    }
+
+    .action-btn.danger {
+      color: #dc2626;
+      border-color: #fecaca;
+      background: #fff7f7;
+    }
+
+    /* EMPTY */
+
+    .empty-state {
+      display: none;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 17px;
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 45px;
+      margin-bottom: 12px;
+    }
+
+    .empty-state h2 {
+      margin: 0 0 7px;
+      color: #111827;
+      font-size: 20px;
+    }
+
+    .empty-state p {
+      margin: 0 0 18px;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .find-work-btn {
+      display: inline-block;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      padding: 11px 17px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* SUMMARY */
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+      margin-bottom: 25px;
+    }
+
+    .summary-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .summary-card span {
+      display: block;
+      color: #6b7280;
+      font-size: 11px;
+      margin-bottom: 7px;
+    }
+
+    .summary-card strong {
+      color: #111827;
+      font-size: 22px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 850px) {
+      .applications-page {
+        padding: 30px 15px 60px;
+      }
+
+      .work-details-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .applications-page {
+        padding: 25px 12px 50px;
+      }
+
+      .page-heading h1 {
+        font-size: 25px;
+      }
+
+      .application-card {
+        padding: 16px;
+        border-radius: 15px;
+      }
+
+      .application-top {
+        flex-direction: column;
+        gap: 9px;
+      }
+
+      .status {
+        align-self: flex-start;
+      }
+
+      .work-details-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .customer-box {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .application-date {
+        margin-left: 53px;
+      }
+
+      .application-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .action-btn {
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .work-details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .application-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="site-header">
+
+    <div class="container">
+
+      <div class="nav-wrap">
+
+        <a href="index.html" class="logo">
+          WorkToday
+        </a>
+
+        <nav class="main-nav">
+
+          <a href="worker-dashboard.html">
+            Dashboard
+          </a>
+
+          <a href="workers.html">
+            Find Work
+          </a>
+
+          <a href="worker-applications.html" class="active">
+            Applications
+          </a>
+
+          <a href="worker-messages.html">
+            Messages
+          </a>
+
+          <a href="worker-notifications.html">
+            Notifications
+          </a>
+
+          <a href="worker-profile.html">
+            Profile
+          </a>
+
+        </nav>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- MAIN -->
+
+  <main class="applications-page">
+
+    <div class="applications-container">
+
+      <a
+        href="worker-dashboard.html"
+        class="back-link">
+        ← Back to Dashboard
+      </a>
+
+      <!-- HEADING -->
+
+      <div class="page-heading">
+
+        <h1>
+          My Applications
+        </h1>
+
+        <p>
+          Track the work you are interested in and your application status.
+        </p>
+
+      </div>
+
+      <!-- SUMMARY -->
+
+      <div class="summary-grid">
+
+        <div class="summary-card">
+
+          <span>
+            Total Applications
+          </span>
+
+          <strong>
+            12
+          </strong>
+
+        </div>
+
+        <div class="summary-card">
+
+          <span>
+            Pending
+          </span>
+
+          <strong>
+            4
+          </strong>
+
+        </div>
+
+        <div class="summary-card">
+
+          <span>
+            Accepted
+          </span>
+
+          <strong>
+            3
+          </strong>
+
+        </div>
+
+        <div class="summary-card">
+
+          <span>
+            Completed
+          </span>
+
+          <strong>
+            5
+          </strong>
+
+        </div>
+
+      </div>
+
+      <!-- TABS -->
+
+      <div class="application-tabs">
+
+        <button
+          class="application-tab active"
+          onclick="filterApplications('all', this)">
+          All (12)
+        </button>
+
+        <button
+          class="application-tab"
+          onclick="filterApplications('pending', this)">
+          Pending (4)
+        </button>
+
+        <button
+          class="application-tab"
+          onclick="filterApplications('accepted', this)">
+          Accepted (3)
+        </button>
+
+        <button
+          class="application-tab"
+          onclick="filterApplications('closed', this)">
+          Completed (5)
+        </button>
+
+      </div>
+
+      <!-- APPLICATION LIST -->
+
+      <div
+        class="applications-list"
+        id="applicationsList">
+
+        <!-- APPLICATION 1 -->
+
+        <article
+          class="application-card"
+          data-status="pending">
+
+          <div class="application-top">
+
+            <div class="work-info">
+
+              <span class="work-category">
+                ⚡ Electrician
+              </span>
+
+              <h2>
+                Fan and Switch Repair
+              </h2>
+
+              <div class="work-location">
+                📍 CIDCO, Aurangabad
+              </div>
+
+            </div>
+
+            <span class="status pending">
+              Pending
+            </span>
+
+          </div>
+
+          <div class="work-details-grid">
+
+            <div class="detail-box">
+              <span>DATE</span>
+              <strong>Today</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>TIME</span>
+              <strong>2:00 PM</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DURATION</span>
+              <strong>1–2 Hours</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DISTANCE</span>
+              <strong>1.8 km</strong>
+            </div>
+
+          </div>
+
+          <div class="customer-box">
+
+            <div class="customer-info">
+
+              <div class="customer-avatar">
+                👨
+              </div>
+
+              <div>
+
+                <strong>
+                  Amit Sharma
+                </strong>
+
+                <span>
+                  Customer • 4.7 ★
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="application-date">
+              Applied 20 min ago
+            </div>
+
+          </div>
+
+          <div class="application-actions">
+
+            <a
+              href="worker-work-details.html"
+              class="action-btn primary">
+              View Work
+            </a>
+
+            <a
+              href="worker-chat.html"
+              class="action-btn">
+              💬 Message
+            </a>
+
+            <button
+              class="action-btn call"
+              onclick="callCustomer('Amit Sharma')">
+              📞 Call
+            </button>
+
+            <button
+              class="action-btn danger"
+              onclick="withdrawApplication(this)">
+              Withdraw
+            </button>
+
+          </div>
+
+        </article>
+
+        <!-- APPLICATION 2 -->
+
+        <article
+          class="application-card"
+          data-status="accepted">
+
+          <div class="application-top">
+
+            <div class="work-info">
+
+              <span class="work-category">
+                ⚡ Electrician
+              </span>
+
+              <h2>
+                Home Wiring Check
+              </h2>
+
+              <div class="work-location">
+                📍 Garkheda, Aurangabad
+              </div>
+
+            </div>
+
+            <span class="status accepted">
+              Accepted
+            </span>
+
+          </div>
+
+          <div class="work-details-grid">
+
+            <div class="detail-box">
+              <span>DATE</span>
+              <strong>Today</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>TIME</span>
+              <strong>4:30 PM</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DURATION</span>
+              <strong>2 Hours</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DISTANCE</span>
+              <strong>3.2 km</strong>
+            </div>
+
+          </div>
+
+          <div class="customer-box">
+
+            <div class="customer-info">
+
+              <div class="customer-avatar">
+                👩
+              </div>
+
+              <div>
+
+                <strong>
+                  Priya Joshi
+                </strong>
+
+                <span>
+                  Customer • 4.9 ★
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="application-date">
+              Accepted 1 hour ago
+            </div>
+
+          </div>
+
+          <div class="application-actions">
+
+            <a
+              href="worker-work-details.html"
+              class="action-btn primary">
+              View Work
+            </a>
+
+            <a
+              href="worker-chat.html"
+              class="action-btn">
+              💬 Message
+            </a>
+
+            <button
+              class="action-btn call"
+              onclick="callCustomer('Priya Joshi')">
+              📞 Call
+            </button>
+
+          </div>
+
+        </article>
+
+        <!-- APPLICATION 3 -->
+
+        <article
+          class="application-card"
+          data-status="pending">
+
+          <div class="application-top">
+
+            <div class="work-info">
+
+              <span class="work-category">
+                🔧 Repair
+              </span>
+
+              <h2>
+                Water Motor Electrical Issue
+              </h2>
+
+              <div class="work-location">
+                📍 Beed Bypass, Aurangabad
+              </div>
+
+            </div>
+
+            <span class="status pending">
+              Pending
+            </span>
+
+          </div>
+
+          <div class="work-details-grid">
+
+            <div class="detail-box">
+              <span>DATE</span>
+              <strong>Today</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>TIME</span>
+              <strong>6:00 PM</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DURATION</span>
+              <strong>1 Hour</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DISTANCE</span>
+              <strong>5.1 km</strong>
+            </div>
+
+          </div>
+
+          <div class="customer-box">
+
+            <div class="customer-info">
+
+              <div class="customer-avatar">
+                👨
+              </div>
+
+              <div>
+
+                <strong>
+                  Sameer Khan
+                </strong>
+
+                <span>
+                  Customer • 4.6 ★
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="application-date">
+              Applied 2 hours ago
+            </div>
+
+          </div>
+
+          <div class="application-actions">
+
+            <a
+              href="worker-work-details.html"
+              class="action-btn primary">
+              View Work
+            </a>
+
+            <a
+              href="worker-chat.html"
+              class="action-btn">
+              💬 Message
+            </a>
+
+            <button
+              class="action-btn call"
+              onclick="callCustomer('Sameer Khan')">
+              📞 Call
+            </button>
+
+            <button
+              class="action-btn danger"
+              onclick="withdrawApplication(this)">
+              Withdraw
+            </button>
+
+          </div>
+
+        </article>
+
+        <!-- APPLICATION 4 -->
+
+        <article
+          class="application-card"
+          data-status="closed">
+
+          <div class="application-top">
+
+            <div class="work-info">
+
+              <span class="work-category">
+                ⚡ Electrician
+              </span>
+
+              <h2>
+                Ceiling Light Installation
+              </h2>
+
+              <div class="work-location">
+                📍 Seven Hills, Aurangabad
+              </div>
+
+            </div>
+
+            <span class="status closed">
+              Completed
+            </span>
+
+          </div>
+
+          <div class="work-details-grid">
+
+            <div class="detail-box">
+              <span>DATE</span>
+              <strong>Yesterday</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>TIME</span>
+              <strong>11:00 AM</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DURATION</span>
+              <strong>1 Hour</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DISTANCE</span>
+              <strong>2.4 km</strong>
+            </div>
+
+          </div>
+
+          <div class="customer-box">
+
+            <div class="customer-info">
+
+              <div class="customer-avatar">
+                👩
+              </div>
+
+              <div>
+
+                <strong>
+                  Neha Deshmukh
+                </strong>
+
+                <span>
+                  Customer • 4.8 ★
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="application-date">
+              Completed yesterday
+            </div>
+
+          </div>
+
+          <div class="application-actions">
+
+            <a
+              href="worker-work-details.html"
+              class="action-btn">
+              View Details
+            </a>
+
+            <a
+              href="worker-chat.html"
+              class="action-btn">
+              💬 Messages
+            </a>
+
+          </div>
+
+        </article>
+
+        <!-- APPLICATION 5 -->
+
+        <article
+          class="application-card"
+          data-status="rejected">
+
+          <div class="application-top">
+
+            <div class="work-info">
+
+              <span class="work-category">
+                🔧 Plumbing
+              </span>
+
+              <h2>
+                Bathroom Tap Repair
+              </h2>
+
+              <div class="work-location">
+                📍 Waluj, Aurangabad
+              </div>
+
+            </div>
+
+            <span class="status rejected">
+              Closed
+            </span>
+
+          </div>
+
+          <div class="work-details-grid">
+
+            <div class="detail-box">
+              <span>DATE</span>
+              <strong>Yesterday</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>TIME</span>
+              <strong>3:00 PM</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DURATION</span>
+              <strong>1 Hour</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>DISTANCE</span>
+              <strong>7.4 km</strong>
+            </div>
+
+          </div>
+
+          <div class="customer-box">
+
+            <div class="customer-info">
+
+              <div class="customer-avatar">
+                👨
+              </div>
+
+              <div>
+
+                <strong>
+                  Raj Mehta
+                </strong>
+
+                <span>
+                  Customer
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="application-date">
+              Work closed
+            </div>
+
+          </div>
+
+          <div class="application-actions">
+
+            <a
+              href="worker-work-details.html"
+              class="action-btn">
+              View Details
+            </a>
+
+          </div>
+
+        </article>
+
+      </div>
+
+      <!-- EMPTY STATE -->
+
+      <div
+        class="empty-state"
+        id="emptyState">
+
+        <div class="empty-icon">
+          📋
+        </div>
+
+        <h2>
+          No applications found
+        </h2>
+
+        <p>
+          You don't have any applications in this section yet.
+        </p>
+
+        <a
+          href="workers.html"
+          class="find-work-btn">
+          Find Work
+        </a>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+    function filterApplications(status, clickedButton) {
+
+      const cards =
+        document.querySelectorAll(
+          ".application-card"
+        );
+
+      const tabs =
+        document.querySelectorAll(
+          ".application-tab"
+        );
+
+      const emptyState =
+        document.getElementById(
+          "emptyState"
+        );
+
+      let visibleCount = 0;
+
+      tabs.forEach(function(tab) {
+
+        tab.classList.remove("active");
+
+      });
+
+      clickedButton.classList.add("active");
+
+      cards.forEach(function(card) {
+
+        const cardStatus =
+          card.getAttribute("data-status");
+
+        let showCard = false;
+
+        if (status === "all") {
+
+          showCard = true;
+
+        } else if (status === "closed") {
+
+          showCard =
+            cardStatus === "closed";
+
+        } else {
+
+          showCard =
+            cardStatus === status;
+
+        }
+
+        if (showCard) {
+
+          card.style.display = "block";
+          visibleCount++;
+
+        } else {
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+      if (visibleCount === 0) {
+
+        emptyState.style.display =
+          "block";
+
+      } else {
+
+        emptyState.style.display =
+          "none";
+
+      }
+
+    }
+
+    function callCustomer(name) {
+
+      alert(
+        "Calling " +
+        name +
+        "...\n\nReal phone calling will be connected with the backend later."
+      );
+
+    }
+
+    function withdrawApplication(button) {
+
+      const confirmation =
+        confirm(
+          "Are you sure you want to withdraw this application?"
+        );
+
+      if (!confirmation) {
+        return;
+      }
+
+      const card =
+        button.closest(
+          ".application-card"
+        );
+
+      if (card) {
+
+        card.remove();
+
+        alert(
+          "Application withdrawn successfully."
+        );
+
+      }
+
+    }
+
+  </script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    WorkTodayAuth.requireLogin();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications - WorkToday</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7fb;
+      color: #172033;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .notification-page {
+      min-height: 100vh;
+      padding: 35px 20px 60px;
+    }
+
+    .notification-container {
+      max-width: 1050px;
+      margin: auto;
+    }
+
+    .page-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .page-title h1 {
+      margin: 0 0 7px;
+      font-size: 32px;
+    }
+
+    .page-title p {
+      margin: 0;
+      color: #697386;
+      font-size: 15px;
+    }
+
+    .mark-read-btn {
+      border: 0;
+      background: #e9f1ff;
+      color: #1261d6;
+      padding: 12px 17px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .mark-read-btn:hover {
+      background: #dbe9ff;
+    }
+
+    .notification-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: #fff;
+      border: 1px solid #e5e9f0;
+      padding: 8px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      border: 0;
+      background: transparent;
+      padding: 11px 18px;
+      border-radius: 9px;
+      cursor: pointer;
+      color: #596579;
+      font-weight: 700;
+    }
+
+    .tab-btn.active {
+      background: #1261d6;
+      color: white;
+    }
+
+    .notification-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .notification-card {
+      background: white;
+      border: 1px solid #e4e8ef;
+      border-radius: 15px;
+      padding: 17px;
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      position: relative;
+      transition: 0.2s;
+    }
+
+    .notification-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 18px rgba(20, 35, 70, 0.07);
+    }
+
+    .notification-card.unread {
+      background: #f8fbff;
+      border-color: #cfe0fb;
+    }
+
+    .notification-card.hidden {
+      display: none;
+    }
+
+    .notification-icon {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      background: #eaf2ff;
+    }
+
+    .notification-icon.work {
+      background: #eaf7ee;
+    }
+
+    .notification-icon.message {
+      background: #fff3df;
+    }
+
+    .notification-icon.accepted {
+      background: #e8f8ef;
+    }
+
+    .notification-icon.closed {
+      background: #ffecec;
+    }
+
+    .notification-icon.profile {
+      background: #f0eaff;
+    }
+
+    .notification-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .notification-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .notification-title {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.4;
+      color: #172033;
+    }
+
+    .notification-time {
+      color: #8a94a6;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .notification-text {
+      margin: 6px 0 12px;
+      color: #657084;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .notification-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .notification-action {
+      text-decoration: none;
+      border: 1px solid #dce2eb;
+      color: #1261d6;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      background: white;
+      cursor: pointer;
+    }
+
+    .notification-action:hover {
+      background: #f2f6ff;
+    }
+
+    .notification-action.primary {
+      background: #1261d6;
+      border-color: #1261d6;
+      color: white;
+    }
+
+    .unread-dot {
+      width: 9px;
+      height: 9px;
+      background: #1261d6;
+      border-radius: 50%;
+      position: absolute;
+      right: 17px;
+      bottom: 17px;
+    }
+
+    .empty-state {
+      background: white;
+      border: 1px solid #e4e8ef;
+      border-radius: 15px;
+      padding: 45px 20px;
+      text-align: center;
+      color: #697386;
+      display: none;
+    }
+
+    .empty-state .empty-icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 6px;
+      color: #172033;
+    }
+
+    .empty-state p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .quick-links {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .quick-link {
+      text-decoration: none;
+      background: white;
+      border: 1px solid #e4e8ef;
+      border-radius: 13px;
+      padding: 15px;
+      color: #172033;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .quick-link span {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 7px;
+    }
+
+    .quick-link small {
+      display: block;
+      color: #7a8495;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    @media (max-width: 800px) {
+      .notification-page {
+        padding: 25px 15px 45px;
+      }
+
+      .page-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .page-title h1 {
+        font-size: 27px;
+      }
+
+      .mark-read-btn {
+        width: 100%;
+      }
+
+      .quick-links {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .notification-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .tab-btn {
+        width: 100%;
+        padding: 10px 8px;
+      }
+
+      .notification-card {
+        padding: 14px;
+        gap: 11px;
+      }
+
+      .notification-icon {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        font-size: 19px;
+      }
+
+      .notification-title-row {
+        display: block;
+      }
+
+      .notification-time {
+        display: block;
+        margin-top: 4px;
+      }
+
+      .notification-text {
+        font-size: 13px;
+      }
+
+      .notification-actions {
+        width: 100%;
+      }
+
+      .notification-action {
+        flex: 1;
+        text-align: center;
+        min-width: 100px;
+      }
+
+      .unread-dot {
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .quick-links {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+
+      <a href="worker-dashboard.html" class="logo">
+        Work<span>Today</span>
+      </a>
+
+      <nav class="main-nav">
+        <a href="worker-dashboard.html">Dashboard</a>
+        <a href="workers.html">Find Work</a>
+        <a href="worker-applications.html">Applications</a>
+        <a href="worker-messages.html">Messages</a>
+        <a href="worker-notifications.html" class="active">Notifications</a>
+        <a href="worker-profile.html">Profile</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="notification-page">
+
+    <div class="notification-container">
+
+      <!-- Page heading -->
+      <div class="page-top">
+
+        <div class="page-title">
+          <h1>Notifications 🔔</h1>
+          <p>Stay updated about new work, applications and messages.</p>
+        </div>
+
+        <button class="mark-read-btn" onclick="markAllRead()">
+          ✓ Mark all as read
+        </button>
+
+      </div>
+
+      <!-- Tabs -->
+      <div class="notification-tabs">
+
+        <button class="tab-btn active" data-filter="all">
+          All
+        </button>
+
+        <button class="tab-btn" data-filter="unread">
+          Unread
+        </button>
+
+        <button class="tab-btn" data-filter="work">
+          Work
+        </button>
+
+        <button class="tab-btn" data-filter="message">
+          Messages
+        </button>
+
+      </div>
+
+      <!-- Notification list -->
+      <div class="notification-list" id="notificationList">
+
+        <!-- 1 -->
+        <div class="notification-card unread" data-type="work">
+
+          <div class="notification-icon work">
+            🔧
+          </div>
+
+          <div class="notification-content">
+
+            <div class="notification-title-row">
+              <h3 class="notification-title">
+                New nearby work is available
+              </h3>
+
+              <span class="notification-time">
+                2 min ago
+              </span>
+            </div>
+
+            <p class="notification-text">
+              An electrician work request has been posted near
+              CIDCO, Aurangabad. Customer needs help today.
+            </p>
+
+            <div class="notification-actions">
+              <a href="worker-work-details.html"
+                 class="notification-action primary">
+                View Work
+              </a>
+
+              <button class="notification-action"
+                      onclick="markRead(this)">
+                Mark read
+              </button>
+            </div>
+
+          </div>
+
+          <span class="unread-dot"></span>
+
+        </div>
+
+        <!-- 2 -->
+        <div class="notification-card unread" data-type="message">
+
+          <div class="notification-icon message">
+            💬
+          </div>
+
+          <div class="notification-content">
+
+            <div class="notification-title-row">
+              <h3 class="notification-title">
+                New message from customer
+              </h3>
+
+              <span class="notification-time">
+                15 min ago
+              </span>
+            </div>
+
+            <p class="notification-text">
+              Amit Sharma sent you a message about the
+              electrician work you applied for.
+            </p>
+
+            <div class="notification-actions">
+              <a href="worker-chat.html"
+                 class="notification-action primary">
+                Open Chat
+              </a>
+
+              <button class="notification-action"
+                      onclick="markRead(this)">
+                Mark read
+              </button>
+            </div>
+
+          </div>
+
+          <span class="unread-dot"></span>
+
+        </div>
+
+        <!-- 3 -->
+        <div class="notification-card unread" data-type="work">
+
+          <div class="notification-icon accepted">
+            ✅
+          </div>
+
+          <div class="notification-content">
+
+            <div class="notification-title-row">
+              <h3 class="notification-title">
+                Your application was accepted
+              </h3>
+
+              <span class="notification-time">
+                1 hour ago
+              </span>
+            </div>
+
+            <p class="notification-text">
+              The customer selected you for the requested
+              electrician work.
+            </p>
+
+            <div class="notification-actions">
+              <a href="worker-applications.html"
+                 class="notification-action primary">
+                View Application
+              </a>
+
+              <a href="worker-chat.html"
+                 class="notification-action">
+                Message Customer
+              </a>
+            </div>
+
+          </div>
+
+          <span class="unread-dot"></span>
+
+        </div>
+
+        <!-- 4 -->
+        <div class="notification-card" data-type="work">
+
+          <div class="notification-icon">
+            📍
+          </div>
+
+          <div class="notification-content">
+
+            <div class="notification-title-row">
+              <h3 class="notification-title">
+                More work near your area
+              </h3>
+
+              <span class="notification-time">
+                3 hours ago
+              </span>
+            </div>
+
+            <p class="notification-text">
+              4 new work requests were posted around
+              your selected service area.
+            </p>
+
+            <div class="notification-actions">
+              <a href="workers.html"
+                 class="notification-action primary">
+                Find Work
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- 5 -->
+        <div class="notification-card" data-type="message">
+
+          <div class="notification-icon message">
+            📞
+          </div>
+
+          <div class="notification-content">
+
+            <div class="notification-title-row">
+              <h3 class="notification-title">
+                Customer viewed your application
+              </h3>
+
+              <span class="notification-time">
+                Yesterday
+              </span>
+            </div>
+
+            <p class="notification-text">
+              A customer viewed your profile and application
+              for the plumbing work.
+            </p>
+
+            <div class="notification-actions">
+              <a href="worker-applications.html"
+                 class="notification-action">
+                View Application
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- 6 -->
+        <div class="notification-card" data-type="work">
+
+          <div class="notification-icon closed">
+            ✕
+          </div>
+
+          <div class="notification-content">
+
+            <div class="notification-title-row">
+              <h3 class="notification-title">
+                Work request was closed
+              </h3>
+
+              <span class="notification-time">
+                Yesterday
+              </span>
+            </div>
+
+            <p class="notification-text">
+              The customer marked the work as
+              “Worker Found”. New applications are no longer accepted.
+            </p>
+
+            <div class="notification-actions">
+              <a href="worker-applications.html"
+                 class="notification-action">
+                View History
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- 7 -->
+        <div class="notification-card" data-type="message">
+
+          <div class="notification-icon profile">
+            👤
+          </div>
+
+          <div class="notification-content">
+
+            <div class="notification-title-row">
+              <h3 class="notification-title">
+                Complete your worker profile
+              </h3>
+
+              <span class="notification-time">
+                2 days ago
+              </span>
+            </div>
+
+            <p class="notification-text">
+              Add your skills, experience, profile photo and
+              work preferences so customers can understand your services.
+            </p>
+
+            <div class="notification-actions">
+              <a href="worker-profile.html"
+                 class="notification-action primary">
+                Complete Profile
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="emptyState">
+
+        <div class="empty-icon">🔔</div>
+
+        <h3>No notifications</h3>
+
+        <p>
+          There are no notifications in this section right now.
+        </p>
+
+      </div>
+
+      <!-- Quick links -->
+      <div class="quick-links">
+
+        <a href="worker-dashboard.html" class="quick-link">
+          <span>🏠</span>
+          Dashboard
+          <small>Your work overview</small>
+        </a>
+
+        <a href="workers.html" class="quick-link">
+          <span>🔎</span>
+          Find Work
+          <small>See nearby jobs</small>
+        </a>
+
+        <a href="worker-applications.html" class="quick-link">
+          <span>📋</span>
+          Applications
+          <small>Track your applications</small>
+        </a>
+
+        <a href="worker-messages.html" class="quick-link">
+          <span>💬</span>
+          Messages
+          <small>Chat with customers</small>
+        </a>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+
+    const tabs = document.querySelectorAll(".tab-btn");
+    const cards = document.querySelectorAll(".notification-card");
+    const emptyState = document.getElementById("emptyState");
+
+    tabs.forEach(tab => {
+
+      tab.addEventListener("click", () => {
+
+        tabs.forEach(t => t.classList.remove("active"));
+
+        tab.classList.add("active");
+
+        const filter = tab.dataset.filter;
+
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+
+          const type = card.dataset.type;
+          const unread = card.classList.contains("unread");
+
+          let show = false;
+
+          if (filter === "all") {
+            show = true;
+          }
+
+          else if (filter === "unread") {
+            show = unread;
+          }
+
+          else if (filter === "work") {
+            show = type === "work";
+          }
+
+          else if (filter === "message") {
+            show = type === "message";
+          }
+
+          if (show) {
+            card.classList.remove("hidden");
+            visibleCount++;
+          } else {
+            card.classList.add("hidden");
+          }
+
+        });
+
+        if (visibleCount === 0) {
+          emptyState.style.display = "block";
+        } else {
+          emptyState.style.display = "none";
+        }
+
+      });
+
+    });
+
+    function markRead(button) {
+
+      const card = button.closest(".notification-card");
+
+      card.classList.remove("unread");
+
+      const dot = card.querySelector(".unread-dot");
+
+      if (dot) {
+        dot.remove();
+      }
+
+      button.textContent = "✓ Read";
+
+      button.disabled = true;
+
+      button.style.opacity = "0.6";
+
+    }
+
+    function markAllRead() {
+
+      cards.forEach(card => {
+
+        card.classList.remove("unread");
+
+        const dot = card.querySelector(".unread-dot");
+
+        if (dot) {
+          dot.remove();
+        }
+
+      });
+
+      alert("All notifications marked as read.");
+
+    }
+
+  </script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    WorkTodayAuth.requireLogin();
+});
+</script>
+</body>
+</html>

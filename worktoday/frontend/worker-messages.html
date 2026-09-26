@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Worker Messages - WorkToday</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .messages-page {
+      min-height: calc(100vh - 80px);
+      background: #f7f8fc;
+      padding: 40px 20px 70px;
+    }
+
+    .messages-container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .messages-heading {
+      margin-bottom: 22px;
+    }
+
+    .messages-heading h1 {
+      margin: 0 0 6px;
+      color: #111827;
+      font-size: 30px;
+    }
+
+    .messages-heading p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .messages-layout {
+      display: grid;
+      grid-template-columns: 350px minmax(0, 1fr);
+      min-height: 620px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 7px 25px rgba(15, 23, 42, 0.05);
+    }
+
+    /* LEFT */
+
+    .conversation-panel {
+      border-right: 1px solid #e5e7eb;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .conversation-header {
+      padding: 18px;
+      border-bottom: 1px solid #edf0f4;
+    }
+
+    .conversation-header h2 {
+      margin: 0 0 13px;
+      color: #111827;
+      font-size: 18px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #dbe1ea;
+      border-radius: 9px;
+      padding: 11px 12px 11px 36px;
+      outline: none;
+      font-size: 13px;
+      color: #374151;
+    }
+
+    .search-box input:focus {
+      border-color: #2563eb;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      font-size: 14px;
+      color: #9ca3af;
+    }
+
+    .conversation-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .conversation {
+      display: flex;
+      gap: 11px;
+      padding: 15px 17px;
+      border-bottom: 1px solid #f0f2f5;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .conversation:hover {
+      background: #f8fafc;
+    }
+
+    .conversation.active {
+      background: #eff6ff;
+    }
+
+    .conversation-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: #eef2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .conversation-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .conversation-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .conversation-name {
+      color: #111827;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .conversation-time {
+      color: #9ca3af;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .conversation-work {
+      color: #2563eb;
+      font-size: 10px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .conversation-message {
+      color: #6b7280;
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .unread-count {
+      background: #2563eb;
+      color: white;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    /* RIGHT CHAT */
+
+    .chat-panel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: #fbfcfe;
+    }
+
+    .chat-header {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .chat-user {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .chat-user-avatar {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      background: #eef2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+
+    .chat-user-info {
+      min-width: 0;
+    }
+
+    .chat-user-info h2 {
+      margin: 0 0 3px;
+      color: #111827;
+      font-size: 15px;
+    }
+
+    .online-status {
+      color: #16a34a;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .chat-header-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .header-action {
+      border: 1px solid #dbe3ef;
+      background: white;
+      color: #2563eb;
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .header-action.call {
+      color: #15803d;
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+    }
+
+    /* WORK INFO */
+
+    .chat-work-info {
+      margin: 15px 18px 0;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      border-radius: 11px;
+      padding: 11px 13px;
+    }
+
+    .chat-work-info strong {
+      display: block;
+      color: #1d4ed8;
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .chat-work-info span {
+      color: #64748b;
+      font-size: 10px;
+    }
+
+    /* CHAT BODY */
+
+    .chat-body {
+      flex: 1;
+      padding: 20px 18px;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .date-divider {
+      text-align: center;
+      margin: 5px 0 18px;
+    }
+
+    .date-divider span {
+      display: inline-block;
+      background: #e5e7eb;
+      color: #6b7280;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .message-row {
+      display: flex;
+      margin-bottom: 13px;
+    }
+
+    .message-row.received {
+      justify-content: flex-start;
+    }
+
+    .message-row.sent {
+      justify-content: flex-end;
+    }
+
+    .message-bubble {
+      max-width: 72%;
+      padding: 10px 13px;
+      border-radius: 13px;
+      font-size: 12px;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    .received .message-bubble {
+      background: white;
+      border: 1px solid #e5e7eb;
+      color: #374151;
+      border-bottom-left-radius: 4px;
+    }
+
+    .sent .message-bubble {
+      background: #2563eb;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message-time {
+      display: block;
+      margin-top: 4px;
+      font-size: 9px;
+      opacity: 0.65;
+      text-align: right;
+    }
+
+    /* INPUT */
+
+    .chat-input-area {
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      padding: 13px 15px;
+    }
+
+    .chat-input-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .attach-btn {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #dbe3ef;
+      background: white;
+      color: #64748b;
+      border-radius: 9px;
+      cursor: pointer;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .chat-input {
+      flex: 1;
+      min-width: 0;
+      min-height: 40px;
+      max-height: 100px;
+      resize: none;
+      border: 1px solid #dbe1ea;
+      border-radius: 9px;
+      padding: 10px 12px;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .chat-input:focus {
+      border-color: #2563eb;
+    }
+
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      border-radius: 9px;
+      cursor: pointer;
+      flex-shrink: 0;
+      font-size: 15px;
+    }
+
+    .send-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* EMPTY MOBILE */
+
+    .mobile-back {
+      display: none;
+      border: none;
+      background: transparent;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 12px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 800px) {
+      .messages-page {
+        padding: 28px 12px 55px;
+      }
+
+      .messages-layout {
+        display: block;
+        min-height: 650px;
+      }
+
+      .conversation-panel {
+        border-right: none;
+      }
+
+      .chat-panel {
+        display: none;
+        min-height: 650px;
+      }
+
+      .messages-layout.chat-open .conversation-panel {
+        display: none;
+      }
+
+      .messages-layout.chat-open .chat-panel {
+        display: flex;
+      }
+
+      .mobile-back {
+        display: block;
+      }
+
+      .messages-heading h1 {
+        font-size: 26px;
+      }
+
+      .conversation-list {
+        max-height: 570px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .chat-header {
+        padding: 12px;
+      }
+
+      .chat-header-actions .header-action {
+        padding: 8px;
+        font-size: 11px;
+      }
+
+      .chat-user-info h2 {
+        font-size: 14px;
+      }
+
+      .chat-work-info {
+        margin-left: 12px;
+        margin-right: 12px;
+      }
+
+      .chat-body {
+        padding: 16px 12px;
+      }
+
+      .message-bubble {
+        max-width: 82%;
+      }
+
+      .chat-input-area {
+        padding: 10px;
+      }
+
+      .conversation-header {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="site-header">
+
+    <div class="container">
+
+      <div class="nav-wrap">
+
+        <a href="index.html" class="logo">
+          WorkToday
+        </a>
+
+        <nav class="main-nav">
+
+          <a href="worker-dashboard.html">
+            Dashboard
+          </a>
+
+          <a href="workers.html">
+            Find Work
+          </a>
+
+          <a href="worker-applications.html">
+            Applications
+          </a>
+
+          <a href="worker-messages.html" class="active">
+            Messages
+          </a>
+
+          <a href="worker-notifications.html">
+            Notifications
+          </a>
+
+          <a href="worker-profile.html">
+            Profile
+          </a>
+
+        </nav>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- MAIN -->
+
+  <main class="messages-page">
+
+    <div class="messages-container">
+
+      <div class="messages-heading">
+
+        <h1>
+          Messages
+        </h1>
+
+        <p>
+          Chat with customers about their work requests.
+        </p>
+
+      </div>
+
+      <div
+        class="messages-layout"
+        id="messagesLayout">
+
+        <!-- LEFT CONVERSATIONS -->
+
+        <section class="conversation-panel">
+
+          <div class="conversation-header">
+
+            <h2>
+              Conversations
+            </h2>
+
+            <div class="search-box">
+
+              <span class="search-icon">
+                🔍
+              </span>
+
+              <input
+                type="text"
+                id="conversationSearch"
+                placeholder="Search conversations..."
+                oninput="searchConversations()">
+
+            </div>
+
+          </div>
+
+          <div
+            class="conversation-list"
+            id="conversationList">
+
+            <!-- CUSTOMER 1 -->
+
+            <div
+              class="conversation active"
+              data-name="Amit Sharma"
+              onclick="openConversation('Amit Sharma', 'Fan and Switch Repair', 'online')">
+
+              <div class="conversation-avatar">
+                👨
+              </div>
+
+              <div class="conversation-content">
+
+                <div class="conversation-top">
+
+                  <span class="conversation-name">
+                    Amit Sharma
+                  </span>
+
+                  <span class="conversation-time">
+                    2 min
+                  </span>
+
+                </div>
+
+                <div class="conversation-work">
+                  Fan and Switch Repair
+                </div>
+
+                <div class="conversation-message">
+                  Are you available today?
+                </div>
+
+                <span class="unread-count">
+                  2
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- CUSTOMER 2 -->
+
+            <div
+              class="conversation"
+              data-name="Priya Joshi"
+              onclick="openConversation('Priya Joshi', 'Home Wiring Check', 'online')">
+
+              <div class="conversation-avatar">
+                👩
+              </div>
+
+              <div class="conversation-content">
+
+                <div class="conversation-top">
+
+                  <span class="conversation-name">
+                    Priya Joshi
+                  </span>
+
+                  <span class="conversation-time">
+                    18 min
+                  </span>
+
+                </div>
+
+                <div class="conversation-work">
+                  Home Wiring Check
+                </div>
+
+                <div class="conversation-message">
+                  Thank you, see you at 4:30 PM.
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- CUSTOMER 3 -->
+
+            <div
+              class="conversation"
+              data-name="Sameer Khan"
+              onclick="openConversation('Sameer Khan', 'Water Motor Electrical Issue', 'offline')">
+
+              <div class="conversation-avatar">
+                👨
+              </div>
+
+              <div class="conversation-content">
+
+                <div class="conversation-top">
+
+                  <span class="conversation-name">
+                    Sameer Khan
+                  </span>
+
+                  <span class="conversation-time">
+                    1 hr
+                  </span>
+
+                </div>
+
+                <div class="conversation-work">
+                  Water Motor Electrical Issue
+                </div>
+
+                <div class="conversation-message">
+                  Please let me know your charges.
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- CUSTOMER 4 -->
+
+            <div
+              class="conversation"
+              data-name="Neha Deshmukh"
+              onclick="openConversation('Neha Deshmukh', 'Ceiling Light Installation', 'offline')">
+
+              <div class="conversation-avatar">
+                👩
+              </div>
+
+              <div class="conversation-content">
+
+                <div class="conversation-top">
+
+                  <span class="conversation-name">
+                    Neha Deshmukh
+                  </span>
+
+                  <span class="conversation-time">
+                    Yesterday
+                  </span>
+
+                </div>
+
+                <div class="conversation-work">
+                  Ceiling Light Installation
+                </div>
+
+                <div class="conversation-message">
+                  Work completed. Thank you!
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- CUSTOMER 5 -->
+
+            <div
+              class="conversation"
+              data-name="Raj Mehta"
+              onclick="openConversation('Raj Mehta', 'Bathroom Repair', 'offline')">
+
+              <div class="conversation-avatar">
+                👨
+              </div>
+
+              <div class="conversation-content">
+
+                <div class="conversation-top">
+
+                  <span class="conversation-name">
+                    Raj Mehta
+                  </span>
+
+                  <span class="conversation-time">
+                    Yesterday
+                  </span>
+
+                </div>
+
+                <div class="conversation-work">
+                  Bathroom Repair
+                </div>
+
+                <div class="conversation-message">
+                  The work is no longer required.
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- RIGHT CHAT -->
+
+        <section class="chat-panel">
+
+          <div class="chat-header">
+
+            <div class="chat-user">
+
+              <button
+                class="mobile-back"
+                onclick="closeChat()">
+                ← Back
+              </button>
+
+              <div class="chat-user-avatar">
+                👨
+              </div>
+
+              <div class="chat-user-info">
+
+                <h2 id="chatCustomerName">
+                  Amit Sharma
+                </h2>
+
+                <span
+                  class="online-status"
+                  id="chatOnlineStatus">
+                  ● Online
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="chat-header-actions">
+
+              <button
+                class="header-action"
+                onclick="viewCustomerProfile()">
+                Profile
+              </button>
+
+              <button
+                class="header-action call"
+                onclick="callCustomer()">
+                📞 Call
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- WORK -->
+
+          <div class="chat-work-info">
+
+            <strong id="chatWorkTitle">
+              ⚡ Fan and Switch Repair
+            </strong>
+
+            <span>
+              Customer conversation • WorkToday
+            </span>
+
+          </div>
+
+          <!-- CHAT -->
+
+          <div
+            class="chat-body"
+            id="chatBody">
+
+            <div class="date-divider">
+              <span>
+                Today
+              </span>
+            </div>
+
+            <div class="message-row received">
+
+              <div class="message-bubble">
+
+                Hello Rahul, I need help with my fan and switch.
+
+                <span class="message-time">
+                  3:42 PM
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="message-row sent">
+
+              <div class="message-bubble">
+
+                Hello Amit. Sure, please tell me what problem you are facing.
+
+                <span class="message-time">
+                  3:43 PM
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="message-row received">
+
+              <div class="message-bubble">
+
+                The fan is not working and one switch is also damaged.
+
+                <span class="message-time">
+                  3:45 PM
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="message-row sent">
+
+              <div class="message-bubble">
+
+                Okay. I can come today. What time would be convenient for you?
+
+                <span class="message-time">
+                  3:46 PM
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="message-row received">
+
+              <div class="message-bubble">
+
+                Are you available today?
+
+                <span class="message-time">
+                  3:48 PM
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- INPUT -->
+
+          <div class="chat-input-area">
+
+            <div class="chat-input-wrap">
+
+              <button
+                class="attach-btn"
+                onclick="attachFile()">
+                📎
+              </button>
+
+              <textarea
+                class="chat-input"
+                id="messageInput"
+                rows="1"
+                placeholder="Type a message..."
+                onkeydown="handleMessageKey(event)"></textarea>
+
+              <button
+                class="send-btn"
+                onclick="sendMessage()">
+                ➤
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+    function sendMessage() {
+
+      const input =
+        document.getElementById(
+          "messageInput"
+        );
+
+      const message =
+        input.value.trim();
+
+      if (!message) {
+        return;
+      }
+
+      const chatBody =
+        document.getElementById(
+          "chatBody"
+        );
+
+      const messageRow =
+        document.createElement(
+          "div"
+        );
+
+      messageRow.className =
+        "message-row sent";
+
+      const bubble =
+        document.createElement(
+          "div"
+        );
+
+      bubble.className =
+        "message-bubble";
+
+      const messageText =
+        document.createTextNode(
+          message
+        );
+
+      const time =
+        document.createElement(
+          "span"
+        );
+
+      time.className =
+        "message-time";
+
+      time.textContent =
+        "Just now";
+
+      bubble.appendChild(
+        messageText
+      );
+
+      bubble.appendChild(
+        time
+      );
+
+      messageRow.appendChild(
+        bubble
+      );
+
+      chatBody.appendChild(
+        messageRow
+      );
+
+      input.value = "";
+
+      chatBody.scrollTop =
+        chatBody.scrollHeight;
+
+    }
+
+    function handleMessageKey(event) {
+
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+      }
+
+    }
+
+    function openConversation(
+      name,
+      work,
+      status
+    ) {
+
+      document.getElementById(
+        "chatCustomerName"
+      ).textContent = name;
+
+      document.getElementById(
+        "chatWorkTitle"
+      ).textContent =
+        "⚡ " + work;
+
+      const onlineStatus =
+        document.getElementById(
+          "chatOnlineStatus"
+        );
+
+      if (status === "online") {
+
+        onlineStatus.textContent =
+          "● Online";
+
+        onlineStatus.style.color =
+          "#16a34a";
+
+      } else {
+
+        onlineStatus.textContent =
+          "● Offline";
+
+        onlineStatus.style.color =
+          "#9ca3af";
+
+      }
+
+      document
+        .querySelectorAll(".conversation")
+        .forEach(function(item) {
+
+          item.classList.remove(
+            "active"
+          );
+
+        });
+
+      event.currentTarget.classList.add(
+        "active"
+      );
+
+      document
+        .getElementById(
+          "messagesLayout"
+        )
+        .classList.add(
+          "chat-open"
+        );
+
+    }
+
+    function closeChat() {
+
+      document
+        .getElementById(
+          "messagesLayout"
+        )
+        .classList.remove(
+          "chat-open"
+        );
+
+    }
+
+    function searchConversations() {
+
+      const search =
+        document
+          .getElementById(
+            "conversationSearch"
+          )
+          .value
+          .toLowerCase()
+          .trim();
+
+      document
+        .querySelectorAll(
+          ".conversation"
+        )
+        .forEach(function(item) {
+
+          const name =
+            item
+              .getAttribute(
+                "data-name"
+              )
+              .toLowerCase();
+
+          if (
+            name.includes(search)
+          ) {
+
+            item.style.display =
+              "flex";
+
+          } else {
+
+            item.style.display =
+              "none";
+
+          }
+
+        });
+
+    }
+
+    function callCustomer() {
+
+      alert(
+        "Calling customer...\n\nReal calling will be connected with the backend later."
+      );
+
+    }
+
+    function viewCustomerProfile() {
+
+      alert(
+        "Customer profile will open here after the backend is connected."
+      );
+
+    }
+
+    function attachFile() {
+
+      alert(
+        "Photo/video attachment will be connected with WorkToday Storage later."
+      );
+
+    }
+
+  </script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    WorkTodayAuth.requireLogin();
+});
+</script>
+</body>
+</html>
