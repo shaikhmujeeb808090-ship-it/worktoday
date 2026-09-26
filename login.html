@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | WorkToday</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.14), transparent 32%),
+                radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.10), transparent 30%),
+                #f7f9fc;
+
+            color: #111827;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1100px;
+            min-height: 650px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 28px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 30px 80px rgba(15, 23, 42, 0.10),
+                0 8px 25px rgba(15, 23, 42, 0.05);
+        }
+
+        /* =========================
+           LEFT SIDE
+        ========================= */
+
+        .brand-side {
+            position: relative;
+            padding: 55px;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0f172a 0%,
+                    #172554 48%,
+                    #1d4ed8 100%
+                );
+
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand-side::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.07);
+
+            top: -120px;
+            right: -100px;
+        }
+
+        .brand-side::after {
+            content: "";
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+
+            border: 1px solid rgba(255,255,255,0.10);
+
+            bottom: -100px;
+            left: -80px;
+        }
+
+        .brand {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background: rgba(255,255,255,0.13);
+            border: 1px solid rgba(255,255,255,0.18);
+
+            font-size: 21px;
+        }
+
+        .hero {
+            position: relative;
+            z-index: 2;
+            max-width: 430px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 4vw, 54px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #93c5fd;
+        }
+
+        .hero p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.72);
+        }
+
+        .features {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-size: 14px;
+            color: rgba(255,255,255,0.82);
+        }
+
+        .check {
+            width: 26px;
+            height: 26px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.10);
+            color: #bfdbfe;
+
+            font-size: 13px;
+        }
+
+        /* =========================
+           RIGHT SIDE
+        ========================= */
+
+        .login-side {
+            padding: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 390px;
+        }
+
+        .mobile-logo {
+            display: none;
+        }
+
+        .login-heading {
+            margin-bottom: 32px;
+        }
+
+        .login-heading h2 {
+            font-size: 32px;
+            letter-spacing: -1px;
+            margin-bottom: 9px;
+        }
+
+        .login-heading p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+
+            font-size: 13px;
+            font-weight: 650;
+            color: #334155;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #94a3b8;
+            font-size: 16px;
+
+            pointer-events: none;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            height: 52px;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 13px;
+
+            background: #f8fafc;
+
+            padding: 0 15px 0 44px;
+
+            outline: none;
+
+            font-size: 15px;
+            color: #0f172a;
+
+            transition: 0.2s ease;
+        }
+
+        .input-wrap input:hover {
+            border-color: #cbd5e1;
+        }
+
+        .input-wrap input:focus {
+            background: white;
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 4px rgba(37, 99, 235, 0.10);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            border: none;
+            background: transparent;
+
+            color: #64748b;
+            cursor: pointer;
+
+            font-size: 13px;
+            padding: 8px;
+        }
+
+        .password-toggle:hover {
+            color: #2563eb;
+        }
+
+        .forgot-row {
+            display: flex;
+            justify-content: flex-end;
+
+            margin-top: -7px;
+            margin-bottom: 22px;
+        }
+
+        .forgot-row button {
+            border: none;
+            background: transparent;
+
+            color: #2563eb;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .forgot-row button:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           LOGIN BUTTON
+        ========================= */
+
+        .login-btn {
+            width: 100%;
+            height: 53px;
+
+            border: none;
+            border-radius: 13px;
+
+            background: #2563eb;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.15s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+
+            box-shadow:
+                0 10px 25px rgba(37,99,235,0.20);
+
+            transform: translateY(-1px);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* =========================
+           DIVIDER
+        ========================= */
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin: 25px 0;
+        }
+
+        .divider span {
+            height: 1px;
+            flex: 1;
+            background: #e2e8f0;
+        }
+
+        .divider p {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* =========================
+           SIGNUP
+        ========================= */
+
+        .signup-text {
+            text-align: center;
+
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .signup-text a {
+            color: #2563eb;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+
+        .secure-note {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+
+            margin-top: 27px;
+
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        /* =========================
+           STATUS MESSAGE
+        ========================= */
+
+        #loginMessage {
+            display: none;
+
+            padding: 12px 14px;
+            margin-bottom: 18px;
+
+            border-radius: 11px;
+
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        #loginMessage.error {
+            display: block;
+
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        #loginMessage.success {
+            display: block;
+
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            body {
+                padding: 0;
+                align-items: stretch;
+            }
+
+            .page {
+                min-height: 100vh;
+                border-radius: 0;
+                border: none;
+
+                display: block;
+
+                box-shadow: none;
+            }
+
+            .brand-side {
+                display: none;
+            }
+
+            .login-side {
+                min-height: 100vh;
+                padding: 32px 22px;
+
+                align-items: center;
+            }
+
+            .login-box {
+                max-width: 430px;
+            }
+
+            .mobile-logo {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 9px;
+
+                margin-bottom: 45px;
+
+                font-size: 23px;
+                font-weight: 800;
+                letter-spacing: -0.6px;
+
+                color: #0f172a;
+            }
+
+            .mobile-logo-icon {
+                width: 39px;
+                height: 39px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                border-radius: 12px;
+
+                background: #2563eb;
+                color: white;
+            }
+
+            .login-heading h2 {
+                font-size: 29px;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            .login-side {
+                padding: 25px 18px;
+            }
+
+            .mobile-logo {
+                margin-bottom: 35px;
+            }
+
+            .login-heading {
+                margin-bottom: 27px;
+            }
+
+            .input-wrap input,
+            .login-btn {
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- LEFT PREMIUM BRAND SECTION -->
+
+    <section class="brand-side">
+
+        <div class="brand">
+
+            <div class="logo">
+                <div class="logo-icon">W</div>
+                WorkToday
+            </div>
+
+        </div>
+
+        <div class="hero">
+
+            <h1>
+                Find work.<br>
+                Find workers.<br>
+                <span>Today.</span>
+            </h1>
+
+            <p>
+                WorkToday connects people who need work done
+                with skilled workers who are available today.
+            </p>
+
+        </div>
+
+        <div class="features">
+
+            <div class="feature">
+                <div class="check">✓</div>
+                Find nearby workers
+            </div>
+
+            <div class="feature">
+                <div class="check">✓</div>
+                Post urgent work in minutes
+            </div>
+
+            <div class="feature">
+                <div class="check">✓</div>
+                Connect directly and get the job done
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- LOGIN SECTION -->
+
+    <section class="login-side">
+
+        <div class="login-box">
+
+            <!-- Mobile Logo -->
+
+            <div class="mobile-logo">
+                <div class="mobile-logo-icon">W</div>
+                WorkToday
+            </div>
+
+            <div class="login-heading">
+
+                <h2>Welcome back</h2>
+
+                <p>
+                    Sign in to continue to your WorkToday account.
+                </p>
+
+            </div>
+
+            <div id="loginMessage"></div>
+
+            <form id="loginForm">
+
+                <!-- EMAIL -->
+
+                <div class="field">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <span class="input-icon">✉</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- PASSWORD -->
+
+                <div class="field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <span class="input-icon">🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="togglePassword"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- FORGOT -->
+
+                <div class="forgot-row">
+
+                    <button
+                        type="button"
+                        id="forgotPassword"
+                    >
+                        Forgot password?
+                    </button>
+
+                </div>
+
+                <!-- LOGIN -->
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    id="loginBtn"
+                >
+                    Sign in
+                </button>
+
+            </form>
+
+            <div class="divider">
+
+                <span></span>
+                <p>NEW TO WORKTODAY?</p>
+                <span></span>
+
+            </div>
+
+            <div class="signup-text">
+
+                Don't have an account?
+
+                <a href="signup.html">
+                    Create account
+                </a>
+
+            </div>
+
+            <div class="secure-note">
+
+                🔐 Secure account authentication
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/auth.js"></script>
+
+<script>
+
+    /* ============================
+       PASSWORD SHOW / HIDE
+    ============================ */
+
+    const passwordInput =
+        document.getElementById("password");
+
+    const togglePassword =
+        document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("click", function () {
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+            togglePassword.textContent = "Hide";
+
+        } else {
+
+            passwordInput.type = "password";
+            togglePassword.textContent = "Show";
+
+        }
+
+    });
+
+    /* ============================
+       MESSAGE HELPER
+    ============================ */
+
+    window.showLoginMessage = function (message, type = "error") {
+
+        const box =
+            document.getElementById("loginMessage");
+
+        box.textContent = message;
+
+        box.className = type;
+
+    };
+
+    /* ============================
+       FORGOT PASSWORD
+    ============================ */
+
+    const forgotPassword =
+        document.getElementById("forgotPassword");
+
+    forgotPassword.addEventListener("click", async function () {
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        if (!email) {
+
+            showLoginMessage(
+                "Pehle apna email address enter karo."
+            );
+
+            document.getElementById("email").focus();
+
+            return;
+        }
+
+        const client = window.supabaseClient;
+
+        if (!client) {
+
+            showLoginMessage(
+                "Supabase connection nahi mila. Page refresh karo."
+            );
+
+            return;
+        }
+
+        forgotPassword.disabled = true;
+        forgotPassword.textContent = "Sending...";
+
+        try {
+
+            const { error } =
+                await client.auth.resetPasswordForEmail(email, {
+
+                    redirectTo:
+                        window.location.origin +
+                        "/frontend/login.html"
+
+                });
+
+            if (error) {
+
+                showLoginMessage(error.message);
+
+            } else {
+
+                showLoginMessage(
+                    "Password reset link email par bhej diya gaya.",
+                    "success"
+                );
+
+            }
+
+        } catch (error) {
+
+            showLoginMessage(
+                "Request failed. Internet connection check karo."
+            );
+
+        } finally {
+
+            forgotPassword.disabled = false;
+            forgotPassword.textContent = "Forgot password?";
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Worker Chat - WorkToday</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .worker-chat-page {
+      min-height: calc(100vh - 80px);
+      background: #f7f8fc;
+      padding: 35px 20px 50px;
+    }
+
+    .worker-chat-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .chat-card {
+      height: 700px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 7px 25px rgba(15, 23, 42, 0.06);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+
+    .chat-top {
+      padding: 15px 18px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      background: white;
+    }
+
+    .customer-area {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .customer-photo {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #eef2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      flex-shrink: 0;
+    }
+
+    .customer-details {
+      min-width: 0;
+    }
+
+    .customer-details h1 {
+      margin: 0 0 3px;
+      color: #111827;
+      font-size: 16px;
+    }
+
+    .online {
+      color: #16a34a;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .offline {
+      color: #9ca3af;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .chat-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .top-btn {
+      border: 1px solid #dbe3ef;
+      background: white;
+      color: #2563eb;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .top-btn.call {
+      color: #15803d;
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+    }
+
+    /* WORK BAR */
+
+    .work-bar {
+      background: #eff6ff;
+      border-bottom: 1px solid #dbeafe;
+      padding: 11px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .work-bar-left {
+      min-width: 0;
+    }
+
+    .work-bar strong {
+      display: block;
+      color: #1d4ed8;
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .work-bar span {
+      color: #64748b;
+      font-size: 10px;
+    }
+
+    .view-work {
+      flex-shrink: 0;
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    /* CHAT BODY */
+
+    .chat-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 22px;
+      background: #f8fafc;
+    }
+
+    .date-divider {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .date-divider span {
+      background: #e2e8f0;
+      color: #64748b;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .message-row {
+      display: flex;
+      margin-bottom: 13px;
+    }
+
+    .message-row.received {
+      justify-content: flex-start;
+    }
+
+    .message-row.sent {
+      justify-content: flex-end;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 10px 13px;
+      border-radius: 13px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .received .message {
+      background: white;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+      border-bottom-left-radius: 4px;
+    }
+
+    .sent .message {
+      background: #2563eb;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message-time {
+      display: block;
+      text-align: right;
+      font-size: 9px;
+      opacity: 0.65;
+      margin-top: 4px;
+    }
+
+    /* INPUT */
+
+    .chat-input-area {
+      padding: 12px 15px;
+      border-top: 1px solid #e5e7eb;
+      background: white;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .attachment-btn,
+    .send-btn {
+      width: 41px;
+      height: 41px;
+      flex-shrink: 0;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .attachment-btn {
+      border: 1px solid #dbe3ef;
+      background: white;
+      color: #64748b;
+      font-size: 16px;
+    }
+
+    .send-btn {
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+    }
+
+    .send-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .message-input {
+      flex: 1;
+      min-width: 0;
+      min-height: 41px;
+      max-height: 110px;
+      resize: none;
+      box-sizing: border-box;
+      border: 1px solid #dbe1ea;
+      border-radius: 9px;
+      padding: 11px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .message-input:focus {
+      border-color: #2563eb;
+    }
+
+    .input-note {
+      color: #9ca3af;
+      font-size: 9px;
+      text-align: center;
+      margin-top: 7px;
+    }
+
+    /* SYSTEM MESSAGE */
+
+    .system-message {
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    .system-message span {
+      display: inline-block;
+      background: #fff7ed;
+      color: #9a3412;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 8px 11px;
+      font-size: 10px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+      .worker-chat-page {
+        padding: 20px 10px 35px;
+      }
+
+      .chat-card {
+        height: calc(100vh - 115px);
+        min-height: 580px;
+        border-radius: 14px;
+      }
+
+      .chat-top {
+        padding: 12px;
+      }
+
+      .customer-photo {
+        width: 41px;
+        height: 41px;
+      }
+
+      .customer-details h1 {
+        font-size: 14px;
+      }
+
+      .chat-actions .top-btn {
+        padding: 8px;
+        font-size: 11px;
+      }
+
+      .work-bar {
+        padding: 10px 12px;
+      }
+
+      .chat-body {
+        padding: 16px 12px;
+      }
+
+      .message {
+        max-width: 82%;
+      }
+
+      .chat-input-area {
+        padding: 10px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .chat-actions .top-btn:first-child {
+        display: none;
+      }
+
+      .work-bar {
+        align-items: flex-start;
+      }
+
+      .view-work {
+        margin-top: 2px;
+      }
+
+      .input-note {
+        font-size: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="site-header">
+
+    <div class="container">
+
+      <div class="nav-wrap">
+
+        <a href="index.html" class="logo">
+          WorkToday
+        </a>
+
+        <nav class="main-nav">
+
+          <a href="worker-dashboard.html">
+            Dashboard
+          </a>
+
+          <a href="workers.html">
+            Find Work
+          </a>
+
+          <a href="worker-applications.html">
+            Applications
+          </a>
+
+          <a href="worker-messages.html" class="active">
+            Messages
+          </a>
+
+          <a href="worker-notifications.html">
+            Notifications
+          </a>
+
+          <a href="worker-profile.html">
+            Profile
+          </a>
+
+        </nav>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- CHAT -->
+
+  <main class="worker-chat-page">
+
+    <div class="worker-chat-container">
+
+      <a
+        href="worker-messages.html"
+        class="back-link">
+        ← Back to Messages
+      </a>
+
+      <div class="chat-card">
+
+        <!-- CHAT HEADER -->
+
+        <div class="chat-top">
+
+          <div class="customer-area">
+
+            <div class="customer-photo">
+              👨
+            </div>
+
+            <div class="customer-details">
+
+              <h1>
+                Amit Sharma
+              </h1>
+
+              <span class="online">
+                ● Online
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="chat-actions">
+
+            <button
+              class="top-btn"
+              onclick="viewCustomer()">
+              Profile
+            </button>
+
+            <button
+              class="top-btn call"
+              onclick="callCustomer()">
+              📞 Call
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- WORK INFORMATION -->
+
+        <div class="work-bar">
+
+          <div class="work-bar-left">
+
+            <strong>
+              ⚡ Fan and Switch Repair
+            </strong>
+
+            <span>
+              📍 CIDCO, Aurangabad • Today • 2:00 PM
+            </span>
+
+          </div>
+
+          <a
+            href="worker-work-details.html"
+            class="view-work">
+            View Work →
+          </a>
+
+        </div>
+
+        <!-- MESSAGES -->
+
+        <div
+          class="chat-body"
+          id="chatBody">
+
+          <div class="date-divider">
+
+            <span>
+              Today
+            </span>
+
+          </div>
+
+          <!-- CUSTOMER -->
+
+          <div class="message-row received">
+
+            <div class="message">
+
+              Hello Rahul, I need help with my fan and switch.
+
+              <span class="message-time">
+                3:42 PM
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- WORKER -->
+
+          <div class="message-row sent">
+
+            <div class="message">
+
+              Hello Amit. Sure, please tell me what problem you are facing.
+
+              <span class="message-time">
+                3:43 PM
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- CUSTOMER -->
+
+          <div class="message-row received">
+
+            <div class="message">
+
+              The fan is not working and one switch is damaged.
+
+              <span class="message-time">
+                3:45 PM
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- WORKER -->
+
+          <div class="message-row sent">
+
+            <div class="message">
+
+              Okay. I can come today. What time would be convenient for you?
+
+              <span class="message-time">
+                3:46 PM
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- CUSTOMER -->
+
+          <div class="message-row received">
+
+            <div class="message">
+
+              Are you available around 2 PM?
+
+              <span class="message-time">
+                3:48 PM
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- WORKER -->
+
+          <div class="message-row sent">
+
+            <div class="message">
+
+              Yes, 2 PM works for me. I will reach the location on time.
+
+              <span class="message-time">
+                3:49 PM
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- CUSTOMER -->
+
+          <div class="message-row received">
+
+            <div class="message">
+
+              Great. I will share the exact address here.
+
+              <span class="message-time">
+                3:50 PM
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- SAFETY SYSTEM MESSAGE -->
+
+          <div class="system-message">
+
+            <span>
+              🔒 Keep payments and communication safe. Never share OTPs or passwords.
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- MESSAGE INPUT -->
+
+        <div class="chat-input-area">
+
+          <div class="input-row">
+
+            <button
+              class="attachment-btn"
+              onclick="attachFile()">
+              📎
+            </button>
+
+            <textarea
+              id="messageInput"
+              class="message-input"
+              rows="1"
+              placeholder="Type a message..."
+              onkeydown="handleKey(event)"></textarea>
+
+            <button
+              class="send-btn"
+              onclick="sendMessage()">
+              ➤
+            </button>
+
+          </div>
+
+          <div class="input-note">
+            WorkToday chat • Messages are intended for this work request.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+
+    /* SEND MESSAGE */
+
+    function sendMessage() {
+
+      const input =
+        document.getElementById(
+          "messageInput"
+        );
+
+      const text =
+        input.value.trim();
+
+      if (!text) {
+        return;
+      }
+
+      const chatBody =
+        document.getElementById(
+          "chatBody"
+        );
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "message-row sent";
+
+      const message =
+        document.createElement(
+          "div"
+        );
+
+      message.className =
+        "message";
+
+      const textNode =
+        document.createTextNode(
+          text
+        );
+
+      message.appendChild(
+        textNode
+      );
+
+      const time =
+        document.createElement(
+          "span"
+        );
+
+      time.className =
+        "message-time";
+
+      time.textContent =
+        "Just now";
+
+      message.appendChild(
+        time
+      );
+
+      row.appendChild(
+        message
+      );
+
+      chatBody.appendChild(
+        row
+      );
+
+      input.value = "";
+
+      chatBody.scrollTop =
+        chatBody.scrollHeight;
+
+    }
+
+    /* ENTER TO SEND */
+
+    function handleKey(event) {
+
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+      }
+
+    }
+
+    /* ATTACHMENT */
+
+    function attachFile() {
+
+      alert(
+        "Photo/video attachment will be connected with WorkToday Storage when the backend is added."
+      );
+
+    }
+
+    /* CALL */
+
+    function callCustomer() {
+
+      alert(
+        "Calling Amit Sharma...\n\nReal phone calling will be connected with the backend later."
+      );
+
+    }
+
+    /* CUSTOMER PROFILE */
+
+    function viewCustomer() {
+
+      alert(
+        "Customer profile will be connected with the backend later."
+      );
+
+    }
+
+    /* OPEN CHAT AT BOTTOM */
+
+    window.addEventListener(
+      "load",
+      function() {
+
+        const chatBody =
+          document.getElementById(
+            "chatBody"
+          );
+
+        chatBody.scrollTop =
+          chatBody.scrollHeight;
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

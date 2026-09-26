@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | WorkToday</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --blue: #1677ff;
+      --blue-dark: #075dcc;
+      --text: #102033;
+      --muted: #68778a;
+      --border: #e4eaf1;
+      --bg: #f7faff;
+      --white: #ffffff;
+      --danger: #dc3545;
+      --success: #14804a;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(22,119,255,.09), transparent 28%),
+        radial-gradient(circle at 90% 90%, rgba(22,119,255,.07), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      height: 74px;
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(228,234,241,.9);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 23px;
+      letter-spacing: -.7px;
+    }
+
+    .brand-icon {
+      width: 39px;
+      height: 39px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1684ff, #075dcc);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 21px;
+      box-shadow: 0 8px 22px rgba(22,119,255,.22);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .login-btn {
+      text-decoration: none;
+      color: var(--blue);
+      font-weight: 700;
+      padding: 11px 17px;
+      border: 1px solid #d8e6f8;
+      border-radius: 11px;
+      background: #f7fbff;
+    }
+
+    /* PAGE */
+    .page {
+      width: min(1080px, 92%);
+      margin: 46px auto 70px;
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    /* LEFT */
+    .intro {
+      padding: 20px 10px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #eaf4ff;
+      color: #0767d8;
+      border: 1px solid #d7eaff;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 19px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      background: #18a566;
+      border-radius: 50%;
+    }
+
+    .intro h1 {
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.04;
+      letter-spacing: -2px;
+      margin-bottom: 18px;
+    }
+
+    .intro h1 span {
+      color: var(--blue);
+    }
+
+    .intro p {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 27px;
+    }
+
+    .benefits {
+      display: grid;
+      gap: 13px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .benefit-icon {
+      width: 37px;
+      height: 37px;
+      flex: 0 0 37px;
+      border-radius: 11px;
+      background: white;
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+    }
+
+    /* CARD */
+    .card {
+      background: rgba(255,255,255,.96);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      padding: 31px;
+      box-shadow: 0 20px 60px rgba(30,64,100,.10);
+    }
+
+    .card-head {
+      margin-bottom: 25px;
+    }
+
+    .card-head h2 {
+      font-size: 27px;
+      letter-spacing: -.8px;
+      margin-bottom: 7px;
+    }
+
+    .card-head p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ROLE */
+    .role-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .roles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+      margin-bottom: 22px;
+    }
+
+    .role-option {
+      position: relative;
+    }
+
+    .role-option input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .role-label {
+      display: block;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: .2s ease;
+      height: 100%;
+    }
+
+    .role-label:hover {
+      border-color: #a9cdf7;
+      background: #f8fbff;
+    }
+
+    .role-option input:checked + .role-label {
+      border-color: var(--blue);
+      background: #edf6ff;
+      box-shadow: 0 0 0 3px rgba(22,119,255,.08);
+    }
+
+    .role-icon {
+      font-size: 20px;
+      margin-bottom: 7px;
+    }
+
+    .role-label strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .role-label small {
+      color: var(--muted);
+      line-height: 1.4;
+      font-size: 11px;
+    }
+
+    /* FORM */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .field {
+      margin-bottom: 2px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0 14px;
+      background: #fbfcfe;
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      transition: .2s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--blue);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(22,119,255,.09);
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 60px;
+    }
+
+    .show-password {
+      position: absolute;
+      right: 9px;
+      top: 8px;
+      height: 32px;
+      padding: 0 9px;
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .terms {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      margin: 19px 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .terms input {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+      margin-top: 1px;
+    }
+
+    .terms a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 51px;
+      border: 0;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #1684ff, #075dcc);
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(22,119,255,.23);
+      transition: .2s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(22,119,255,.28);
+    }
+
+    .submit-btn:disabled {
+      opacity: .65;
+      cursor: wait;
+      transform: none;
+    }
+
+    .message {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 13px;
+      border-radius: 11px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .message.error {
+      display: block;
+      color: var(--danger);
+      background: #fff1f2;
+      border: 1px solid #ffd4d8;
+    }
+
+    .message.success {
+      display: block;
+      color: var(--success);
+      background: #effcf5;
+      border: 1px solid #c9f0da;
+    }
+
+    .bottom-login {
+      text-align: center;
+      margin-top: 19px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .bottom-login a {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .security {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      align-items: center;
+      margin-top: 17px;
+      color: #8290a0;
+      font-size: 11px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 820px) {
+      .navbar {
+        height: 66px;
+        padding: 0 4%;
+      }
+
+      .brand {
+        font-size: 19px;
+      }
+
+      .brand-icon {
+        width: 35px;
+        height: 35px;
+        border-radius: 10px;
+      }
+
+      .nav-right span {
+        display: none;
+      }
+
+      .page {
+        grid-template-columns: 1fr;
+        width: min(620px, 92%);
+        margin-top: 25px;
+      }
+
+      .intro {
+        padding: 4px;
+        text-align: center;
+      }
+
+      .intro p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .benefits {
+        text-align: left;
+        max-width: 390px;
+        margin: auto;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: 94%;
+        margin-bottom: 35px;
+      }
+
+      .intro h1 {
+        font-size: 36px;
+      }
+
+      .card {
+        padding: 21px 17px;
+        border-radius: 20px;
+      }
+
+      .card-head h2 {
+        font-size: 24px;
+      }
+
+      .roles {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="brand">
+      <span class="brand-icon">⚡</span>
+      WorkToday
+    </a>
+
+    <div class="nav-right">
+      <span>Already have an account?</span>
+      <a href="login.html" class="login-btn">Log in</a>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <section class="intro">
+      <div class="eyebrow">
+        <span class="dot"></span>
+        Join WorkToday
+      </div>
+
+      <h1>
+        Work today.<br>
+        <span>Grow tomorrow.</span>
+      </h1>
+
+      <p>
+        Create one WorkToday account and use the platform for everything —
+        posting work, finding work, finding workers and managing your jobs.
+      </p>
+
+      <div class="benefits">
+        <div class="benefit">
+          <span class="benefit-icon">⚡</span>
+          <span>Find urgent work available today</span>
+        </div>
+
+        <div class="benefit">
+          <span class="benefit-icon">👷</span>
+          <span>Connect with workers in your city</span>
+        </div>
+
+        <div class="benefit">
+          <span class="benefit-icon">💬</span>
+          <span>Message and contact people directly</span>
+        </div>
+
+        <div class="benefit">
+          <span class="benefit-icon">🔒</span>
+          <span>Your account and profile stay protected</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+
+      <div class="card-head">
+        <h2>Create your account</h2>
+        <p>One account. Everything you need on WorkToday.</p>
+      </div>
+
+      <form id="signupForm">
+
+        <div class="role-title">What do you want to do?</div>
+
+        <div class="roles">
+
+          <div class="role-option">
+            <input
+              type="radio"
+              id="customerRole"
+              name="role"
+              value="customer"
+              checked
+            >
+
+            <label class="role-label" for="customerRole">
+              <div class="role-icon">🏠</div>
+              <strong>Hire a Worker</strong>
+              <small>Post work and find workers</small>
+            </label>
+          </div>
+
+          <div class="role-option">
+            <input
+              type="radio"
+              id="workerRole"
+              name="role"
+              value="worker"
+            >
+
+            <label class="role-label" for="workerRole">
+              <div class="role-icon">🛠️</div>
+              <strong>Find Work</strong>
+              <small>Find available work and apply</small>
+            </label>
+          </div>
+
+        </div>
+
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="fullName">Full name</label>
+            <input
+              id="fullName"
+              type="text"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="phone">Mobile number</label>
+            <input
+              id="phone"
+              type="tel"
+              placeholder="10-digit mobile number"
+              maxlength="10"
+              inputmode="numeric"
+              autocomplete="tel"
+              required
+            >
+          </div>
+
+          <div class="field full">
+            <label for="email">Email address</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="city">City</label>
+            <select id="city" required>
+              <option value="">Select your city</option>
+              <option value="Aurangabad">Aurangabad</option>
+              <option value="Pune">Pune</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Nagpur">Nagpur</option>
+              <option value="Nashik">Nashik</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Bengaluru">Bengaluru</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+
+            <div class="password-wrap">
+              <input
+                id="password"
+                type="password"
+                placeholder="Minimum 6 characters"
+                minlength="6"
+                autocomplete="new-password"
+                required
+              >
+
+              <button
+                type="button"
+                class="show-password"
+                id="showPassword"
+              >
+                Show
+              </button>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label for="confirmPassword">Confirm password</label>
+
+            <div class="password-wrap">
+              <input
+                id="confirmPassword"
+                type="password"
+                placeholder="Enter password again"
+                minlength="6"
+                autocomplete="new-password"
+                required
+              >
+            </div>
+          </div>
+
+        </div>
+
+        <label class="terms">
+          <input type="checkbox" id="terms" required>
+          <span>
+            I agree to the WorkToday
+            <a href="#" onclick="return false;">Terms</a>
+            and
+            <a href="#" onclick="return false;">Privacy Policy</a>.
+          </span>
+        </label>
+
+        <button type="submit" class="submit-btn" id="createBtn">
+          Create WorkToday Account
+        </button>
+
+        <div id="message" class="message"></div>
+
+        <div class="bottom-login">
+          Already have an account?
+          <a href="login.html">Log in</a>
+        </div>
+
+        <div class="security">
+          🔒 Secure account creation with Supabase
+        </div>
+
+      </form>
+
+    </section>
+
+  </main>
+
+  <!-- IMPORTANT: Supabase first -->
+  <script src="supabase.js"></script>
+  <script src="auth.js"></script>
+
+  <script>
+    const form = document.getElementById("signupForm");
+    const message = document.getElementById("message");
+    const createBtn = document.getElementById("createBtn");
+
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+
+    const showPassword = document.getElementById("showPassword");
+
+    showPassword.addEventListener("click", function () {
+      const type =
+        password.type === "password" ? "text" : "password";
+
+      password.type = type;
+      confirmPassword.type = type;
+
+      this.textContent =
+        type === "password" ? "Show" : "Hide";
+    });
+
+    function showMessage(text, type) {
+      message.className = "message " + type;
+      message.textContent = text;
+    }
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      message.className = "message";
+      message.textContent = "";
+
+      const fullName =
+        document.getElementById("fullName").value.trim();
+
+      const email =
+        document.getElementById("email").value.trim().toLowerCase();
+
+      const phone =
+        document.getElementById("phone").value.trim();
+
+      const city =
+        document.getElementById("city").value;
+
+      const role =
+        document.querySelector('input[name="role"]:checked').value;
+
+      const pass = password.value;
+      const confirm = confirmPassword.value;
+
+      if (!/^[0-9]{10}$/.test(phone)) {
+        showMessage(
+          "Please enter a valid 10-digit mobile number.",
+          "error"
+        );
+        return;
+      }
+
+      if (pass.length < 6) {
+        showMessage(
+          "Password must contain at least 6 characters.",
+          "error"
+        );
+        return;
+      }
+
+      if (pass !== confirm) {
+        showMessage(
+          "Passwords do not match.",
+          "error"
+        );
+        return;
+      }
+
+      if (
+        !window.supabaseClient ||
+        typeof window.supabaseClient.auth?.signUp !== "function"
+      ) {
+        showMessage(
+          "Supabase connection is not ready. Check supabase.js.",
+          "error"
+        );
+        return;
+      }
+
+      createBtn.disabled = true;
+      createBtn.textContent = "Creating account...";
+
+      try {
+        const { data, error } =
+          await window.supabaseClient.auth.signUp({
+            email: email,
+            password: pass,
+            options: {
+              data: {
+                full_name: fullName,
+                phone: phone,
+                city: city,
+                role: role
+              }
+            }
+          });
+
+        if (error) {
+          throw error;
+        }
+
+        showMessage(
+          "Account created successfully. Please check your email if verification is required.",
+          "success"
+        );
+
+        form.reset();
+
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1800);
+
+      } catch (error) {
+
+        console.error("Signup error:", error);
+
+        showMessage(
+          error.message || "Account could not be created.",
+          "error"
+        );
+
+        createBtn.disabled = false;
+        createBtn.textContent = "Create WorkToday Account";
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>WorkToday — Find Work. Get Work. Today.</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    :root {
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f8fafc;
+      --white: #ffffff;
+      --green: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background: #fff;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* HEADER */
+
+    .wt-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(226,232,240,.8);
+    }
+
+    .wt-nav {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .wt-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .wt-logo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg,#2563eb,#0ea5e9);
+      box-shadow: 0 8px 20px rgba(37,99,235,.22);
+    }
+
+    .wt-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 27px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .wt-nav-links a:hover {
+      color: var(--blue);
+    }
+
+    .wt-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wt-login {
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .wt-start {
+      border: 0;
+      background: var(--blue);
+      color: white;
+      padding: 12px 19px;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(37,99,235,.2);
+    }
+
+    .wt-start:hover {
+      background: var(--blue-dark);
+    }
+
+    /* HERO */
+
+    .wt-hero {
+      background:
+        radial-gradient(circle at 82% 25%, rgba(37,99,235,.10), transparent 28%),
+        linear-gradient(180deg,#f8fbff 0%,#ffffff 100%);
+      padding: 78px 0 65px;
+    }
+
+    .wt-hero-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .wt-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #dbeafe;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .wt-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .wt-hero h1 {
+      margin: 0;
+      max-width: 650px;
+      font-size: clamp(42px,6vw,70px);
+      line-height: .98;
+      letter-spacing: -3px;
+      font-weight: 950;
+    }
+
+    .wt-hero h1 span {
+      color: var(--blue);
+    }
+
+    .wt-hero p {
+      max-width: 590px;
+      margin: 24px 0 28px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .wt-hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .wt-primary,
+    .wt-secondary {
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .wt-primary {
+      background: var(--blue);
+      color: white;
+      border: 1px solid var(--blue);
+    }
+
+    .wt-primary:hover {
+      background: var(--blue-dark);
+    }
+
+    .wt-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .wt-secondary:hover {
+      border-color: #94a3b8;
+    }
+
+    /* LIVE CARD */
+
+    .wt-live-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 25px;
+      padding: 18px;
+      box-shadow: 0 25px 70px rgba(15,23,42,.10);
+    }
+
+    .wt-live-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 5px 15px;
+      color: #475569;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .wt-live {
+      color: #15803d;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .wt-live::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .wt-location {
+      color: #64748b;
+    }
+
+    .wt-job {
+      border: 1px solid #e5e7eb;
+      border-radius: 17px;
+      padding: 18px;
+      margin-top: 11px;
+      background: #fff;
+    }
+
+    .wt-job h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .wt-job p {
+      margin: 0 0 14px;
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .wt-job-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .wt-job-meta span {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 7px 9px;
+    }
+
+    /* STATS */
+
+    .wt-stats {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      transform: translateY(-1px);
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 12px 35px rgba(15,23,42,.05);
+    }
+
+    .wt-stat {
+      padding: 24px;
+      text-align: center;
+      border-right: 1px solid var(--line);
+    }
+
+    .wt-stat:last-child {
+      border-right: 0;
+    }
+
+    .wt-stat strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .wt-stat span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* SECTION */
+
+    .wt-section {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      padding: 82px 0;
+    }
+
+    .wt-section-head {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto 34px;
+    }
+
+    .wt-section-label {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .wt-section h2 {
+      margin: 9px 0;
+      font-size: clamp(29px,4vw,42px);
+      letter-spacing: -1.5px;
+    }
+
+    .wt-section-head p {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* QUICK ACTIONS */
+
+    .wt-actions {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 15px;
+    }
+
+    .wt-action {
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      padding: 22px;
+      background: white;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .wt-action:hover {
+      transform: translateY(-3px);
+      border-color: #bfdbfe;
+      box-shadow: 0 15px 30px rgba(15,23,42,.07);
+    }
+
+    .wt-action-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #eff6ff;
+      margin-bottom: 17px;
+      font-size: 19px;
+    }
+
+    .wt-action h3 {
+      margin: 0 0 7px;
+      font-size: 16px;
+    }
+
+    .wt-action p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* CATEGORIES */
+
+    .wt-categories {
+      display: grid;
+      grid-template-columns: repeat(5,1fr);
+      gap: 10px;
+    }
+
+    .wt-category {
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 12px;
+      padding: 15px 12px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .wt-category:hover {
+      background: #f8fbff;
+      border-color: #bfdbfe;
+      color: var(--blue);
+    }
+
+    /* HOW */
+
+    .wt-how {
+      background: #0f172a;
+      color: white;
+      width: 100%;
+    }
+
+    .wt-how-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      padding: 80px 0;
+    }
+
+    .wt-how .wt-section-label {
+      color: #60a5fa;
+    }
+
+    .wt-how h2 {
+      margin-top: 9px;
+    }
+
+    .wt-how-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 16px;
+      margin-top: 35px;
+    }
+
+    .wt-step {
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.05);
+      border-radius: 18px;
+      padding: 25px;
+    }
+
+    .wt-step-number {
+      color: #60a5fa;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 25px;
+    }
+
+    .wt-step h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .wt-step p {
+      margin: 0;
+      color: #94a3b8;
+      line-height: 1.6;
+      font-size: 13px;
+    }
+
+    /* FOOTER */
+
+    .wt-footer {
+      padding: 30px 16px;
+      text-align: center;
+      color: #64748b;
+      font-size: 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 900px) {
+      .wt-nav-links {
+        display: none;
+      }
+
+      .wt-hero-inner {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+
+      .wt-actions {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .wt-categories {
+        grid-template-columns: repeat(3,1fr);
+      }
+
+      .wt-how-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .wt-nav {
+        min-height: 64px;
+      }
+
+      .wt-logo {
+        font-size: 19px;
+      }
+
+      .wt-logo-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .wt-login {
+        display: none;
+      }
+
+      .wt-start {
+        padding: 10px 13px;
+      }
+
+      .wt-hero {
+        padding: 52px 0 45px;
+      }
+
+      .wt-hero h1 {
+        font-size: 43px;
+        letter-spacing: -2px;
+      }
+
+      .wt-hero p {
+        font-size: 15px;
+      }
+
+      .wt-hero-buttons {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .wt-primary,
+      .wt-secondary {
+        width: 100%;
+      }
+
+      .wt-stats {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .wt-stat {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .wt-stat:nth-child(2) {
+        border-right: 0;
+      }
+
+      .wt-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .wt-categories {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .wt-section {
+        padding: 60px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="wt-header">
+    <div class="wt-nav">
+
+      <a href="index.html" class="wt-logo">
+        <span class="wt-logo-icon">⚡</span>
+        <span>WorkToday</span>
+      </a>
+
+      <nav class="wt-nav-links">
+        <a href="#home">Home</a>
+        <a href="#actions">Find Work</a>
+        <a href="#categories">Categories</a>
+        <a href="#how">How It Works</a>
+      </nav>
+
+      <div class="wt-nav-actions">
+        <a href="login.html" class="wt-login">
+          Log in
+        </a>
+
+        <button class="wt-start" data-action="signup">
+          Get Started
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- HERO -->
+
+  <main id="home">
+
+    <section class="wt-hero">
+
+      <div class="wt-hero-inner">
+
+        <div>
+
+          <div class="wt-eyebrow">
+            <span class="wt-dot"></span>
+            Available for urgent work today
+          </div>
+
+          <h1>
+            Aaj Ka Kaam.
+            <span>Aaj Hi Worker.</span>
+          </h1>
+
+          <p>
+            WorkToday connects people who need work with
+            skilled workers who are available today.
+            Find the right person, connect directly and
+            get the work done.
+          </p>
+
+          <div class="wt-hero-buttons">
+
+            <button
+              class="wt-primary"
+              data-action="post">
+              + Post Urgent Work
+            </button>
+
+            <button
+              class="wt-secondary"
+              data-action="workers">
+              Find a Worker →
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- DEMO WORK -->
+
+        <div class="wt-live-card">
+
+          <div class="wt-live-head">
+
+            <span class="wt-live">
+              LIVE WORK
+            </span>
+
+            <span class="wt-location">
+              📍 Aurangabad
+            </span>
+
+          </div>
+
+          <div class="wt-job">
+
+            <h3>
+              Need Electrician Today
+            </h3>
+
+            <p>
+              Need someone to fix a switchboard
+              and check electrical points at home.
+            </p>
+
+            <div class="wt-job-meta">
+              <span>⚡ Electrician</span>
+              <span>📍 Today</span>
+              <span>🟢 Available</span>
+            </div>
+
+          </div>
+
+          <div class="wt-job">
+
+            <h3>
+              Loading / Unloading Helper
+            </h3>
+
+            <p>
+              Workers required for loading household
+              items. Work available immediately.
+            </p>
+
+            <div class="wt-job-meta">
+              <span>💪 Labour</span>
+              <span>📍 Today</span>
+              <span>🟢 Urgent</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- STATS -->
+
+    <div class="wt-stats">
+
+      <div class="wt-stat">
+        <strong>Today</strong>
+        <span>Focus on urgent work</span>
+      </div>
+
+      <div class="wt-stat">
+        <strong>20+</strong>
+        <span>Work categories</span>
+      </div>
+
+      <div class="wt-stat">
+        <strong>24/7</strong>
+        <span>Post work anytime</span>
+      </div>
+
+      <div class="wt-stat">
+        <strong>1 Place</strong>
+        <span>Customers & workers</span>
+      </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+
+    <section class="wt-section" id="actions">
+
+      <div class="wt-section-head">
+
+        <div class="wt-section-label">
+          GET STARTED
+        </div>
+
+        <h2>
+          Everything you need in one place.
+        </h2>
+
+        <p>
+          Create an account to post work, find jobs,
+          contact workers and manage your activity.
+        </p>
+
+      </div>
+
+      <div class="wt-actions">
+
+        <div class="wt-action" data-action="post">
+
+          <div class="wt-action-icon">📣</div>
+
+          <h3>Post Work</h3>
+
+          <p>
+            Need someone today?
+            Create a work request and let suitable
+            workers find it.
+          </p>
+
+        </div>
+
+        <div class="wt-action" data-action="find">
+
+          <div class="wt-action-icon">🔎</div>
+
+          <h3>Find Work</h3>
+
+          <p>
+            Search available work according to
+            your skills and location.
+          </p>
+
+        </div>
+
+        <div class="wt-action" data-action="workers">
+
+          <div class="wt-action-icon">👷</div>
+
+          <h3>Find Workers</h3>
+
+          <p>
+            Find workers by category,
+            skill and city.
+          </p>
+
+        </div>
+
+        <div class="wt-action" data-action="mywork">
+
+          <div class="wt-action-icon">📋</div>
+
+          <h3>My Work</h3>
+
+          <p>
+            Manage your posted work,
+            applications and messages.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CATEGORIES -->
+
+    <section class="wt-section" id="categories">
+
+      <div class="wt-section-head">
+
+        <div class="wt-section-label">
+          WORK CATEGORIES
+        </div>
+
+        <h2>
+          Find the skill you need.
+        </h2>
+
+        <p>
+          Explore categories available on WorkToday.
+          Actual work search requires an account.
+        </p>
+
+      </div>
+
+      <div class="wt-categories">
+
+        <div class="wt-category" data-action="category">⚡ Electrician</div>
+        <div class="wt-category" data-action="category">🔧 Plumber</div>
+        <div class="wt-category" data-action="category">🧱 Construction</div>
+        <div class="wt-category" data-action="category">🎨 Painter</div>
+        <div class="wt-category" data-action="category">🧹 Cleaning</div>
+
+        <div class="wt-category" data-action="category">🚗 Driver</div>
+        <div class="wt-category" data-action="category">🛵 Delivery</div>
+        <div class="wt-category" data-action="category">🪚 Carpenter</div>
+        <div class="wt-category" data-action="category">❄️ AC Technician</div>
+        <div class="wt-category" data-action="category">🧰 Repair Work</div>
+
+        <div class="wt-category" data-action="category">📦 Loading / Unloading</div>
+        <div class="wt-category" data-action="category">🌱 Gardening</div>
+        <div class="wt-category" data-action="category">🏠 Home Work</div>
+        <div class="wt-category" data-action="category">💻 Computer Work</div>
+        <div class="wt-category" data-action="category">➕ Other Work</div>
+
+      </div>
+
+    </section>
+
+    <!-- HOW IT WORKS -->
+
+    <section class="wt-how" id="how">
+
+      <div class="wt-how-inner">
+
+        <div class="wt-section-head">
+
+          <div class="wt-section-label">
+            SIMPLE PROCESS
+          </div>
+
+          <h2>
+            Work should be easy to find.
+          </h2>
+
+          <p style="color:#94a3b8;">
+            A simple system for people who need work
+            and people who can do it.
+          </p>
+
+        </div>
+
+        <div class="wt-how-grid">
+
+          <div class="wt-step">
+
+            <div class="wt-step-number">
+              01 — CREATE
+            </div>
+
+            <h3>
+              Create your account
+            </h3>
+
+            <p>
+              Sign up once and create your WorkToday
+              profile with your real information.
+            </p>
+
+          </div>
+
+          <div class="wt-step">
+
+            <div class="wt-step-number">
+              02 — CONNECT
+            </div>
+
+            <h3>
+              Find the right work
+            </h3>
+
+            <p>
+              Search work or workers by category,
+              location and availability.
+            </p>
+
+          </div>
+
+          <div class="wt-step">
+
+            <div class="wt-step-number">
+              03 — GET IT DONE
+            </div>
+
+            <h3>
+              Connect & work
+            </h3>
+
+            <p>
+              Message or call directly and get
+              today's work completed.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer class="wt-footer">
+    © 2026 WorkToday. Find Work. Get Work. Today.
+  </footer>
+
+  <!-- SUPABASE -->
+
+  <script src="supabase.js"></script>
+  <script src="auth.js"></script>
+
+  <!-- LOGIN GATE -->
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const actions =
+        document.querySelectorAll("[data-action]");
+
+      actions.forEach(function (element) {
+
+        element.addEventListener("click", async function () {
+
+          let loggedIn = false;
+
+          try {
+
+            if (
+              window.supabaseClient &&
+              window.supabaseClient.auth
+            ) {
+
+              const result =
+                await window.supabaseClient.auth.getSession();
+
+              loggedIn =
+                !!result.data.session;
+
+            }
+
+          } catch (error) {
+
+            console.error(
+              "Session check failed:",
+              error
+            );
+
+          }
+
+          /*
+             LANDING PAGE IS PUBLIC.
+             REAL ACTIONS REQUIRE LOGIN.
+          */
+
+          if (!loggedIn) {
+
+            window.location.href =
+              "login.html";
+
+            return;
+
+          }
+
+          const action =
+            this.dataset.action;
+
+          if (action === "post") {
+
+            window.location.href =
+              "post-work.html";
+
+          }
+
+          else if (action === "find") {
+
+            window.location.href =
+              "workers.html";
+
+          }
+
+          else if (action === "workers") {
+
+            window.location.href =
+              "workers.html";
+
+          }
+
+          else if (action === "mywork") {
+
+            window.location.href =
+              "my-work.html";
+
+          }
+
+          else if (action === "signup") {
+
+            window.location.href =
+              "signup.html";
+
+          }
+
+          else if (action === "category") {
+
+            window.location.href =
+              "workers.html";
+
+          }
+
+        });
+
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>

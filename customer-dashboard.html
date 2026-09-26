@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Dashboard — WorkToday</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --blue:#2563eb;
+    --blue2:#3b82f6;
+    --blue-soft:#eff6ff;
+
+    --dark:#0b1220;
+    --dark2:#111827;
+
+    --text:#0f172a;
+    --muted:#64748b;
+    --light:#94a3b8;
+
+    --bg:#f6f8fc;
+    --white:#fff;
+
+    --border:#e5eaf2;
+
+    --green:#059669;
+    --green-soft:#ecfdf5;
+
+    --orange:#ea580c;
+    --orange-soft:#fff7ed;
+
+    --purple:#7c3aed;
+    --purple-soft:#f5f3ff;
+
+    --red:#e11d48;
+
+    --sidebar:255px;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+    overflow-x:hidden;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button,
+a{
+    -webkit-tap-highlight-color:transparent;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* ==============================
+   SIDEBAR
+============================== */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:var(--sidebar);
+
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            rgba(59,130,246,.16),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            #0d1729,
+            #09111f
+        );
+
+    color:#fff;
+    padding:22px 15px;
+
+    display:flex;
+    flex-direction:column;
+
+    z-index:1000;
+    overflow-y:auto;
+
+    border-right:1px solid rgba(255,255,255,.05);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    padding:5px 10px 28px;
+}
+
+.brand-logo{
+    width:44px;
+    height:44px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #60a5fa,
+            #2563eb
+        );
+
+    font-size:21px;
+    font-weight:900;
+
+    box-shadow:
+        0 10px 28px rgba(37,99,235,.30);
+}
+
+.brand-text strong{
+    display:block;
+    font-size:20px;
+    letter-spacing:-.5px;
+}
+
+.brand-text span{
+    display:block;
+    margin-top:3px;
+    color:#94a3b8;
+    font-size:9px;
+}
+
+.sidebar-nav{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.nav-link{
+    min-height:48px;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:0 13px;
+
+    border-radius:13px;
+
+    color:#b9c4d5;
+
+    font-size:13px;
+    font-weight:650;
+
+    transition:.2s ease;
+}
+
+.nav-link:hover{
+    background:rgba(255,255,255,.06);
+    color:#fff;
+}
+
+.nav-link.active{
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color:#fff;
+
+    box-shadow:
+        0 9px 24px rgba(37,99,235,.24);
+}
+
+.nav-icon{
+    width:25px;
+    text-align:center;
+    font-size:18px;
+}
+
+.nav-badge{
+    margin-left:auto;
+
+    min-width:20px;
+    height:20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0 5px;
+
+    border-radius:50px;
+
+    background:#ef4444;
+    color:#fff;
+
+    font-size:9px;
+    font-weight:800;
+}
+
+.sidebar-spacer{
+    flex:1;
+    min-height:20px;
+}
+
+.sidebar-promo{
+    position:relative;
+    overflow:hidden;
+
+    margin:14px 3px;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    box-shadow:
+        0 15px 35px rgba(37,99,235,.18);
+}
+
+.sidebar-promo:after{
+    content:"";
+
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    right:-55px;
+    top:-50px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.09);
+}
+
+.promo-icon{
+    width:40px;
+    height:40px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-bottom:12px;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.15);
+
+    font-size:20px;
+}
+
+.sidebar-promo h3{
+    font-size:15px;
+    margin-bottom:6px;
+}
+
+.sidebar-promo p{
+    color:#dbeafe;
+    font-size:11px;
+    line-height:1.5;
+    margin-bottom:14px;
+}
+
+.promo-btn{
+    width:100%;
+    min-height:39px;
+
+    border:0;
+    border-radius:10px;
+
+    background:#fff;
+    color:#2563eb;
+
+    font-size:11px;
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+.sidebar-bottom{
+    padding:2px 8px;
+}
+
+.logout-btn{
+    width:100%;
+    min-height:44px;
+
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    padding:0 8px;
+
+    border:0;
+    border-radius:10px;
+
+    background:transparent;
+    color:#94a3b8;
+
+    cursor:pointer;
+
+    font-size:12px;
+    font-weight:650;
+}
+
+.logout-btn:hover{
+    color:#fff;
+    background:rgba(255,255,255,.06);
+}
+
+/* ==============================
+   MAIN
+============================== */
+
+.main{
+    margin-left:var(--sidebar);
+    width:calc(100% - var(--sidebar));
+    min-height:100vh;
+}
+
+/* ==============================
+   TOPBAR
+============================== */
+
+.topbar{
+    height:74px;
+
+    position:sticky;
+    top:0;
+    z-index:900;
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    padding:0 28px;
+
+    background:rgba(255,255,255,.90);
+
+    border-bottom:1px solid var(--border);
+
+    backdrop-filter:blur(18px);
+}
+
+.mobile-menu-btn{
+    display:none;
+
+    width:42px;
+    height:42px;
+
+    border:1px solid var(--border);
+    border-radius:12px;
+
+    background:#fff;
+
+    cursor:pointer;
+}
+
+.search-box{
+    width:100%;
+    max-width:560px;
+    height:43px;
+
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    padding:0 14px;
+
+    background:#f8fafc;
+
+    border:1px solid var(--border);
+    border-radius:13px;
+}
+
+.search-box span{
+    color:#64748b;
+    font-size:17px;
+}
+
+.search-box input{
+    width:100%;
+
+    border:0;
+    outline:0;
+
+    background:transparent;
+
+    color:var(--text);
+    font-size:12px;
+}
+
+.search-box input::placeholder{
+    color:#94a3b8;
+}
+
+.topbar-spacer{
+    flex:1;
+}
+
+.location-box{
+    height:43px;
+
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    padding:0 13px;
+
+    border:1px solid var(--border);
+    border-radius:12px;
+
+    background:#fff;
+
+    color:#475569;
+
+    font-size:11px;
+    font-weight:700;
+
+    white-space:nowrap;
+}
+
+.location-dot{
+    color:#ef4444;
+}
+
+.notification-btn{
+    width:42px;
+    height:42px;
+
+    position:relative;
+
+    border:1px solid var(--border);
+    border-radius:50%;
+
+    background:#fff;
+
+    cursor:pointer;
+
+    font-size:17px;
+}
+
+.notification-count{
+    position:absolute;
+
+    right:-2px;
+    top:-3px;
+
+    min-width:18px;
+    height:18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0 4px;
+
+    border-radius:50px;
+
+    background:#ef4444;
+    color:#fff;
+
+    border:2px solid #fff;
+
+    font-size:8px;
+    font-weight:800;
+}
+
+.user-menu{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    min-width:145px;
+
+    cursor:pointer;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #60a5fa
+        );
+
+    color:#fff;
+
+    font-size:12px;
+    font-weight:800;
+}
+
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.user-info{
+    min-width:0;
+}
+
+.user-info strong{
+    display:block;
+
+    max-width:120px;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+    font-size:12px;
+}
+
+.user-info span{
+    display:block;
+    margin-top:2px;
+
+    color:#64748b;
+
+    font-size:9px;
+}
+
+.user-arrow{
+    color:#94a3b8;
+}
+
+/* ==============================
+   CONTENT
+============================== */
+
+.content{
+    width:100%;
+    max-width:1450px;
+
+    margin:auto;
+
+    padding:27px 29px 45px;
+}
+
+/* ==============================
+   HERO
+============================== */
+
+.welcome{
+    position:relative;
+    overflow:hidden;
+
+    min-height:150px;
+
+    display:flex;
+    align-items:center;
+
+    padding:25px 29px;
+
+    border:1px solid #dbeafe;
+    border-radius:21px;
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(59,130,246,.13),
+            transparent 28%
+        ),
+        linear-gradient(
+            110deg,
+            #eff6ff,
+            #f8fbff 55%,
+            #edf6ff
+        );
+}
+
+.welcome:after{
+    content:"W";
+
+    position:absolute;
+
+    right:35px;
+    bottom:-55px;
+
+    font-size:150px;
+    font-weight:900;
+
+    color:rgba(37,99,235,.055);
+}
+
+.welcome-content{
+    position:relative;
+    z-index:2;
+}
+
+.welcome h1{
+    font-size:clamp(26px,3vw,35px);
+    letter-spacing:-1.4px;
+    margin-bottom:7px;
+}
+
+.welcome h1 span{
+    color:#2563eb;
+}
+
+.welcome p{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:12px;
+}
+
+.welcome-meta{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.role-pill,
+.city-pill{
+    min-height:27px;
+
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+
+    padding:0 10px;
+
+    border-radius:50px;
+
+    font-size:9px;
+    font-weight:750;
+}
+
+.role-pill{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.city-pill{
+    background:#fff;
+    color:#64748b;
+    border:1px solid #dbe3ef;
+}
+
+/* ==============================
+   STATS
+============================== */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:15px;
+
+    margin-top:17px;
+}
+
+.stat-card{
+    padding:19px;
+
+    background:#fff;
+
+    border:1px solid var(--border);
+    border-radius:17px;
+
+    transition:.2s ease;
+}
+
+.stat-card:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 13px 32px rgba(15,23,42,.06);
+}
+
+.stat-icon{
+    width:41px;
+    height:41px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-bottom:13px;
+
+    border-radius:12px;
+
+    font-size:18px;
+}
+
+.stat-blue .stat-icon{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.stat-purple .stat-icon{
+    background:#ede9fe;
+    color:#7c3aed;
+}
+
+.stat-orange .stat-icon{
+    background:#ffedd5;
+    color:#ea580c;
+}
+
+.stat-green .stat-icon{
+    background:#d1fae5;
+    color:#059669;
+}
+
+.stat-number{
+    font-size:25px;
+    font-weight:850;
+    letter-spacing:-.8px;
+}
+
+.stat-title{
+    margin-top:4px;
+
+    color:#64748b;
+
+    font-size:10px;
+    font-weight:650;
+}
+
+/* ==============================
+   SECTIONS
+============================== */
+
+.section{
+    margin-top:27px;
+}
+
+.section-heading{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin-bottom:12px;
+}
+
+.section-heading h2{
+    font-size:18px;
+    letter-spacing:-.5px;
+}
+
+.section-heading p{
+    margin-top:3px;
+    color:#64748b;
+    font-size:10px;
+}
+
+.view-all{
+    color:#2563eb;
+    font-size:11px;
+    font-weight:800;
+}
+
+/* ==============================
+   QUICK ACTIONS
+============================== */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;
+}
+
+.quick-card{
+    position:relative;
+    overflow:hidden;
+
+    min-height:145px;
+
+    padding:18px;
+
+    border:1px solid var(--border);
+    border-radius:17px;
+
+    transition:.2s ease;
+}
+
+.quick-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 14px 30px rgba(15,23,42,.07);
+}
+
+.quick-blue{
+    background:linear-gradient(145deg,#eff6ff,#fafdff);
+}
+
+.quick-purple{
+    background:linear-gradient(145deg,#f5f3ff,#fbfaff);
+}
+
+.quick-green{
+    background:linear-gradient(145deg,#ecfdf5,#f8fffc);
+}
+
+.quick-red{
+    background:linear-gradient(145deg,#fff1f2,#fffafa);
+}
+
+.quick-icon{
+    width:39px;
+    height:39px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-bottom:13px;
+
+    border-radius:11px;
+
+    color:#fff;
+
+    font-size:18px;
+}
+
+.quick-blue .quick-icon{
+    background:#2563eb;
+}
+
+.quick-purple .quick-icon{
+    background:#7c3aed;
+}
+
+.quick-green .quick-icon{
+    background:#059669;
+}
+
+.quick-red .quick-icon{
+    background:#e11d48;
+}
+
+.quick-card h3{
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.quick-card p{
+    max-width:190px;
+
+    color:#64748b;
+
+    font-size:10px;
+    line-height:1.5;
+}
+
+.quick-arrow{
+    position:absolute;
+    right:14px;
+    bottom:14px;
+
+    width:27px;
+    height:27px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:1px solid var(--border);
+    border-radius:50%;
+
+    background:#fff;
+
+    font-size:13px;
+}
+
+/* ==============================
+   JOBS
+============================== */
+
+.jobs-card{
+    overflow:hidden;
+
+    background:#fff;
+
+    border:1px solid var(--border);
+    border-radius:17px;
+}
+
+.job-item{
+    display:grid;
+
+    grid-template-columns:
+        55px
+        minmax(0,1fr)
+        auto
+        auto
+        20px;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:14px 18px;
+
+    border-bottom:1px solid #edf1f6;
+
+    transition:.18s ease;
+}
+
+.job-item:last-child{
+    border-bottom:0;
+}
+
+.job-item:hover{
+    background:#fafcff;
+}
+
+.job-thumb{
+    width:55px;
+    height:55px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #dbeafe,
+            #eff6ff
+        );
+
+    font-size:23px;
+}
+
+.job-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.job-info{
+    min-width:0;
+}
+
+.job-title{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+    font-size:12px;
+    font-weight:800;
+
+    margin-bottom:5px;
+}
+
+.job-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+
+    color:#64748b;
+
+    font-size:9px;
+}
+
+.job-description{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+    margin-top:5px;
+
+    color:#64748b;
+
+    font-size:9px;
+}
+
+.job-category{
+    padding:6px 9px;
+
+    border-radius:50px;
+
+    background:#eff6ff;
+    color:#2563eb;
+
+    font-size:9px;
+    font-weight:750;
+}
+
+.status{
+    padding:6px 9px;
+
+    border-radius:50px;
+
+    background:#ecfdf5;
+    color:#059669;
+
+    font-size:9px;
+    font-weight:750;
+}
+
+.status.closed{
+    background:#f1f5f9;
+    color:#64748b;
+}
+
+.job-arrow{
+    color:#94a3b8;
+}
+
+.empty-state{
+    padding:46px 20px;
+
+    text-align:center;
+
+    color:#64748b;
+}
+
+.empty-icon{
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+.empty-state h3{
+    color:#0f172a;
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.empty-state p{
+    font-size:11px;
+    margin-bottom:14px;
+}
+
+.empty-btn{
+    padding:10px 15px;
+
+    border:0;
+    border-radius:9px;
+
+    background:#2563eb;
+    color:#fff;
+
+    cursor:pointer;
+
+    font-size:11px;
+    font-weight:750;
+}
+
+/* ==============================
+   MOBILE
+============================== */
+
+.sidebar-overlay{
+    display:none;
+
+    position:fixed;
+    inset:0;
+
+    z-index:950;
+
+    background:rgba(15,23,42,.48);
+}
+
+@media(max-width:1100px){
+
+    :root{
+        --sidebar:220px;
+    }
+
+    .location-box{
+        display:none;
+    }
+
+    .stats-grid,
+    .quick-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+
+@media(max-width:760px){
+
+    .sidebar{
+        width:min(285px,82vw);
+
+        transform:translateX(-105%);
+
+        transition:transform.25s ease;
+
+        box-shadow:
+            18px 0 45px rgba(15,23,42,.22);
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .sidebar-overlay.show{
+        display:block;
+    }
+
+    .main{
+        width:100%;
+        margin-left:0;
+    }
+
+    .topbar{
+        height:65px;
+        padding:0 14px;
+        gap:8px;
+    }
+
+    .mobile-menu-btn{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-shrink:0;
+    }
+
+    .search-box{
+        height:41px;
+        padding:0 10px;
+    }
+
+    .notification-btn{
+        width:40px;
+        height:40px;
+        flex-shrink:0;
+    }
+
+    .user-menu{
+        display:none;
+    }
+
+    .content{
+        padding:15px 13px 35px;
+    }
+
+    .welcome{
+        min-height:155px;
+        padding:22px 19px;
+        border-radius:17px;
+    }
+
+    .welcome h1{
+        font-size:25px;
+    }
+
+    .welcome p{
+        max-width:270px;
+        font-size:11px;
+    }
+
+    .stats-grid{
+        gap:9px;
+        margin-top:11px;
+    }
+
+    .stat-card{
+        padding:14px;
+        border-radius:14px;
+    }
+
+    .stat-icon{
+        width:35px;
+        height:35px;
+        margin-bottom:9px;
+        font-size:15px;
+    }
+
+    .stat-number{
+        font-size:21px;
+    }
+
+    .stat-title{
+        font-size:9px;
+    }
+
+    .section{
+        margin-top:23px;
+    }
+
+    .section-heading h2{
+        font-size:16px;
+    }
+
+    .quick-grid{
+        gap:9px;
+    }
+
+    .quick-card{
+        min-height:137px;
+        padding:14px;
+    }
+
+    .quick-card h3{
+        font-size:11px;
+    }
+
+    .quick-card p{
+        font-size:9px;
+    }
+
+    .quick-icon{
+        width:34px;
+        height:34px;
+        margin-bottom:10px;
+        font-size:15px;
+    }
+
+    .job-item{
+        grid-template-columns:
+            46px
+            minmax(0,1fr)
+            17px;
+
+        gap:10px;
+        padding:12px;
+    }
+
+    .job-thumb{
+        width:46px;
+        height:46px;
+        border-radius:10px;
+        font-size:19px;
+    }
+
+    .job-title{
+        font-size:11px;
+    }
+
+    .job-meta{
+        font-size:8px;
+        gap:5px;
+    }
+
+    .job-description{
+        font-size:8px;
+    }
+
+    .job-category,
+    .status{
+        display:none;
+    }
+}
+
+@media(max-width:390px){
+
+    .search-box span{
+        display:none;
+    }
+
+    .content{
+        padding-left:9px;
+        padding-right:9px;
+    }
+
+    .welcome{
+        padding:19px 16px;
+    }
+
+    .welcome h1{
+        font-size:22px;
+    }
+
+    .stats-grid,
+    .quick-grid{
+        gap:7px;
+    }
+
+    .stat-card{
+        padding:11px;
+    }
+
+    .quick-card{
+        padding:12px;
+        min-height:130px;
+    }
+}
+
+@media(max-width:320px){
+
+    .notification-btn{
+        display:none;
+    }
+
+    .stats-grid,
+    .quick-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation:none!important;
+        transition:none!important;
+        scroll-behavior:auto!important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <div class="brand-logo">W</div>
+
+        <div class="brand-text">
+            <strong>WorkToday</strong>
+            <span>Aaj Ka Kaam. Aaj Hi Worker.</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a href="customer-dashboard.html" class="nav-link active">
+            <span class="nav-icon">⌂</span>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="post-work.html" class="nav-link">
+            <span class="nav-icon">⊕</span>
+            <span>Post Work</span>
+        </a>
+
+        <a href="my-work.html" class="nav-link">
+            <span class="nav-icon">▣</span>
+            <span>My Work</span>
+        </a>
+
+        <a href="workers.html" class="nav-link">
+            <span class="nav-icon">⌕</span>
+            <span>Find Workers</span>
+        </a>
+
+        <a href="messages.html" class="nav-link">
+            <span class="nav-icon">▢</span>
+            <span>Messages</span>
+
+            <span
+                class="nav-badge"
+                id="messagesBadge"
+                style="display:none"
+            >0</span>
+        </a>
+
+        <a href="notifications.html" class="nav-link">
+            <span class="nav-icon">♧</span>
+            <span>Notifications</span>
+
+            <span
+                class="nav-badge"
+                id="notificationsBadge"
+                style="display:none"
+            >0</span>
+        </a>
+
+        <a href="profile.html" class="nav-link">
+            <span class="nav-icon">◯</span>
+            <span>Profile</span>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-spacer"></div>
+
+    <div class="sidebar-promo">
+
+        <div class="promo-icon">+</div>
+
+        <h3>Need work done?</h3>
+
+        <p>
+            Post your work and connect with skilled workers near you.
+        </p>
+
+        <button
+            class="promo-btn"
+            type="button"
+            onclick="window.location.href='post-work.html'"
+        >
+            Post New Work →
+        </button>
+
+    </div>
+
+    <div class="sidebar-bottom">
+
+        <button
+            class="logout-btn"
+            type="button"
+            id="logoutBtn"
+        >
+            <span>↪</span>
+            <span>Logout</span>
+        </button>
+
+    </div>
+
+</aside>
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+<!-- MAIN -->
+<main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+
+        <button
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Open menu"
+        >
+            ☰
+        </button>
+
+        <div class="search-box">
+
+            <span>⌕</span>
+
+            <input
+                type="search"
+                id="dashboardSearch"
+                placeholder="Search your work..."
+                autocomplete="off"
+            >
+
+        </div>
+
+        <div class="location-box">
+
+            <span class="location-dot">●</span>
+
+            <span id="topLocation">Loading...</span>
+
+        </div>
+
+        <div class="topbar-spacer"></div>
+
+        <button
+            type="button"
+            class="notification-btn"
+            onclick="window.location.href='notifications.html'"
+            aria-label="Notifications"
+        >
+            ♧
+
+            <span
+                class="notification-count"
+                id="topNotificationCount"
+                style="display:none"
+            >0</span>
+
+        </button>
+
+        <a
+            href="profile.html"
+            class="user-menu"
+        >
+
+            <div
+                class="avatar"
+                id="topAvatar"
+            >
+                WT
+            </div>
+
+            <div class="user-info">
+
+                <strong id="topUserName">
+                    Loading...
+                </strong>
+
+                <span>Customer</span>
+
+            </div>
+
+            <span class="user-arrow">⌄</span>
+
+        </a>
+
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- WELCOME -->
+        <section class="welcome">
+
+            <div class="welcome-content">
+
+                <h1>
+                    Hello,
+                    <span id="welcomeName">there</span>
+                    👋
+                </h1>
+
+                <p>
+                    Find the right worker for your work today.
+                </p>
+
+                <div class="welcome-meta">
+
+                    <span class="role-pill">
+                        Customer
+                    </span>
+
+                    <span class="city-pill">
+                        ●
+                        <span id="welcomeCity">
+                            Loading...
+                        </span>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- STATS -->
+        <section class="stats-grid">
+
+            <div class="stat-card stat-blue">
+
+                <div class="stat-icon">▣</div>
+
+                <div
+                    class="stat-number"
+                    id="activeWorks"
+                >0</div>
+
+                <div class="stat-title">
+                    Active Works
+                </div>
+
+            </div>
+
+            <div class="stat-card stat-purple">
+
+                <div class="stat-icon">◉</div>
+
+                <div
+                    class="stat-number"
+                    id="totalViews"
+                >0</div>
+
+                <div class="stat-title">
+                    Total Views
+                </div>
+
+            </div>
+
+            <div class="stat-card stat-orange">
+
+                <div class="stat-icon">♙</div>
+
+                <div
+                    class="stat-number"
+                    id="interestedWorkers"
+                >0</div>
+
+                <div class="stat-title">
+                    Interested Workers
+                </div>
+
+            </div>
+
+            <div class="stat-card stat-green">
+
+                <div class="stat-icon">✓</div>
+
+                <div
+                    class="stat-number"
+                    id="completedWorks"
+                >0</div>
+
+                <div class="stat-title">
+                    Work Completed
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- QUICK ACTIONS -->
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Quick Actions</h2>
+
+                    <p>
+                        Manage your work faster.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="quick-grid">
+
+                <a
+                    href="post-work.html"
+                    class="quick-card quick-blue"
+                >
+
+                    <div class="quick-icon">+</div>
+
+                    <h3>Post Work</h3>
+
+                    <p>
+                        Need someone today? Post your work.
+                    </p>
+
+                    <div class="quick-arrow">→</div>
+
+                </a>
+
+                <a
+                    href="workers.html"
+                    class="quick-card quick-purple"
+                >
+
+                    <div class="quick-icon">♙</div>
+
+                    <h3>Find Workers</h3>
+
+                    <p>
+                        Search skilled workers near you.
+                    </p>
+
+                    <div class="quick-arrow">→</div>
+
+                </a>
+
+                <a
+                    href="my-work.html"
+                    class="quick-card quick-green"
+                >
+
+                    <div class="quick-icon">▣</div>
+
+                    <h3>My Work</h3>
+
+                    <p>
+                        Manage your posted work.
+                    </p>
+
+                    <div class="quick-arrow">→</div>
+
+                </a>
+
+                <a
+                    href="messages.html"
+                    class="quick-card quick-red"
+                >
+
+                    <div class="quick-icon">▢</div>
+
+                    <h3>Messages</h3>
+
+                    <p>
+                        Chat with interested workers.
+                    </p>
+
+                    <div class="quick-arrow">→</div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- RECENT JOBS -->
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>Recent Jobs</h2>
+
+                    <p>
+                        Your latest posted work
+                    </p>
+
+                </div>
+
+                <a
+                    href="my-work.html"
+                    class="view-all"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+            <div
+                class="jobs-card"
+                id="jobsList"
+            >
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ⏳
+                    </div>
+
+                    <h3>
+                        Loading your work...
+                    </h3>
+
+                    <p>
+                        Please wait.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/auth.js"></script>
+
+<script>
+
+let supabaseClient = null;
+let currentUser = null;
+let allJobs = [];
+
+/* ==============================
+   HELPERS
+============================== */
+
+function $(id){
+    return document.getElementById(id);
+}
+
+function escapeHTML(value){
+
+    if(value === null || value === undefined){
+        return "";
+    }
+
+    return String(value)
+       .replace(/&/g,"&amp;")
+       .replace(/</g,"&lt;")
+       .replace(/>/g,"&gt;")
+       .replace(/"/g,"&quot;")
+       .replace(/'/g,"&#039;");
+}
+
+function getInitials(name){
+
+    if(!name){
+        return "WT";
+    }
+
+    const words =
+        String(name)
+       .trim()
+       .split(/\s+/)
+       .filter(Boolean);
+
+    if(words.length === 1){
+        return words[0]
+           .slice(0,2)
+           .toUpperCase();
+    }
+
+    return (
+        words[0][0] +
+        words[words.length - 1][0]
+    ).toUpperCase();
+}
+
+function formatDate(dateString){
+
+    if(!dateString){
+        return "Recently";
+    }
+
+    const date = new Date(dateString);
+
+    if(Number.isNaN(date.getTime())){
+        return "Recently";
+    }
+
+    const now = new Date();
+
+    const diff =
+        Math.floor(
+            (now.getTime() - date.getTime()) / 1000
+        );
+
+    if(diff < 60){
+        return "Just now";
+    }
+
+    if(diff < 3600){
+        return Math.floor(diff / 60) + " min ago";
+    }
+
+    if(diff < 86400){
+        return Math.floor(diff / 3600) + " hr ago";
+    }
+
+    if(diff < 604800){
+        return Math.floor(diff / 86400) + " day ago";
+    }
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day:"numeric",
+            month:"short",
+            year:"numeric"
+        }
+    );
+}
+
+function getJobIcon(category){
+
+    const value =
+        String(category || "").toLowerCase();
+
+    if(value.includes("electric")) return "⚡";
+    if(value.includes("plumb")) return "🔧";
+    if(value.includes("paint")) return "🎨";
+    if(value.includes("clean")) return "🧹";
+    if(value.includes("driver")) return "🚗";
+    if(value.includes("construction")) return "🏗️";
+    if(value.includes("labour")) return "👷";
+    if(value.includes("worker")) return "👷";
+    if(value.includes("carpenter")) return "🪚";
+
+    return "🛠️";
+}
+
+/* ==============================
+   LOAD PROFILE
+============================== */
+
+async function loadProfile(){
+
+    if(!supabaseClient ||!currentUser){
+        return;
+    }
+
+    try{
+
+        const {data,error} =
+            await supabaseClient
+               .from("profiles")
+               .select("*")
+               .eq("id",currentUser.id)
+               .maybeSingle();
+
+        if(error){
+            console.error("Profile error:",error);
+            return;
+        }
+
+        const profile = data || {};
+
+        const name =
+            profile.name ||
+            currentUser.user_metadata?.name ||
+            currentUser.email?.split("@")[0] ||
+            "User";
+
+        const city =
+            profile.city ||
+            currentUser.user_metadata?.city ||
+            "Not set";
+
+        $("welcomeName").textContent = name;
+        $("topUserName").textContent = name;
+
+        $("welcomeCity").textContent = city;
+        $("topLocation").textContent = city;
+
+        $("topAvatar").textContent =
+            getInitials(name);
+
+        if(profile.profile_photo_url){
+
+            $("topAvatar").innerHTML = `
+                <img
+                    src="${escapeHTML(profile.profile_photo_url)}"
+                    alt="Profile photo"
+                >
+            `;
+        }
+
+    }catch(error){
+
+        console.error(
+            "Profile loading failed:",
+            error
+        );
+
+    }
+}
+
+/* ==============================
+   LOAD JOBS
+============================== */
+
+async function loadJobs(){
+
+    if(!supabaseClient ||!currentUser){
+        return;
+    }
+
+    const jobsList = $("jobsList");
+
+    try{
+
+        const {data,error} =
+            await supabaseClient
+               .from("jobs")
+               .select("*")
+               .eq("customer_id",currentUser.id)
+               .order(
+                    "created_at",
+                    {
+                        ascending:false
+                    }
+                );
+
+        if(error){
+
+            console.error(
+                "Jobs error:",
+                error
+            );
+
+            jobsList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">⚠️</div>
+                    <h3>Could not load your work</h3>
+                    <p>
+                        Please refresh the page and try again.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+        allJobs = data || [];
+
+        calculateStats(allJobs);
+
+        renderJobs(allJobs);
+
+    }catch(error){
+
+        console.error(
+            "Jobs loading failed:",
+            error
+        );
+
+        jobsList.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <h3>Something went wrong</h3>
+                <p>Please refresh and try again.</p>
+            </div>
+        `;
+    }
+}
+
+/* ==============================
+   STATS
+============================== */
+
+async function calculateStats(jobs){
+
+    const active =
+        jobs.filter(
+            job =>
+                job.status === "open" ||
+                job.status === "assigned"
+        ).length;
+
+    const completed =
+        jobs.filter(
+            job =>
+                job.status === "closed"
+        ).length;
+
+    const views =
+        jobs.reduce(
+            (total,job) =>
+                total +
+                Number(job.views_count || 0),
+            0
+        );
+
+    $("activeWorks").textContent = active;
+    $("totalViews").textContent = views;
+    $("completedWorks").textContent = completed;
+
+    if(jobs.length === 0){
+
+        $("interestedWorkers").textContent = "0";
+
+        return;
+    }
+
+    const jobIds =
+        jobs.map(job => job.id);
+
+    try{
+
+        const {data,error} =
+            await supabaseClient
+               .from("applications")
+               .select("id,job_id")
+               .in("job_id",jobIds);
+
+        if(!error){
+
+            $("interestedWorkers").textContent =
+                (data || []).length;
+        }
+
+    }catch(error){
+
+        console.error(
+            "Applications count error:",
+            error
+        );
+    }
+}
+
+/* ==============================
+   RENDER JOBS
+============================== */
+
+function renderJobs(jobs){
+
+    const jobsList = $("jobsList");
+
+    if(!jobs || jobs.length === 0){
+
+        jobsList.innerHTML = `
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    🛠️
+                </div>
+
+                <h3>
+                    No work posted yet
+                </h3>
+
+                <p>
+                    Post your first work and find a worker today.
+                </p>
+
+                <button
+                    class="empty-btn"
+                    type="button"
+                    onclick="window.location.href='post-work.html'"
+                >
+                    + Post New Work
+                </button>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    const recentJobs =
+        jobs.slice(0,8);
+
+    jobsList.innerHTML =
+        recentJobs
+           .map(job => {
+
+                const status =
+                    job.status || "open";
+
+                const isClosed =
+                    status === "closed" ||
+                    status === "cancelled";
+
+                let statusText = "Active";
+
+                if(status === "assigned"){
+                    statusText = "Assigned";
+                }
+
+                if(status === "closed"){
+                    statusText = "Completed";
+                }
+
+                if(status === "cancelled"){
+                    statusText = "Cancelled";
+                }
+
+                const category =
+                    job.category_name || "Work";
+
+                const title =
+                    job.title || "Untitled work";
+
+                const description =
+                    job.description ||
+                    "Work details available";
+
+                const city =
+                    job.city || "Not set";
+
+                const views =
+                    Number(job.views_count || 0);
+
+                const icon =
+                    getJobIcon(category);
+
+                return `
+                    <a
+                        href="work-details.html?id=${encodeURIComponent(job.id)}"
+                        class="job-item"
+                    >
+
+                        <div class="job-thumb">
+                            ${icon}
+                        </div>
+
+                        <div class="job-info">
+
+                            <div class="job-title">
+                                ${escapeHTML(title)}
+                            </div>
+
+                            <div class="job-meta">
+
+                                <span>
+                                    ● ${escapeHTML(city)}
+                                </span>
+
+                                <span>
+                                    ◷ ${formatDate(job.created_at)}
+                                </span>
+
+                                <span>
+                                    ◉ ${views} views
+                                </span>
+
+                            </div>
+
+                            <div class="job-description">
+                                ${escapeHTML(description)}
+                            </div>
+
+                        </div>
+
+                        <div class="job-category">
+                            ${escapeHTML(category)}
+                        </div>
+
+                        <div
+                            class="status ${isClosed ? "closed" : ""}"
+                        >
+                            ${statusText}
+                        </div>
+
+                        <div class="job-arrow">
+                            →
+                        </div>
+
+                    </a>
+                `;
+
+            })
+           .join("");
+}
+
+/* ==============================
+   SEARCH
+============================== */
+
+$("dashboardSearch")
+   .addEventListener(
+        "input",
+        function(){
+
+            const query =
+                this.value
+                   .trim()
+                   .toLowerCase();
+
+            if(!query){
+
+                renderJobs(allJobs);
+
+                return;
+            }
+
+            const filtered =
+                allJobs.filter(job => {
+
+                    const text = [
+                        job.title,
+                        job.description,
+                        job.category_name,
+                        job.city,
+                        job.area
+                    ]
+                   .filter(Boolean)
+                   .join(" ")
+                   .toLowerCase();
+
+                    return text.includes(query);
+                });
+
+            renderJobs(filtered);
+        }
+    );
+
+/* ==============================
+   MOBILE MENU
+============================== */
+
+const sidebar =
+    $("sidebar");
+
+const overlay =
+    $("sidebarOverlay");
+
+const mobileMenuBtn =
+    $("mobileMenuBtn");
+
+function openMobileMenu(){
+
+    sidebar.classList.add("open");
+    overlay.classList.add("show");
+
+    document.body.style.overflow = "hidden";
+}
+
+function closeMobileMenu(){
+
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+
+    document.body.style.overflow = "";
+}
+
+mobileMenuBtn.addEventListener(
+    "click",
+    openMobileMenu
+);
+
+overlay.addEventListener(
+    "click",
+    closeMobileMenu
+);
+
+document
+   .querySelectorAll(".nav-link")
+   .forEach(link => {
+
+        link.addEventListener(
+            "click",
+            closeMobileMenu
+        );
+
+    });
+
+/* ==============================
+   LOGOUT
+============================== */
+
+$("logoutBtn")
+   .addEventListener(
+        "click",
+        async function(){
+
+            if(!supabaseClient){
+                return;
+            }
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to logout?"
+                );
+
+            if(!confirmed){
+                return;
+            }
+
+            const {error} =
+                await supabaseClient
+                   .auth
+                   .signOut();
+
+            if(error){
+
+                alert(
+                    "Logout failed. Please try again."
+                );
+
+                return;
+            }
+
+            window.location.href =
+                "login.html";
+        }
+    );
+
+/* ==============================
+   INITIALIZE
+============================== */
+
+async function initDashboard(){
+
+    supabaseClient =
+        window.supabaseClient;
+
+    if(!supabaseClient){
+
+        console.error(
+            "Supabase client not found."
+        );
+
+        $("jobsList").innerHTML = `
+            <div class="empty-state">
+
+                <div class="empty-icon">⚠️</div>
+
+                <h3>
+                    Supabase connection missing
+                </h3>
+
+                <p>
+                    Check js/supabase.js
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    const {data,error} =
+        await supabaseClient
+           .auth
+           .getUser();
+
+    if(error ||!data.user){
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+    currentUser =
+        data.user;
+
+    await loadProfile();
+
+    await loadJobs();
+}
+
+initDashboard();
+
+</script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    WorkTodayAuth.requireLogin();
+});
+</script>
+</body>
+</html>

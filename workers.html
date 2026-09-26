@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Find Workers - WorkToday</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* =====================================================
+   WORKTODAY — PREMIUM FIND WORKERS
+===================================================== */
+
+.workers-page {
+    min-height: calc(100vh - 80px);
+    padding: 42px 20px 70px;
+}
+
+.workers-container {
+    width: min(1180px, 100%);
+    margin: auto;
+}
+
+/* HERO */
+
+.workers-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 25px;
+    margin-bottom: 28px;
+}
+
+.hero-left h1 {
+    margin: 0;
+    font-size: clamp(30px, 4vw, 44px);
+    letter-spacing: -1.5px;
+}
+
+.hero-left p {
+    margin: 10px 0 0;
+    color: #667085;
+    font-size: 15px;
+}
+
+.back-link {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    color: #475467;
+}
+
+/* SEARCH PANEL */
+
+.search-panel {
+    background: rgba(255,255,255,.97);
+    border: 1px solid #e7e9ee;
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: 0 18px 50px rgba(16,24,40,.07);
+    margin-bottom: 28px;
+}
+
+.search-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    min-height: 50px;
+    box-sizing: border-box;
+    border: 1px solid #d9dee8;
+    border-radius: 13px;
+    padding: 0 16px;
+    font-size: 15px;
+    outline: none;
+}
+
+.search-input:focus,
+.filter-control:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17,24,39,.07);
+}
+
+.search-button {
+    min-height: 50px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: 13px;
+    background: #111827;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 13px;
+}
+
+.filter-label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #344054;
+}
+
+.filter-control {
+    width: 100%;
+    height: 44px;
+    box-sizing: border-box;
+    border: 1px solid #d9dee8;
+    border-radius: 10px;
+    padding: 0 11px;
+    background: white;
+    outline: none;
+    font-size: 14px;
+}
+
+.filter-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.available-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #344054;
+}
+
+.available-label input {
+    width: 18px;
+    height: 18px;
+}
+
+.clear-button {
+    border: 0;
+    background: transparent;
+    color: #344054;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+/* RESULTS */
+
+.results-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.results-count {
+    font-size: 15px;
+    font-weight: 800;
+    color: #101828;
+}
+
+.sort-area {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.sort-area span {
+    color: #667085;
+    font-size: 13px;
+}
+
+.sort-select {
+    height: 40px;
+    border: 1px solid #d9dee8;
+    border-radius: 10px;
+    padding: 0 11px;
+    background: white;
+}
+
+/* WORKERS GRID */
+
+.workers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 19px;
+}
+
+/* WORKER CARD */
+
+.worker-card {
+    background: white;
+    border: 1px solid #e7e9ee;
+    border-radius: 20px;
+    padding: 21px;
+    box-shadow: 0 10px 32px rgba(16,24,40,.055);
+    transition:.2s ease;
+}
+
+.worker-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 17px 42px rgba(16,24,40,.10);
+}
+
+.worker-top {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 17px;
+}
+
+.worker-photo {
+    width: 64px;
+    height: 64px;
+    flex: 0 0 64px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #f0f2f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: #344054;
+}
+
+.worker-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.worker-name {
+    font-size: 18px;
+    font-weight: 900;
+    color: #101828;
+    word-break: break-word;
+}
+
+.worker-location {
+    margin-top: 4px;
+    color: #667085;
+    font-size: 12px;
+}
+
+.verified {
+    display: inline-flex;
+    margin-top: 6px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background: #ecfdf3;
+    color: #027a48;
+    font-size: 10px;
+    font-weight: 900;
+}
+
+.worker-about {
+    min-height: 43px;
+    color: #667085;
+    font-size: 13px;
+    line-height: 1.55;
+    margin-bottom: 14px;
+}
+
+.worker-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 15px;
+}
+
+.worker-tag {
+    padding: 6px 9px;
+    border-radius: 20px;
+    background: #f2f4f7;
+    color: #344054;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.worker-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.info-box {
+    background: #f8fafc;
+    border-radius: 11px;
+    padding: 10px;
+}
+
+.info-label {
+    display: block;
+    color: #98a2b3;
+    font-size: 10px;
+    margin-bottom: 3px;
+}
+
+.info-value {
+    color: #344054;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.available {
+    color: #027a48;
+}
+
+.unavailable {
+    color: #98a2b3;
+}
+
+.worker-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+}
+
+.worker-action {
+    min-height: 42px;
+    border-radius: 10px;
+    border: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.profile-action {
+    background: #f2f4f7;
+    color: #344054;
+}
+
+.message-action {
+    background: #111827;
+    color: white;
+}
+
+.call-action {
+    grid-column: 1 / -1;
+    background: #ecfdf3;
+    color: #027a48;
+}
+
+/* EMPTY */
+
+.empty-state {
+    display: none;
+    text-align: center;
+    padding: 65px 20px;
+    background: white;
+    border: 1px solid #e7e9ee;
+    border-radius: 20px;
+}
+
+.empty-icon {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.empty-state h3 {
+    margin: 0 0 7px;
+}
+
+.empty-state p {
+    margin: 0;
+    color: #667085;
+}
+
+/* LOADING */
+
+.loading-state {
+    text-align: center;
+    padding: 65px 20px;
+    color: #667085;
+}
+
+/* MOBILE */
+
+@media (max-width: 950px) {
+
+   .workers-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+   .filter-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+
+   .workers-page {
+        padding: 27px 13px 50px;
+    }
+
+   .workers-hero {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 13px;
+    }
+
+   .search-panel {
+        padding: 16px;
+        border-radius: 17px;
+    }
+
+   .search-row {
+        grid-template-columns: 1fr;
+    }
+
+   .search-button {
+        width: 100%;
+    }
+
+   .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+   .filter-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+   .results-bar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+   .sort-area {
+        width: 100%;
+    }
+
+   .sort-select {
+        flex: 1;
+    }
+
+   .workers-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="site-header">
+
+    <div class="container nav-wrap">
+
+        <a href="index.html" class="logo">
+            Work<span>Today</span>
+        </a>
+
+        <nav class="main-nav">
+
+            <a href="customer-dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="workers.html" class="active">
+                Find Workers
+            </a>
+
+            <a href="post-work.html">
+                Post Work
+            </a>
+
+            <a href="my-work.html">
+                My Work
+            </a>
+
+            <a href="messages.html">
+                Messages
+            </a>
+
+            <a href="notifications.html">
+                🔔
+            </a>
+
+            <a href="profile.html">
+                Profile
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+<!-- MAIN -->
+
+<main class="workers-page">
+
+<div class="workers-container">
+
+    <!-- HERO -->
+
+    <section class="workers-hero">
+
+        <div class="hero-left">
+
+            <h1>
+                Find Workers
+            </h1>
+
+            <p>
+                Discover workers available for your work.
+            </p>
+
+        </div>
+
+        <a
+            href="customer-dashboard.html"
+            class="back-link"
+        >
+            ← Dashboard
+        </a>
+
+    </section>
+
+    <!-- SEARCH -->
+
+    <section class="search-panel">
+
+        <div class="search-row">
+
+            <input
+                id="workerSearch"
+                class="search-input"
+                type="search"
+                placeholder="Search by name, skill, area..."
+            >
+
+            <button
+                id="searchButton"
+                class="search-button"
+                type="button"
+            >
+                Search
+            </button>
+
+        </div>
+
+        <div class="filter-grid">
+
+            <div>
+
+                <label class="filter-label">
+                    Category / Skill
+                </label>
+
+                <select
+                    id="categoryFilter"
+                    class="filter-control"
+                >
+
+                    <option value="">
+                        All Skills
+                    </option>
+
+                    <option value="electrician">
+                        Electrician
+                    </option>
+
+                    <option value="plumber">
+                        Plumber
+                    </option>
+
+                    <option value="carpenter">
+                        Carpenter
+                    </option>
+
+                    <option value="painter">
+                        Painter
+                    </option>
+
+                    <option value="cleaning">
+                        Cleaning
+                    </option>
+
+                    <option value="driver">
+                        Driver
+                    </option>
+
+                    <option value="delivery">
+                        Delivery
+                    </option>
+
+                    <option value="mechanic">
+                        Mechanic
+                    </option>
+
+                    <option value="computer">
+                        Computer / IT
+                    </option>
+
+                    <option value="ac">
+                        AC / Appliance
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div>
+
+                <label class="filter-label">
+                    Area
+                </label>
+
+                <input
+                    id="areaFilter"
+                    class="filter-control"
+                    type="text"
+                    placeholder="e.g. CIDCO"
+                >
+
+            </div>
+
+            <div>
+
+                <label class="filter-label">
+                    Experience
+                </label>
+
+                <select
+                    id="experienceFilter"
+                    class="filter-control"
+                >
+
+                    <option value="0">
+                        Any Experience
+                    </option>
+
+                    <option value="1">
+                        1+ Years
+                    </option>
+
+                    <option value="3">
+                        3+ Years
+                    </option>
+
+                    <option value="5">
+                        5+ Years
+                    </option>
+
+                    <option value="10">
+                        10+ Years
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div>
+
+                <label class="filter-label">
+                    Availability
+                </label>
+
+                <select
+                    id="availabilityFilter"
+                    class="filter-control"
+                >
+
+                    <option value="">
+                        Everyone
+                    </option>
+
+                    <option value="yes">
+                        Available Today
+                    </option>
+
+                    <option value="no">
+                        Not Available
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="filter-bottom">
+
+            <label class="available-label">
+
+                <input
+                    type="checkbox"
+                    id="verifiedFilter"
+                >
+
+                Verified Workers Only
+
+            </label>
+
+            <button
+                id="clearButton"
+                class="clear-button"
+                type="button"
+            >
+                Clear Filters
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- RESULTS -->
+
+    <div class="results-bar">
+
+        <div class="results-count">
+
+            <span id="resultCount">
+                0
+            </span>
+
+            workers found
+
+        </div>
+
+        <div class="sort-area">
+
+            <span>
+                Sort:
+            </span>
+
+            <select
+                id="sortWorkers"
+                class="sort-select"
+            >
+
+                <option value="experience">
+                    Experience
+                </option>
+
+                <option value="recent">
+                    Recently Active
+                </option>
+
+                <option value="name">
+                    Name
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+    <!-- WORKERS -->
+
+    <section
+        id="workersGrid"
+        class="workers-grid"
+    >
+
+        <div
+            id="loadingState"
+            class="loading-state"
+            style="grid-column:1/-1;"
+        >
+            Loading workers...
+        </div>
+
+    </section>
+
+    <!-- EMPTY -->
+
+    <section
+        id="emptyState"
+        class="empty-state"
+    >
+
+        <div class="empty-icon">
+            🔎
+        </div>
+
+        <h3>
+            No workers found
+        </h3>
+
+        <p>
+            Try changing your search or filters.
+        </p>
+
+    </section>
+
+</div>
+
+</main>
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/auth.js"></script>
+
+<script>
+
+/* =====================================================
+   WORKTODAY REAL WORKERS
+===================================================== */
+
+const supabaseClient =
+    window.supabaseClient;
+
+const workersGrid =
+    document.getElementById("workersGrid");
+
+const loadingState =
+    document.getElementById("loadingState");
+
+const emptyState =
+    document.getElementById("emptyState");
+
+const resultCount =
+    document.getElementById("resultCount");
+
+let allWorkers = [];
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+async function getCurrentUser() {
+
+    if (!supabaseClient) {
+
+        throw new Error(
+            "Supabase connection nahi mila."
+        );
+
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+    if (error ||!data.user) {
+
+        window.location.href =
+            "login.html";
+
+        return null;
+    }
+
+    return data.user;
+}
+
+/* =====================================================
+   LOAD WORKERS
+===================================================== */
+
+async function loadWorkers() {
+
+    try {
+
+        await getCurrentUser();
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+              .from("profiles")
+              .select(`
+                    id,
+                    name,
+                    email,
+                    phone,
+                    city,
+                    area,
+                    profile_photo_url,
+                    experience_years,
+                    about,
+                    availability_today,
+                    own_vehicle,
+                    own_tools,
+                    languages,
+                    verified,
+                    updated_at
+                `)
+              .neq(
+                    "id",
+                    (await supabaseClient.auth.getUser()).data.user.id
+                )
+              .order(
+                    "updated_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "Workers error:",
+                error
+            );
+
+            throw error;
+        }
+
+        allWorkers =
+            data || [];
+
+        renderWorkers(
+            allWorkers
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        loadingState.textContent =
+            "Workers load nahi ho paaye. Please refresh and try again.";
+
+    }
+
+}
+
+/* =====================================================
+   INITIALS
+===================================================== */
+
+function getInitials(name) {
+
+    if (!name) {
+        return "WT";
+    }
+
+    const parts =
+        name
+          .trim()
+          .split(/\s+/)
+          .slice(0, 2);
+
+    return parts
+      .map(
+            word =>
+                word
+                  .charAt(0)
+                  .toUpperCase()
+        )
+      .join("");
+
+}
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+}
+
+/* =====================================================
+   WORKER CARD
+===================================================== */
+
+function createWorkerCard(worker) {
+
+    const name =
+        worker.name ||
+        "WorkToday Worker";
+
+    const city =
+        worker.city ||
+        "City not set";
+
+    const area =
+        worker.area ||
+        "";
+
+    const experience =
+        Number.isFinite(
+            Number(worker.experience_years)
+        )
+        ? Number(worker.experience_years)
+            : 0;
+
+    const about =
+        worker.about ||
+        "Worker profile information not added yet.";
+
+    const available =
+        worker.availability_today === true;
+
+    const verified =
+        worker.verified === true;
+
+    const photo =
+        worker.profile_photo_url;
+
+    const languages =
+        Array.isArray(worker.languages)
+        ? worker.languages
+            : [];
+
+    const skillText =
+        (
+            about +
+            " " +
+            languages.join(" ")
+        ).toLowerCase();
+
+    let tags = [];
+
+    /* REAL PROFILE INFORMATION */
+
+    if (worker.own_tools === true) {
+        tags.push("Own Tools");
+    }
+
+    if (worker.own_vehicle === true) {
+        tags.push("Own Vehicle");
+    }
+
+    languages
+      .slice(0, 2)
+      .forEach(language => {
+
+            if (language) {
+                tags.push(language);
+            }
+
+        });
+
+    if (tags.length === 0) {
+        tags.push("WorkToday Member");
+    }
+
+    const safePhone =
+        worker.phone
+        ? String(worker.phone)
+            : "";
+
+    const phoneButton =
+        safePhone
+        ? `
+                <a
+                    class="worker-action call-action"
+                    href="tel:${escapeHTML(safePhone)}"
+                >
+                    📞 Call Worker
+                </a>
+              `
+            : `
+                <span
+                    class="worker-action call-action"
+                    style="opacity:.55;cursor:default;"
+                >
+                    📞 Phone Not Added
+                </span>
+              `;
+
+    const photoHTML =
+        photo
+        ? `
+                <img
+                    src="${escapeHTML(photo)}"
+                    alt="${escapeHTML(name)} profile photo"
+                    loading="lazy"
+                >
+              `
+            : escapeHTML(
+                getInitials(name)
+              );
+
+    return `
+
+        <article
+            class="worker-card"
+            data-name="${escapeHTML(name)}"
+            data-area="${escapeHTML(area)}"
+            data-experience="${experience}"
+            data-available="${available? "yes" : "no"}"
+            data-verified="${verified? "yes" : "no"}"
+            data-search="${escapeHTML(
+                name + " " +
+                area + " " +
+                city + " " +
+                about + " " +
+                languages.join(" ")
+            ).toLowerCase()}"
+        >
+
+            <div class="worker-top">
+
+                <div class="worker-photo">
+                    ${photoHTML}
+                </div>
+
+                <div>
+
+                    <div class="worker-name">
+                        ${escapeHTML(name)}
+                    </div>
+
+                    <div class="worker-location">
+                        📍 ${escapeHTML(area || city)}
+                        ${area? ", " + escapeHTML(city) : ""}
+                    </div>
+
+                    ${
+                        verified
+                        ? `
+                                <span class="verified">
+                                    ✓ Verified
+                                </span>
+                              `
+                            : ""
+                    }
+
+                </div>
+
+            </div>
+
+            <div class="worker-about">
+
+                ${escapeHTML(about)}
+
+            </div>
+
+            <div class="worker-tags">
+
+                ${tags
+                  .map(
+                        tag =>
+                            `<span class="worker-tag">
+                                ${escapeHTML(tag)}
+                             </span>`
+                    )
+                  .join("")
+                }
+
+            </div>
+
+            <div class="worker-info">
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Experience
+                    </span>
+
+                    <span class="info-value">
+                        ${experience}
+                        ${experience === 1? "Year" : "Years"}
+                    </span>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Availability
+                    </span>
+
+                    <span
+                        class="info-value ${
+                            available
+                            ? "available"
+                                : "unavailable"
+                        }"
+                    >
+
+                        ${
+                            available
+                            ? "● Available Today"
+                                : "Not Available"
+                        }
+
+                    </span>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Vehicle
+                    </span>
+
+                    <span class="info-value">
+                        ${
+                            worker.own_vehicle
+                            ? "✓ Yes"
+                                : "No"
+                        }
+                    </span>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Tools
+                    </span>
+
+                    <span class="info-value">
+                        ${
+                            worker.own_tools
+                            ? "✓ Own Tools"
+                                : "No"
+                        }
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="worker-actions">
+
+                <a
+                    href="worker-profile.html?id=${encodeURIComponent(worker.id)}"
+                    class="worker-action profile-action"
+                >
+                    View Profile
+                </a>
+
+                <a
+                    href="chat.html?worker_id=${encodeURIComponent(worker.id)}"
+                    class="worker-action message-action"
+                >
+                    Message
+                </a>
+
+                ${phoneButton}
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function renderWorkers(workers) {
+
+    loadingState.style.display =
+        "none";
+
+    workersGrid
+      .querySelectorAll(".worker-card")
+      .forEach(card => card.remove());
+
+    if (!workers.length) {
+
+        resultCount.textContent =
+            "0";
+
+        emptyState.style.display =
+            "block";
+
+        return;
+    }
+
+    emptyState.style.display =
+        "none";
+
+    workers.forEach(worker => {
+
+        workersGrid.insertAdjacentHTML(
+            "beforeend",
+            createWorkerCard(worker)
+        );
+
+    });
+
+    resultCount.textContent =
+        workers.length;
+
+    applyFilters();
+
+}
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+function applyFilters() {
+
+    const search =
+        document
+          .getElementById("workerSearch")
+          .value
+          .trim()
+          .toLowerCase();
+
+    const category =
+        document
+          .getElementById("categoryFilter")
+          .value
+          .trim()
+          .toLowerCase();
+
+    const area =
+        document
+          .getElementById("areaFilter")
+          .value
+          .trim()
+          .toLowerCase();
+
+    const experience =
+        Number(
+            document
+              .getElementById("experienceFilter")
+              .value
+        );
+
+    const availability =
+        document
+          .getElementById("availabilityFilter")
+          .value;
+
+    const verifiedOnly =
+        document
+          .getElementById("verifiedFilter")
+          .checked;
+
+    const cards =
+        workersGrid
+          .querySelectorAll(".worker-card");
+
+    let visible =
+        0;
+
+    cards.forEach(card => {
+
+        const searchText =
+            card.dataset.search || "";
+
+        const cardArea =
+            (
+                card.dataset.area || ""
+            ).toLowerCase();
+
+        const cardExperience =
+            Number(
+                card.dataset.experience || 0
+            );
+
+        const cardAvailable =
+            card.dataset.available === "yes";
+
+        const cardVerified =
+            card.dataset.verified === "yes";
+
+        const searchMatch =
+            !search ||
+            searchText.includes(search);
+
+        const categoryMatch =
+            !category ||
+            searchText.includes(category);
+
+        const areaMatch =
+            !area ||
+            cardArea.includes(area);
+
+        const experienceMatch =
+            cardExperience >= experience;
+
+        const availabilityMatch =
+            !availability ||
+            (
+                availability === "yes"
+                ? cardAvailable
+                    : !cardAvailable
+            );
+
+        const verifiedMatch =
+            !verifiedOnly ||
+            cardVerified;
+
+        const show =
+            searchMatch &&
+            categoryMatch &&
+            areaMatch &&
+            experienceMatch &&
+            availabilityMatch &&
+            verifiedMatch;
+
+        card.style.display =
+            show
+            ? ""
+                : "none";
+
+        if (show) {
+            visible++;
+        }
+
+    });
+
+    resultCount.textContent =
+        visible;
+
+    emptyState.style.display =
+        visible === 0
+        ? "block"
+            : "none";
+
+}
+
+/* =====================================================
+   SORT
+===================================================== */
+
+function sortWorkers() {
+
+    const sort =
+        document
+          .getElementById("sortWorkers")
+          .value;
+
+    const cards =
+        Array.from(
+            workersGrid
+              .querySelectorAll(".worker-card")
+        );
+
+    cards.sort(
+        (a, b) => {
+
+            if (sort === "experience") {
+
+                return (
+                    Number(b.dataset.experience) -
+                    Number(a.dataset.experience)
+                );
+
+            }
+
+            if (sort === "name") {
+
+                return (
+                    a.dataset.name
+                      .localeCompare(
+                            b.dataset.name
+                        )
+                );
+
+            }
+
+            if (sort === "recent") {
+
+                return 0;
+
+            }
+
+            return 0;
+
+        }
+    );
+
+    cards.forEach(card => {
+
+        workersGrid.appendChild(card);
+
+    });
+
+    applyFilters();
+
+}
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+function clearFilters() {
+
+    document
+      .getElementById("workerSearch")
+      .value = "";
+
+    document
+      .getElementById("categoryFilter")
+      .value = "";
+
+    document
+      .getElementById("areaFilter")
+      .value = "";
+
+    document
+      .getElementById("experienceFilter")
+      .value = "0";
+
+    document
+      .getElementById("availabilityFilter")
+      .value = "";
+
+    document
+      .getElementById("verifiedFilter")
+      .checked = false;
+
+    applyFilters();
+
+}
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+document
+  .getElementById("searchButton")
+  .addEventListener(
+        "click",
+        applyFilters
+    );
+
+document
+  .getElementById("workerSearch")
+  .addEventListener(
+        "input",
+        applyFilters
+    );
+
+document
+  .getElementById("categoryFilter")
+  .addEventListener(
+        "change",
+        applyFilters
+    );
+
+document
+  .getElementById("areaFilter")
+  .addEventListener(
+        "input",
+        applyFilters
+    );
+
+document
+  .getElementById("experienceFilter")
+  .addEventListener(
+        "change",
+        applyFilters
+    );
+
+document
+  .getElementById("availabilityFilter")
+  .addEventListener(
+        "change",
+        applyFilters
+    );
+
+document
+  .getElementById("verifiedFilter")
+  .addEventListener(
+        "change",
+        applyFilters
+    );
+
+document
+  .getElementById("clearButton")
+  .addEventListener(
+        "click",
+        clearFilters
+    );
+
+document
+  .getElementById("sortWorkers")
+  .addEventListener(
+        "change",
+        sortWorkers
+    );
+
+/* ====================================================
+   START
+===================================================== */
+
+loadWorkers();
+
+</script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    WorkTodayAuth.requireLogin();
+});
+</script>
+</body>
+</html>
